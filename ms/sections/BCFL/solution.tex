@@ -1,0 +1,151 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Solving the recursive Pareto problem}
+
+
+We compute a competitive equilibrium indirectly as a Pareto optimum,
+a standard approach in this literature.
+The equilibirum prices then show up as Lagrange multipliers on the resource constraints.
+Similar models have been studied by \citet{Colacito2013-yq},
+\citet{Kollmann2015-sy}, and \citet{Tretvoll2011-lo}.
+
+
+\subsection*{Pareto problem}
+
+We solve the Pareto problem recursively with a slight change in notation:
+We represent utility of agent 1 by $J$, the value function,
+and the utility of agent 2 by $U$, without the ``2'' subscript.
+The state at date $t$ is then the exogenous variables $s_t = ( z_{1t}, z_{2t}, v_t ) $
+plus the utility promise $U_{t}$ made to agent 2.
+The Bellman equation is
+\begin{eqnarray*}
+    J(U_t, s_t) &=& \max_{\{c_{1t}, U_{t+1} \}}  V \big\{ c_{1t}, \mu_t [J(U_{t+1}, s_{t+1})] \big\} \\
+    \mbox{s.t.} && V \big\{ c_{2t}, \mu_t (U_{t+1}) \big\} \;\geq\; U_{t} \\
+            && \mbox{plus resource constraints and shocks} .
+\end{eqnarray*}
+The resource constraints include (\ref{eq:resource-a},\ref{eq:resource-b}) for intermediate goods
+and (\ref{eq:armington-1},\ref{eq:armington-2}) for final goods.
+The shocks follow (\ref{eq:lom-z},\ref{eq:lom-v}).
+
+We use Lagrange multipliers $\lambda_t$ on promised utility
+and $(q_{1t}, q_{2t}, p_{1t}, p_{2t})$ on the resource constraints.
+The first-order conditions are then
+\begin{eqnarray}
+    {c}_{1t}: &&  p_{1t} \;\;=\;\; {J}_t^{1-\rho} (1-\beta) {c}_{1t}^{\rho-1}
+            \label{eq:foc-c1} \\
+    {c}_{2t}: &&  p_{2t} \;\;=\;\; \lambda_t {U}_t^{1-\rho} (1-\beta) {c}_{2t}^{\rho-1}
+            \label{eq:foc-c2} \\
+    {a}_{1t}: &&  q_{1t} \;\;=\;\; p_{1t} {c}_{1t}^{1-\sigma} (1-\omega) {a}_{1t}^{\sigma-1}
+            \label{eq:foc-a1} \\
+    {b}_{1t}: &&  q_{2t} \;\;=\;\; p_{1t} {c}_{1t}^{1-\sigma} \omega {b}_{1t}^{\sigma-1}
+            \label{eq:foc-b1} \\
+    {a}_{2t}: &&  q_{1t} \;\;=\;\; p_{2t} {c}_{2t}^{1-\sigma} \omega {a}_{2t}^{\sigma-1}
+            \label{eq:foc-a2} \\
+    {b}_{2t}: &&  q_{2t} \;\;=\;\; p_{2t} {c}_{2t}^{1-\sigma} (1-\omega) {b}_{2t}^{\sigma-1}
+            \label{eq:foc-b2} \\
+    {U}_{t+1}:&&  {J}_t^{1-\rho} \beta \mu_t ({J}_{t+1})^{\rho-\alpha} {J}_{t+1}^{\alpha-1} {J}_{Ut+1}
+            \;\;=\;\; - \lambda_t {U}_t^{1-\rho} \beta \mu_t ({U}_{t+1})^{\rho-\alpha} {U}_{t+1}^{\alpha-1} .
+            \label{eq:foc-u}
+\end{eqnarray}
+Note, in particular, that equation (\ref{eq:foc-u}) applies to promises $U_{t+1}$
+in every state at $t+1$.  It's many equations, not just one.
+
+The envelope condition for ${U}_t$ is
+\begin{eqnarray*}
+    {J}_{Ut} &=& - \lambda_t ,
+\end{eqnarray*}
+which we use to replace $J_{Ut+1}$ with $\lambda_{t+1}$ in  (\ref{eq:foc-u}).
+
+{\textit Transforming the Pareto weight.\/}
+We can simplify the solution by transforming the Pareto weight $\lambda_t$.
+A Pareto weight is defined for specific a utility function;
+if we transform the utility function, we transform the Pareto weight along with it.
+The natural benchmark for the Pareto weight is the additive case, in which it's constant.
+Additive preferences are traditionally expressed using utility $U_{t}^* = U_{t}^\rho/\rho$ and $J_{t}^* = J_{t}^\rho/\rho$.
+The associated Pareto weight is
+\begin{eqnarray*}
+    \lambda_t^* &=& \lambda_t {U}_t^{1-\rho}/ {J}_t^{1-\rho} .
+\end{eqnarray*}
+We refer to $\lambda^*_t$ as the additive Pareto weight ---
+or simply the Pareto weight.
+
+With this substitution, we can clearly see the impact of recursive preferences.
+The first-order condition (\ref{eq:foc-u}) becomes
+\begin{eqnarray}
+    \beta \left( \frac{{J}_{t+1}} {\mu_t({J}_{t+1})} \right)^{\alpha-\rho}
+%                  \left( \frac{e_{t+1}}{e_t} \right)
+                  \lambda^*_{t+1}
+            &=&  \lambda^*_t \
+            \beta \left( \frac{{U}_{t+1}} {\mu_t({U}_{t+1})} \right)^{\alpha-\rho} .
+            \label{eq:foc-u-additive}
+\end{eqnarray}
+In the additive case, $\alpha=\rho$, this reduces to
+$ \lambda^*_{t+1}  = \lambda^*_{t} $ and  the Pareto weight is constant.
+This is, of course, well known, but it's nice to know we're on the right track.
+
+%*** Show one-good case reduces to constant weight. ??
+
+With recursive preferences, the Pareto weight need not be constant, although it's an open
+question how important this is quantitatively.
+
+
+{\textit Consumption and the exchange rate.\/}
+The same transformation of the Pareto weight changes equations (\ref{eq:foc-c1},\ref{eq:foc-c2}) to
+\begin{eqnarray*}
+    (1-\beta) c_{1t}^{\rho-1} / p_{1t} &=& \lambda_t^* (1-\beta) c_{2t}^{\rho-1} / p_{2t}
+\end{eqnarray*}
+or
+\begin{eqnarray}
+    p_{2t} / p_{1t} &=& \lambda_t^* (c_{2t}/c_{1t})^{\rho-1} .
+    \label{eq:cons-rer}
+\end{eqnarray}
+If the prices of final goods are equal, as they are in a one-good world,
+the first equation tells us to equate weighted marginal utilities across agents.
+
+In the second equation, the left side is the real exchange rate $e_t$.
+The right side is the product of the Pareto weight
+and the consumption ratio.
+In the additive case, the Pareto weight is constant and we have a linear relation between
+the logs of the real exchange rate and the consumption ratio.
+In the data, there is little sign of such a relation.
+See, among many others, \citet{Backus1993-ul,Chari2002-ll,Corsetti2008-lx,Colacito2013-yq,Kollmann1995-fe}, and \citet{Tretvoll2011-lo}.
+We might say that the data suggests a wedge between the price and consumption ratios
+that is represented in the recursive model by the Pareto weight.
+
+If we further simplify the model to have a single good,
+then the real exchange rate is one in all states.
+In the additive case,
+$\lambda_t^*$ is constant
+and equation (\ref{eq:cons-rer}) tells us that the ratio of consumptions is also constant.
+Any variation in consumption by one agent is exactly mirrored by the other.
+This is, of course, counterfactual, and one of the standard anomalies
+of international business cycle models.
+
+
+{\textit Marginal rates of substitution.\/}
+The Pareto problem equates marginal rates of substitution,
+but since the agents consume different goods this involves the relative price $ e_t = p_{2t} / p_{1t} $.
+The ratio of equation (\ref{eq:cons-rer})
+at dates $t$ and $t+1$ is
+\begin{eqnarray*}
+        \beta \left( \frac{c_{1t+1}}{c_{1t}}\right)^{\rho-1}
+              \left( \frac{e_{t+1}}{e_t} \right)
+              &=&
+              \left( \frac{\lambda^*_{t+1}}{\lambda^*_t} \right)
+              \beta \left( \frac{c_{2t+1}}{c_{2t}}\right)^{\rho-1} .
+\end{eqnarray*}
+Combining this with (\ref{eq:foc-u-additive}) gives us
+\begin{eqnarray*}
+        \beta \left( \frac{c_{1t+1}}{c_{1t}}\right)^{\rho-1}
+              \left( \frac{J_{t+1}}{\mu_{t}(J_{t+1})} \right)^{\alpha-\rho}
+              \left( \frac{e_{t+1}}{e_t} \right)
+              &=&
+              \beta \left( \frac{c_{2t+1}}{c_{2t}}\right)^{\rho-1}
+              \left( \frac{U_{t+1}}{\mu_{t}(U_{t+1})} \right)^{\alpha-\rho}
+\end{eqnarray*}
+as noted earlier.
+Note the role of  $\alpha - \rho$.
+If the difference is zero, the recursive term drops out.
+Otherwise the sign of the impact of future utility depends on the sign of $\alpha-\rho$.
+
+%[*** Talk about relation between promises and weights?]  %??

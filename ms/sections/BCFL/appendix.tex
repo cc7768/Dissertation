@@ -1,0 +1,99 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Computation}
+\label{app:computation_BCFL}
+
+{\textit Scaling.\/}
+One challenge with computing solutions to this model is that the
+productivity process (\ref{eq:lom-z}) has a unit root.
+We deal with that by scaling: We divide everything by
+$\bar{z}_t$ and label it with a tilde:  $\ti{c}_{1t} = c_{1t} / \bar{z}_t$,
+$\ti{c}_{2t} = c_{2t} / \bar{z}_t$, $\wt{U}_{t} = U_{t} / \bar{z}_t$, and so on.
+We define the relevant state by $ \ti{s}_t = (\wh{z}_t, v_t)$
+and the growth rate in the scaling variable $\bar{z}_t$ by
+$g_{t+1} = \bar{z}_{t+1} / \bar{z}_t $.
+
+Since the functions are all hd1, we can divide the whole Bellman equation by $\bar{z}_t$:
+\begin{eqnarray*}
+    \wt{J}(\wt{U}_t, \ti{s}_t) &=& \max_{\{\ti{c}_{1t}, \wt{U}_{t+1} \}}
+            V \big\{ \ti{c}_{1t}, \mu_t [g_{t+1} \wt{J}(\wt{U}_{t+1}, \ti{s}_{t+1})] \big\} \\
+    \mbox{s.t.} && V \big\{ \ti{c}_{2t}, \mu_t (g_{t+1} \wt{U}_{t+1}) \big\} \;\geq\; \wt{U}_{t} \\
+            && \mbox{plus resource constraints and shocks} .
+\end{eqnarray*}
+The scaled resource constraints become
+\begin{eqnarray*}
+    \ti{a}_{1t} + \ti{a}_{2t} &=&  \ti{y}_{1t} \;\;=\;\; \wh{z}_{t} \\
+    \ti{b}_{1t} + \ti{b}_{2t} &=&  \ti{y}_{2t} \;\;=\;\; 1/\wh{z}_{t} \\
+    \ti{c}_{1t} &=&  h (\ti{a}_{1t}, \ti{b}_{1t} ) \\
+    \ti{c}_{1t} &=&  h (\ti{a}_{1t}, \ti{b}_{1t} ) .
+\end{eqnarray*}
+The laws of motion for the shocks are
+(\ref{eq:lom-zhat}) for $\wh{z}_t$ and (\ref{eq:lom-v}) for $v_t$ (no scaling required).
+$\bar{z}_t$ drops out, leaving us with a lower-dimensional state.
+
+
+Given a solution to the scaled problem, we can multiply by $\bar{z}_t$
+to produce a solution to the original problem.
+The notation is horrendous.
+The point is simply that we can
+convert our problem to one with stable shocks.
+
+
+{\textit Algorithm.\/}
+Another challenge in computing a solution is that at each date $t$,
+we need to choose utility promises $\wt{U}_{t+1}$
+for every state the following period.
+We adapt the algorithm of Collin-Dufresne, Johannes, and Lochstoer (2015) to a multi-good setting.
+Their algorithm has three essential features.
+First, they make a clever choice of state variable.
+Second, they use backward recursion, starting at a terminal date and computing the value
+function recursively at earlier dates.
+Third, they use the first-order conditions to solve for the optimal policies,
+rather than simply choosing the best from a finite set of possibilities.
+
+Consider the state variable.  We characterize the problem using promised utility $\wt{U}_t$ as the state.
+Collin-Dufresne, Johannes, and Lochstoer replace promised utility with the consumption share.
+Given the consumption share, the conditions of the solution give us promised utility as a byproduct.
+We use the (additive) Pareto weight the same way,
+with consumption shares and promised utility as byproducts.
+The choice of variable does not change the solution,
+but in our experience it can have a large effect on the performance of the algorithm.
+
+Now consider backward recursion.
+We approximate an infinite-horizon dynamic programming problem
+with a long finite-horizon problem.
+At the terminal date $T$, we set utility equal to current consumption.
+This corresponds to a steady state in which consumptions are constant at these values
+at all future dates.
+If we know the Pareto weight $\lambda_T^*$ in all states at $T$,
+we can compute allocations of the two intermediate goods and consumptions of the two agents
+in the same states.
+The consumptions then give us value functions for each state at $T$ that we can use the
+previous period.
+
+In any previous period $t$, we need to choose both current consumptions
+and continuation values for the Pareto weight in every succeeding state at $t+1$.
+We choose the Pareto weights $\lambda^*_{t+1}$ and current consumptions $c_{jt}$
+by solving the planner's first-order conditions.
+We speed this up by pre-solving the allocation problem on a fine grid for the state variables.
+Given a solution for the Pareto weight, the time aggregators then give us current utility
+and the value function.
+
+We repeat this process until the value function and decision rules converge.
+We use a sup norm criterion over both value functions and decision rules.
+
+
+We use a discrete grid for the Pareto weight and other state variables.
+Our numerical implementation has 451 points for the Pareto weight,
+13 points each for the exogenous state variables $\wh{z}_t$ and $v_t$,
+and 5 quadrature nodes for each of the three future innovations ---
+a total of 9.5 million points.
+We then use Hermite quadrature to compute the expectations in the certainty equivalent functions.
+If the number of points seems high, we have found that it's essential to have a fine grid
+over the Pareto weight to describe its dynamics adequately.
+We could probably work with a less fine grid,
+but this gives us some confidence that the solutions are accurate.
+
+We do all of these calculations in Julia,
+a programming language that combines the convenience of
+dynamic vector-based languages like Matlab with the speed of compiled languages like C or Fortran.

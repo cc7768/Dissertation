@@ -1,0 +1,370 @@
+\documentclass[12pt,letterpaper,oneside,final]{memoir}
+
+% ---------- Options ----------------- %
+
+  % NYU GSAS Requirements
+  \usepackage{amsmath}
+  \usepackage{amssymb}
+  \usepackage{amsthm}
+  \usepackage{array}
+  \usepackage{bbm}
+  \usepackage{booktabs}
+  \usepackage{caption}
+  \usepackage{color, colortbl}
+  \usepackage{dsfont}
+  \usepackage{enumitem}
+  \usepackage{epstopdf}
+  \usepackage[gen]{eurosym}
+  \usepackage{float}
+  \usepackage[left=1in, right=1in, top=1in, bottom=1in, includefoot, heightrounded,footskip=.75in]{geometry}
+  \usepackage[colorlinks=true, citecolor=blue, urlcolor=blue, linkcolor=blue, backref=page]{hyperref}
+  \usepackage{kpfonts}
+  \usepackage{lipsum}
+  \usepackage{longtable}
+  \usepackage{makeidx}
+  \usepackage{mathpazo}
+  \usepackage{mathtools}
+  \usepackage{morefloats}
+  \usepackage{multirow}
+  \usepackage[round]{natbib}
+  \usepackage{pifont}
+  \usepackage{placeins}
+  \usepackage{rotating}
+  \usepackage{setspace}
+  \usepackage{subcaption}
+  \usepackage{tabularx}
+  \usepackage{titling}
+  \usepackage{tkz-tab}
+  \usepackage{units}
+  \usepackage{verbatim}
+  \usepackage{wasysym}
+
+  % Misc packages
+  \usepackage{afterpage}
+  \usepackage{amsfonts}
+  \usepackage[english]{babel}
+  \usepackage{bigdelim}
+  \usepackage{epsfig}
+  \usepackage{fullpage}
+  \usepackage{graphicx}
+  \usepackage[utf8]{inputenc}
+  \usepackage{latexsym}
+  \usepackage{listings}
+  \usepackage{pdflscape}
+  \usepackage{tgtermes}
+  \usepackage{threeparttable}
+  \usepackage{tikz}
+
+  % New commands
+  \newcommand{\cmark}{\ding{51}} % Nice checkmark for tables
+  \newcommand{\xmark}{\ding{55}} % Nice X mark for tables
+
+  % Theorems etc
+  \newtheorem{theorem}{Theorem}
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{definition}{Definition}
+  \newtheorem{result}{Result}
+
+  % Misc new commands
+  \def\citeapos#1{\citeauthor{#1}'s (\citeyear{#1})}
+  \newcommand{\var}{\mbox{\textit Var\/}}
+  \newcommand{\wh}{\widehat}
+  \newcommand{\wt}{\widetilde}
+  \newcommand{\ti}{\tilde}
+  \newcommand{\TODO}[1]{
+    {\color{red} TODO: #1}
+  }
+  \newcommand{\NOTE}[2]{
+    {\color{blue} NOTE (author: #1): #2}
+  }
+
+  % Other personalizations
+  \setitemize{noitemsep}
+  \setenumerate{noitemsep}
+
+  % Footnote without marker
+  \newcommand\blfootnote[1]{%
+    \begingroup
+    \renewcommand\thefootnote{}\footnote{#1}%
+    \addtocounter{footnote}{-1}%
+    \endgroup
+  }
+
+  % Fix position for page numbers
+  \pagestyle{plain}
+
+  % Needed to create list of appendices
+  % disable everything after the POST hook, but restore after BIB
+  \cftinsertcode{POST}{
+    \setcounter{tocdepth}{-1}
+  }
+  \cftinsertcode{BIB}{
+    \setcounter{tocdepth}{0}
+  }
+
+  \newcommand\tableofcontentsapps{
+    \begingroup
+      % disable first part
+      \cftinsertcode{PRE}{
+        \setcounter{tocdepth}{-10}
+      }
+      % enable down to subsection within appendices
+      \cftinsertcode{POST}{
+        \setcounter{tocdepth}{1}
+      }
+
+      % disable bibliography
+      \cftinsertcode{BIB}{
+        \setcounter{tocdepth}{-10}
+      }
+
+      \renewcommand\contentsname{List of Appendices}
+        \tableofcontents
+    \endgroup
+  }
+
+% OPTIONS END, DOCUMENT STARTS HERE
+
+\begin{document}
+
+\cftinserthook{toc}{PRE}
+\fussy
+\vbadness=10000 % badness above which bad vboxes are shown. (Default = 10000?)
+\frontmatter
+\hyphenation{}
+
+\DoubleSpacing
+
+\begin{center}
+
+% ----------
+% Title Page
+% ----------
+
+\thispagestyle{empty}
+\vspace*{15mm} Three Essays in Macroeconomics
+\vspace{20mm}
+by\\
+\vspace{10mm}
+Chase G. Coleman \\
+\vspace{10mm}
+A dissertation submitted in partial fulfillment\\
+of the requirements for the degree of\\
+Doctor of Philosophy\\
+Department of Economics\\
+Stern School of Business\\
+New York University\\
+May, 2019
+\end{center}
+\vspace{20mm}
+\begin{flushright}
+{\rule[0pt]{60mm}{0.1mm}}\\ %rule[raise-height]{width}{height} * raise-height specifies how high to raise the rule (optional) * width specifies the length of the rule (mandatory) * height specifies the height of the rule (mandatory)
+Laura L. Veldkamp\\
+\vspace{7.5mm}
+% {\rule[0pt]{60mm}{0.1mm}}\\
+\end{flushright}
+
+\newpage
+
+% ---------
+% COPYRIGHT
+% ---------
+
+%\thispagestyle{empty}
+
+% \begin{center} Copyright © Chase G. Coleman \\
+% All Rights Reserved, 2019 \end{center}
+
+%\newpage
+%
+%\thispagestyle{empty}
+%
+
+% ----------
+% DEDICATION
+% ----------
+% \chapter{Dedication}
+  %
+  % \vspace*{\fill}
+  % \begin{center}
+  %   \begin{minipage}{.6\textwidth}
+  %     I dedicate this dissertation to
+  %   \end{minipage}
+  % \end{center}
+  % \vfill
+
+\newpage
+
+% ---------------
+% ACKNOWLEDGMENTS
+% ---------------
+\chapter{Acknowledgments}
+
+  I am grateful for my committee for their guidance, time, friendship and for teaching me the many
+  ways that economics can provide insight into the world around us. Laura Veldkamp. Thomas Sargent.
+  Stan Zin. Dave Backus, though no longer with us, also played an important role in my development
+  as an economist and as a person --- I often miss him.
+
+\newpage
+
+\newpage
+
+% --------
+% ABSTRACT
+% --------
+\chapter{Abstract}
+
+  \DoubleSpacing
+
+  This dissertation consists of three chapters. These chapters focus on
+
+  Chapter 1, `Pareto weights as wedges in two-country models`, was written with Dave Backus, Axelle
+  Ferriere, and Spencer Lyon. In this chapter we study how in models with recursive preferences,
+  endogenous variation in Pareto weights would be interpreted as wedges from the perspective of a
+  frictionless model with additive preferences. We describe the behavior of the relative Pareto
+  weight in a two-country world and explore its interaction with consumption and the real exchange
+  rate.
+
+  Chapter 2, `Global Solution Methods for Macroeconomic Models`, was written jointly with Spencer
+  Lyon, Lilia Maliar, and Serguei Maliar. This chapter first discusses 7 global solution methods in
+  the context of a simple neoclassical growth model and then introduces a new 8th global solution
+  method in the context of a non-trivial New-Keynesian model. We first highlight how algorithm
+  choice, even more than programming language, plays an important role in the speed that a model can
+  be solved. The new method introduced in this paper is capable of solving a New-Keynesian model
+  with an 8-dimensional state-space in mere seconds which makes it possible to perform model
+  calibration.
+
+  In Chapter 3, `The Cost of Income-Driven Repayment for Student Loans,'
+
+\newpage
+
+% -----------------
+% TABLE OF CONTENTS
+% -----------------
+
+  \renewcommand*{\cftappendixname}{Appendix\space}
+  \renewcommand*{\contentsname}{Table of Contents}
+  \setcounter{tocdepth}{1}% chapters and above
+  %this removes TOC listing from TOC
+  \begin{KeepFromToc}
+  \tableofcontents*
+  \end{KeepFromToc}
+
+\clearpage
+\newpage
+\clearpage
+
+% ---------------
+% LIST OF FIGURES
+% ---------------
+
+  \listoffigures
+
+\newpage
+\clearpage
+
+% --------------
+% LIST OF TABLES
+% --------------
+
+  \listoftables
+
+\newpage
+\clearpage
+
+% ------------------
+% LIST OF APPENDICES
+% ------------------
+
+  \tableofcontentsapps
+
+
+
+\DoubleSpacing
+\mainmatter
+\clearpage
+\cleardoublepage
+\phantomsection
+%\addcontentsline{toc}{chapter}{Introduction}
+
+% ------------
+% Introduction
+% ------------
+\chapter*[Introduction]{Introduction} \label{ch-intro}
+
+  Introduction
+
+  \setcounter{tocdepth}{1}% chapters and above
+
+% CHAPTER 1
+\chapter{Pareto weights as wedges in two-country models}
+
+  \input{sections/BCFL/intro.tex}
+  \input{sections/BCFL/two_countries.tex}
+  \input{sections/BCFL/calibration.tex}
+  \input{sections/BCFL/solution.tex}
+  \input{sections/BCFL/equilibrium.tex}
+  \input{sections/BCFL/conclusion.tex}
+
+\newpage
+\clearpage
+
+% CHAPTER 2
+\chapter{Global Solution Methods for Macroeconomic Models}
+
+  \input{sections/CLMM/intro}
+  \input{sections/CLMM/languageintro}
+  \input{sections/CLMM/growthmodel}
+  \input{sections/CLMM/nkmodel}
+  \input{sections/CLMM/conclusion}
+
+
+% CHAPTER 3
+\chapter{Student Loans}
+
+Add stuff here
+
+\newpage
+\clearpage
+
+%%% APPENDICES
+\begin{appendices}
+
+\appendix
+\addcontentsline{toc}{chapter}{Appendices}
+\cftinserthook{toc}{POST}
+
+% APPENDIX 1
+\chapter{Supplementary Material for Chapter 1} \label{sec:Appendix1}
+
+  \input{sections/BCFL/appendix.tex}
+  \input{sections/BCFL/tables_and_figs.tex}
+
+% APPENDIX 2
+\chapter{Supplementary Material for Chapter 2} \label{sec:Appendix2}
+
+  \input{sections/CLMM/appendix.tex}
+  \input{sections/CLMM/tables_and_figs.tex}
+
+\newpage
+\clearpage
+
+\end{appendices}
+
+\newpage
+
+\clearpage
+
+\backmatter
+
+%%% BIBLIOGRAPHY
+
+  \cftinserthook{toc}{BIB}
+  \begin{OnehalfSpace}
+    \bibliographystyle{ecta}
+    \bibliography{combined}
+  \end{OnehalfSpace}
+
+\end{document}

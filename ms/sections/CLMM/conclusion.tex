@@ -1,0 +1,22 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Conclusion}
+
+We have described and implemented seven algorithms to solve the stochastic
+neoclassical growth model, and we have described and analyzed a modification of
+an algorithm that has been previously used to globally solve new Keynesian
+models. The implementation has provided us a \textquotedblleft
+laboratory\textquotedblright \ to explore some of the strengths and weaknesses
+of the three languages we consider. One insight we gained was that for some
+algorithms, the choice of programming language has little effect on
+performance, but for others, there are important speedups that can be obtained.
+In particular, if an algorithm depends heavily on numerical optimization or
+root-finding then it is likely that Julia will provide significant speedups,
+but may come at the cost of ensuring that your code provides enough information
+to the compiler.
+
+We hope we have brought some clarity in the trade-off between these three
+programming languages which will first, provide information to economists who
+are thinking about which language is the best fit for them; and second, provide
+a clear description, examples, and tools which can facilitate other researchers
+implement similar algorithms for their own models.

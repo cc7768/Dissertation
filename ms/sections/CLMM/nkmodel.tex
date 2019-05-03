@@ -1,0 +1,252 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Comparison using a new Keynesian model}
+
+In this section, we solve a stylized medium-scale Keynesian model using equivalent codes implemented
+in Julia, Matlab, and Python. The model was previously analyzed in \cite{MM2015}. It features
+Calvo-type price frictions and a Taylor rule with a zero lower bound on the nominal interest rate.
+
+\subsection{The model}
+
+To save on space, we present the model in Appendix B.
+
+\paragraph{First-order conditions.}
+
+Here, we summarize the model by showing the set of optimality conditions
+used to construct the numerical solutions:
+
+\begin{eqnarray}
+  S_{t} &=&\frac{\exp \left( \eta _{u,t}+\eta _{L,t}\right) }{\exp \left( \eta_{a,t}\right) }L_{t}^{\vartheta }Y_{t}+\beta \theta E_{t}\left \{ \pi_{t+1}^{\varepsilon }S_{t+1}\right \} ,  \label{NK1} \\
+  F_{t} &=&\exp \left( \eta _{u,t}\right) C_{t}^{-\gamma }Y_{t}+\beta \theta E_{t}\left \{ \pi _{t+1}^{\varepsilon -1}F_{t+1}\right \} ,  \label{NK2} \\
+  \frac{S_{t}}{F_{t}} &=&\left[ \frac{1-\theta \pi _{t}^{\varepsilon -1}}{1-\theta }\right] ^{\frac{1}{1-\varepsilon }},  \label{NK3} \\
+  \Delta _{t} &=&\left[ \left( 1-\theta \right) \left[ \frac{1-\theta \pi _{t}^{\varepsilon -1}}{1-\theta }\right] ^{\frac{\varepsilon }{\varepsilon -1}}+\theta \frac{\pi _{t}^{\varepsilon }}{\Delta _{t-1}}\right] ^{-1}, \label{NK4} \\
+  C_{t}^{-\gamma } &=&\beta \frac{\exp \left( \eta _{B,t}\right) }{\exp \left(\eta _{u,t}\right) }R_{t}E_{t}\left[ \frac{C_{t+1}^{-\gamma }\exp \left(\eta _{u,t+1}\right) }{\pi _{t+1}}\right] ,  \label{NK5} \\
+  Y_{t} &=&\exp \left( \eta _{a,t}\right) L_{t}\Delta _{t}  \label{NKs1} \\
+  C_{t} &=&\left( 1-\frac{\overline{G}}{\exp \left( \eta _{G,t}\right) }\right) Y_{t}  \label{NKs2} \\
+  R_{t} &=&\max \left \{ 1,R_{\ast }\left( \frac{R_{t-1}}{R_{\ast }}\right)^{\mu }\left[ \left( \frac{\pi _{t}}{\pi _{\ast }}\right) ^{\phi _{\pi}}\left( \frac{Y_{t}}{Y_{N,t}}\right) ^{\phi _{y}}\right] ^{1-\mu }\exp
+  \left( \eta _{R,t}\right) \right \} ,  \label{NK6}
+\end{eqnarray}
+
+where $S_{t}$ and $F_{t}$ are supplementary variables reflecting profit
+maximizing conditions of firms; $\Delta _{t}$ is a measure of price dispersion
+across firms; $C_{t}$, $Y_{t}$, $L_{t}$ are consumption, output and labor,
+respectively; $\pi _{t}$ and $R_{t}$ are inflation and interest rate,
+respectively; $\pi {\ast }$ and $R{\ast } = \frac{\pi {\ast }}{\beta }$ are
+the inflation target and the steady state interest rate, respectively;
+$Y_{N,t}=\left[ \frac{\exp \left( \eta _{a,t}\right) ^{1+\vartheta }}{\left[\exp \left( \eta _{G,t}\right) \right] ^{-\gamma }\exp \left( \eta_{L,t}\right) }\right] ^{\frac{1}{\vartheta +\gamma }}$
+is the natural level of
+output. The parameters are $\beta$ (discount factor), $\theta$ (fraction of non-reoptimizing firms), $\varepsilon$ (inverse of
+the elasticity of substitution in the final-good production), $\vartheta$ and $\gamma$ (utility-function
+parameters), $\overline{G}$ (steady-state government spending), and $\mu$, $\phi_{y}$ and $\phi_{\pi}$ (Taylor-rule parameters).
+Each exogenous variable $\eta_{z,t} \in \left \{ \eta_{u,t},\eta_{L,t}, \eta_{a,t}, \eta_{u,t}, \eta_{B,t}, \eta_{G,t} \right \} $ follows an
+AR(1) process $\eta_{z,t+1}=\rho_{z}\eta_{z,t}+\epsilon_{z,t+1}$ with
+$\epsilon_{z,t+1}\sim \mathcal{N}\left( 0,\sigma _{z}^{2}\right) $, $\sigma_{z}>0$ and $\rho _{z}\in \left( -1,1\right) $.
+
+\paragraph{Parameterization and implementation details.}
+
+We parameterize the model by $\beta =0.99$, $\gamma =1$, $\vartheta =2.09$, $
+\varepsilon =4.45$, $\theta =0.83$ and $\overline{G}=0.23$. The autocorrelation
+coefficients in six exogenous variables are $\rho _{a}=0.95$ , $\rho
+_{B}=0.22$, $\rho _{R}=0.15$, $\rho _{u}=0.92$, $\rho _{G}=0.95$, $ \rho
+_{L}=0.25$, and the corresponding standard deviations are $\sigma _{u}=0.54\%$,
+$\sigma _{G}=0.38\%$, $\sigma _{L}=18.21\%$ $\sigma _{a}=0.45\% $, $\sigma
+_{B}=0.23\%$ and $\sigma _{R}=0.28\%$. The parameters in the Taylor rule are
+$\phi _{y}=0.07$, $\phi _{\pi }=2.21$, and $\mu =0.82$ . These values are used
+in \cite{MM2015} and are in line with the estimates in \cite{DSSW2007} and
+\cite{SW2007}.
+
+As a solution domain, we use random and quasi-random grids constructed inside
+an 8-dimensional hypercube; we describe the grid construction in Section 4.2.
+To approximate the equilibrium policy rules, we use a family of ordinary
+polynomials up to degree 5. To compute conditional expectations in Euler
+equations (\ref{NK1}), (\ref{NK2}) and (\ref{NK5}), we use a monomial
+integration rule (either a formula with $2N$ nodes or the one with $2N^{2}+1$
+nodes); see \cite{JMM2011} for a detailed description of the monomial
+integration formulas. To solve for the polynomial coefficients, we use fixed
+point iteration. Again, Julia, Matlab, and Python software can be found in the
+corresponding notebooks submitted on QuantEcon\footnote{
+\href{http://notes.quantecon.org/submission/5b53cd9117fb4900153deafe}{Matlab notebook},
+\href{http://notes.quantecon.org/submission/5b53cdaf17fb4900153deaff}{Python notebook},
+\href{http://notes.quantecon.org/submission/5b53cd6917fb4900153deafd}{Julia notebook}}.
+
+
+
+\paragraph{Computational method.}
+
+We now outline the Euler equation algorithm used to solve the neoclassical
+model. An extended description of this algorithm is provided in Appendix B.
+
+\begin{equation*}
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 8. Euler equation algorithms for the new Keynesian model. }
+\\ \hline
+Given $S\left( {\Delta ,R,\eta _z }\right) $, $F\left( {\Delta ,R,\eta _z }\right)
+$ and $C\left( {\Delta ,R,\eta _z }\right) $ for each point $\left( {\Delta
+,R,\eta _z }\right) $, define the following recursion: \\
+
+\quad i). Find ${\pi }$ {from} $\frac{{S}}{{F}}{=}\left[ \frac{{1-\theta \pi
+}^{\varepsilon -1}}{{1-\theta }}\right] ^{\frac{1}{1-\varepsilon }}${\ and }$
+{\Delta }^{\prime }{=}\left[ \left( {1-\theta }\right) \left[ \frac{{
+1-\theta \pi }^{\varepsilon -1}}{{1-\theta }}\right] ^{\frac{\varepsilon }{
+\varepsilon -1}}{+\theta }\frac{{\pi }^{\varepsilon }}{{\Delta }}\right] ^{{
+-1}}${;} \\
+
+\quad -- ${Y}=\left( {1}-\frac{\overline{G}}{\exp \left( \eta _{G}\right) }
+\right) ^{{-1}}{C}${, and }${L}={Y}\left[ {\exp }\left( {\eta }_{{a}}\right)
+{\Delta }^{{\prime }}\right] ^{-1}${;} \\
+\quad --{\ }${Y}_{{N}}=\left[ \frac{{\exp }\left( {\eta }_{a}\right)
+^{1+\vartheta }}{\left[ {\exp }\left( {\eta }_{{G}}\right) \right] ^{-\gamma
+}{\exp }\left( {\eta }_{{L}}\right) }\right] ^{\frac{1}{\vartheta +\gamma }}$
+{;} \\
+
+{\quad }--{\ }${R}^{{\prime }}={\max }\left \{ {1,R}_{\ast }\left( \frac{R}{
+R_{\ast }}\right) ^{{\mu }}\left[ \left( \frac{\pi }{\pi _{\ast }}\right) ^{{
+\phi }_{\pi }}\left( \frac{Y}{Y_{N}}\right) ^{{\phi }_{y}}\right] ^{{1-\mu }}
+{\exp }\left( {\eta }_{{R}}\right) \right \} .$ \\
+
+\quad ii). Find $S\left( {\Delta }^{\prime }{,R}^{\prime }{,\eta_z }^{\prime
+}\right) $, $F\left( {\Delta }^{\prime }{,R}^{\prime }{,\eta_z }^{\prime
+}\right) $ and $C\left( {\Delta }^{\prime }{,R}^{\prime }{,\eta_z }^{\prime
+}\right) ${;} \\
+
+\quad iii). Find ${\pi }^{{\prime }}${\ from }$\frac{{S}^{\prime }}{{F}
+^{\prime }}{=}\left[ \frac{{1-\theta }\left( \pi ^{^{\prime }}\right)
+^{\varepsilon -1}}{{1-\theta }}\right] ^{\frac{{1}}{{1-\varepsilon }}}${;}
+\\
+
+\quad -- $\widehat{{S}}\left( {\Delta ,R,\eta_z }\right) {=}\frac{{\exp }
+\left( {\eta }_{{u}}{+\eta }_{{L}}\right) }{{\exp }\left( {\eta }_{{a}
+}\right) }{L}^{{\vartheta }}{Y+\beta \theta }E\left \{ \left( {\pi }^{{
+\prime }}\right) ^{{\varepsilon }}{S}^{{\prime }}\right \} ;$ \\
+
+\quad -- $\widehat{{F}}\left( {\Delta ,R,\eta_z }\right) ={\exp }\left( {\eta }
+_{{u}}\right) {C}^{{-\gamma }}{Y+\beta \theta }E\left \{ \left( {\pi }
+^{^{\prime }}\right) ^{{\varepsilon -1}}{F}^{{\prime }}\right \} {;}$ \\
+
+\quad -- $\widehat{{C}}\left( {\Delta ,R,\eta_z }\right) {=}\left \{ \frac{{
+\beta \exp }\left( \eta _{{B}}\right) {R}^{{\prime }}}{{\exp }\left( {\eta }
+_{{u}}\right) }E\left[ \frac{\left( {C}^{\prime }\right) ^{{-\gamma }}{\exp }
+\left( {\eta }_{{u}}^{{\prime }}\right) }{{\pi }^{{\prime }}}\right] \right
+\} ^{-1/\gamma }.$ \\
+
+Iterate on i)-iii) until convergence $\widehat{F}=F$, $\widehat{S}=S$, $
+\widehat{C}=C$. \\ \hline \hline
+\end{tabular}
+\end{equation*}
+
+\subsection{Grid techniques for high dimensional applications}
+
+Tensor product grids can be successfully used for analyzing small-scale
+applications but their cost increases exponentially with the number of the
+state variables (curse of dimensionality). In particular, tensor product grid
+are expensive even for moderately-large models like our model with 8 state
+variables. There is a number of alternative grid techniques that do not rely on
+tensor products and that ameliorate the curse of dimensionality; see
+\cite{MM2014} for a survey.
+
+To solve the model (\ref{NK1})-(\ref{NK6}),
+\cite{MM2015} construct the grid on the high-probability area of the state
+space which is approximated by stochastic simulation. However, crude simulated points are not uniformly spaced, in particular, many
+simulated points are situated close to one another and are redundant for the
+purpose of the grid construction. \cite{MM2015} introduce two techniques for
+selecting a roughly uniformly-spaced subset of simulated points. One technique
+is clustering analysis: the simulated points are grouped into clusters and the
+centers of the clusters are used as a grid. Another technique is an
+$\varepsilon $-\textit{distinguishable set} (EDS) method that selects a subset
+of points situated at the distance of at least $ \varepsilon $ from one
+another. As an example, in Figure \ref{fig:eps_dist_grid} we show a
+stochastic-simulation grid and epsilon-distinguishable set grid.
+
+\cite{MM2015} construct the EDS or cluster grids iteratively. In particular,
+they (i) guess policy functions and use them to simulate the time series
+solution; (ii) build an EDS or cluster grid; (iii) solve the model on this
+grid; (iv) then use the new solution to form a new grid. This procedure is
+repeated until the solution and grid both remain constant on successive
+iterations. The advantage of this approach is that it focuses on the right area
+of the state space -- a high probability set. However, it requires to have
+initial guess for the solution (the paper uses linearization solution from
+Dynare) and it reconstructs the EDS or cluster grid iteratively, which leads to
+larger running times. Finally, the code is more complicated.
+
+In the present paper, we modify the grid construction relative to the method in
+\cite{MM2015}. We specifically replace the EDS and cluster grids with random
+and quasi-random grids covering a fixed multi-dimensional hypercube. To
+construct the hypercube, we choose the interval $\left[ -\frac{2\sigma
+_{z}}{\sqrt{1-\rho _{z}^{2}}},\frac{2\sigma _{z}}{\sqrt{1-\rho _{z}^{2}}}
+\right] $ for each of six exogenous variable $\eta _{z}\in \left \{ \eta
+_{u},\eta _{L},\eta _{a},\eta _{u},\eta _{B},\eta _{G}\right \} $, where $
+\sigma _{z}$ and $\rho _{z}$ are standard deviation and auto-correlation
+coefficient. For endogenous state variables $R$ and $\Delta $, we chose
+intervals that cover the high probability set, $\Delta \in \left[ 0.95,1
+\right] $ and $R\in \left[ 1,1.05\right] $.
+
+We consider two alternative grid techniques in the constructed fixed hypercube.
+One is a \textit{random grid} obtained by drawing an 8-dimensional set of
+random uncorrelated uniformly distributed points. The other is
+\textit{quasi-random grids} (also known as \textit{quasi-Monte Carlo } sequence
+or \textit{low discrepancy sequence}). Uniformly distributed random draws
+converge to an evenly spaced grid as a number of draws increases but the
+convergence rate is low; in turn, low disrepancy sequences are constructed to
+be evenly spaced and their convergence rate is much faster; see \cite{MM2015}
+for a discussion. We use Sobol low discrepancy sequence for constructing the
+grid but there are a variety of other low discrepancy sequences that can be used
+for this purpose; see \cite{niederreiter1992}. The random and quasi-random grids
+are shown in Figure \ref{fig:rand_sobol_grid}.
+
+Using random grids has its advantages and disadvantages. Unlike the EDS and
+cluster grids used in \cite{MM2015}, the random and quasi-random grids operate
+on a fixed hypercube and do not benefit from the domain reduction. However, the
+random and quasi-random grids are much faster and easier to construct than the
+EDS and cluster grids. By constructing grids on predefined intervals, we did
+not have to write our own rough solution routine or rely on external software
+like Dynare to construct a preliminary solution to the model as we would with
+cluster grid or EDS techniques and we do not need to re-construct the grids
+iteratively. The MATLAB code accompanying the present paper achieves an almost
+a 60-time speed up over the original code in \cite{MM2015}, while still
+producing highly accurate solutions.
+
+\subsubsection{Numerical results}
+
+We have provided an implementation of this algorithm in the Matlab, Python, and Julia programming
+languages. In this section we discuss our experience with the three languages and report our results
+in Table \ref{clmm:Table3}.
+
+We report the solution for two parameterizations that are previously analyzed in \cite{MM2015}. To
+save on space, we report the solution only for the quasi-random (Sobol) grid. The solution for the
+random grid is similar (although slightly less accurate). Our two parameterizations differ in the
+value of the inflation target $\pi _{\ast }$. In our first experiment, we use $\pi _{\ast }=1.0598$,
+which corresponds to long term average as estimated in \cite{DSSW2007}, while in the second
+experiment, we use $\pi _{\ast }=1.$ For the second experiment, we report results when we solve the
+model both when the ZLB is and is not imposed (in the first experiment, ZLB is never active).
+
+The computational cost increases rapidly with a polynomial degree. The number of points in the grid
+must be at least as large as the number of the polynomial coefficients to identify such
+coefficients. In particular, for the polynomial degrees 1, 2, 3, 4 and 5, we construct 20,100, 300,
+1000 and 2000 grid points respectively to identify 9, 45, 165, 495 and 1287 coefficients (we use
+about 50 percent more of grid points than the polynomial coefficients to enhance the numerical
+stability of the algorithm). The cost of second-order polynomial approximations is about 1-3 seconds
+depending on specific parameterization used. It is fast enough to repeatedly solve the model inside
+an estimation procedure.
+
+Concerning the accuracy, in our first experiment, the inflation target is relatively high and the
+probability of reaching a zero lower bound (ZLB) on nominal interest rates is so low that it is
+never observed in finite simulation (unless we use the initial condition that leads to ZLB). In the
+absence of binding ZLB, the accuracy of our numerical solutions increases considerably with the
+degree of polynomial, in particular, the maximum residuals across the model's equations decrease
+from $-1.94$ to $-5.47$ when the polynomial order increases from 1 to 5 respectively. The accuracy
+of the solutions is surprisingly high given that we assume very large volatility of labor shock of
+$18\%$. If we reduce the size of the labor shock to $5\%$, the residuals in the table decrease by
+nearly 2 orders of magnitude and the accuracy levels will be comparable to those we obtained for the
+neoclassical growth model.
+
+In our second experiment, the inflation target is low and the probability of reaching the ZLB
+increases to about 2\%. When we do not impose the ZLB, the accuracy of the solution looks very
+similar to our first parameter set. However, with the ZLB imposed, the results are different.
+Relatively small average residuals indicate that the solution is sufficiently accurate in most of
+the domain and large maximum residuals show that the accuracy declines sharply in the ZLB area. As
+this example shows, even the global solution methods might still be insufficiently accurate in the
+presence of active ZLB because smooth polynomials functions are not well suitable for approximating
+the ZLB kink. \cite{ACS2017} and \cite{MM2015} show that the accuracy can be slightly increased by
+using piecewise linear and locally adaptive approximations, respectively, but these extensions lie
+beyond the scope of our analysis.

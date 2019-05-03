@@ -1,0 +1,140 @@
+%!TEX root = ../../dissertation.tex
+
+\section{A recursive two-country economy}
+\label{sec:model}
+
+We study an exchange version of the \citet{Backus1994-bi}
+two-country business cycle model.
+Like their model, ours has
+two agents (one for each country),
+two intermediate goods (``apples'' and ``bananas''),
+and two final goods (one for each country).
+Unlike theirs, ours has
+(i)~exogenous output of intermediate goods,
+(ii)~a unit root in productivity,
+(iii)~recursive preferences,
+and (iv)~stochastic volatility in productivity growth in one country.
+The first is for convenience.
+The second allows us to produce realistic asset prices.
+We focus on the last two, specifically their role in the fluctuations in
+consumption and exchange rates.
+
+
+{\textit Preferences.\/} We use the recursive preferences developed by
+\citet{Epstein1989-mt,Kreps1978-gf}, and \citet{Weil1989-vy}.
+Utility from date $t$ on in country $j$ is denoted $U_{jt}$.
+We define utility recursively with the time aggregator $V$:
+\begin{eqnarray}
+    U_{jt} &=& V [c_{jt}, \mu_{t} (U_{jt+1})]
+            \;\;=\;\; [(1-\beta) c_{jt}^{\rho} + \beta \mu_{t} (U_{jt+1})^{\rho}]^{1/\rho} ,
+            \label{eq:time-agg}
+\end{eqnarray}
+where $c_{jt}$ is consumption in country $j$ and $\mu_t$ is a certainty equivalent function.
+The parameters are $ 0 < \beta < 1$ and $\rho \leq 1$.
+We use the power utility certainty equivalent function,
+\begin{eqnarray}
+    \mu_{t} (U_{jt+1} ) &=&  \big[ E_t  (U_{jt+1}^{\alpha} ) \big]^{1/\alpha} ,
+%            \;\;=\;\; \Big[ \sum_{s_{t+1}} \pi(s_{t+1} | s^t) U_{j} (s^{t+1})^{\alpha} ) \Big]^{1/\alpha}
+            \label{eq:cert-equiv}
+\end{eqnarray}
+where $E_t$ is the expectation conditional on the state at date $t$
+and $\alpha \leq 1$.
+Preferences reduce to the traditional additive case when $\alpha = \rho$.
+
+
+Both $V$ and $\mu$ are homogeneous of degree one (hd1).
+The two functions together have the property that if consumption is constant at $c$ from date $t$ on,
+then $U_{jt} = c$.
+
+In standard terminology, $ 1/(1-\rho)$ is the intertemporal elasticity of substitution (IES)
+(between current consumption and the certainty equivalent of future utility)
+and $1-\alpha$ is risk aversion (RA) (over future utility).
+The terminology is somewhat misleading, because changes in $\rho$ affect future utility,
+the thing over which we are risk averse.
+As in other multi-good settings, there's no clean separation between risk aversion
+and substitutability.
+
+{\textit Technology.\/}
+Each country specializes in the production of its own intermediate good,
+``apples'' in country 1 and ``bananas'' in country 2.
+In the exchange case we study, production in country $j$ equals its exogenous productivity:
+\begin{eqnarray}
+    y_{jt} &=&  z_{jt} .
+            \label{eq:production}
+\end{eqnarray}
+Intermediate goods can be used in either country.
+The  resource constraints are
+\begin{eqnarray}
+    a_{1t} + a_{2t} &=& y_{1t}
+            \label{eq:resource-a} \\
+    b_{1t} + b_{2t} &=& y_{2t}  ,
+            \label{eq:resource-b}
+\end{eqnarray}
+where $b_{1t}$ is the quantity of country 2's good imported by country 1
+and $a_{2t}$ is the quantity of country 1's good imported by country 2.
+
+Agents consume final goods, composites of the intermediate goods defined by the
+Armington aggregator $h$:
+\begin{eqnarray}
+    c_{1t} &=& h (a_{1t}, b_{1t} )
+            \;\;=\;\; \big[(1-\omega) a_{1t}^{\sigma} + \omega b_{1t}^{\sigma}\big]^{1/\sigma}
+            \label{eq:armington-1} \\
+    c_{2t} &=& h (b_{2t} , a_{2t})
+            \label{eq:armington-2}
+\end{eqnarray}
+with $ 0 \leq \omega \leq 1$ and $\sigma \leq 1$.
+The elasticity of substitution between the two intermediate goods is $1/(1-\sigma)$.
+The function $h$ is also hd1.
+
+We will typically use $\omega < 1/2 $, which puts more weight on the home good
+in the production of final goods.
+This ``home bias'' in final goods production is essential.
+If $\omega = 1/2$, the two final goods are the same.
+In this case, we have identical hd1 utility functions,
+and any optimal allocation
+involves a constant Pareto weight and proportional consumption paths.
+
+{\textit Shocks.\/}
+Fluctuations in this economy reflect variation in
+the productivities cum endowments $z_{jt}$ and the conditional variance of the first one.
+Logs of productivities have unit roots and are cointegrated:
+\begin{eqnarray}
+    \left[
+    \begin{array}{c}
+    \log z_{1t+1} \\ \log z_{2t+1}
+    \end{array}
+    \right]
+    &=&
+    \left[
+    \begin{array}{c}
+    \log g \\ \log g
+    \end{array}
+    \right] +
+    \left[
+    \begin{array}{cc}
+    1-\gamma & \gamma \\ \gamma & 1-\gamma
+    \end{array}
+    \right]
+    \left[
+    \begin{array}{c}
+    \log z_{1t} \\ \log z_{2t}
+    \end{array}
+    \right] +
+    \left[
+    \begin{array}{c}
+    v_t^{1/2} w_{1t+1} \\ v^{1/2} w_{2t+1}
+    \end{array}
+    \right] ,
+    \label{eq:lom-z}
+\end{eqnarray}
+with $0 < \gamma < 1/2$.
+The only asymmetry in the model is the conditional variance
+of productivity.
+The conditional variance $v$ of $\log z_{2t+1}$ is constant.
+The conditional variance $v_t$ of $\log z_{1t+1}$ is AR(1):
+\begin{eqnarray}
+        v_{t+1} &=& (1-\varphi_v) v + \varphi_v v_t + \tau w_{3t+1} .
+        \label{eq:lom-v}
+\end{eqnarray}
+The innovations $\{ w_{1t}, w_{2t}, w_{3t} \} $ are standard normals
+and are independent of each other and over time.

@@ -1,0 +1,171 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Properties of the exchange economy}
+\label{sec:properties}
+
+We compute an accurate global solution to the scaled Pareto problem
+by methods described in Appendix \ref{app:computation_BCFL}.
+We  describe its properties here.
+We start with the Pareto weight, then go on to explore
+the dynamics of the Pareto weight,
+the connection between consumption and the real exchange rate,
+and the responses of consumption and other variables to changes in various state variables.
+
+
+{\textit The Pareto frontier.\/}
+One of the outputs of the numerical solution is the value function $J$, a function of
+promised utility $U$ and the exogenous state variables.
+Given values for the exogenous state variables, this gives us the Pareto frontier:
+the highest utility of agent 1 ($J$) consistent with a given level of utility
+for agent 2 ($U$) and the productive capacity of the economy.
+
+We describe the Pareto frontier in Figure \ref{fig:pareto-frontier}
+with state variables $z_{1t} = z_{2t} = \wh{z}_t = 1$ and $v_t = v$.
+The outer curve in the figure is the consumption frontier,
+which echoes Figure \ref{fig:consumption-frontier}.
+The inner curve is the Pareto frontier.
+We see that it has much the same shape.
+It's inside the consumption frontier largely because of risk:
+utility is below consumption because risk reduces utility.
+If we increase risk aversion to 50 ($\alpha = -49$, not shown),
+it shifts in further.
+
+Changes in the state variables change both frontiers.
+Movements in productivity and output shift the frontiers --- both of them ---
+in and out ($\bar{z}_t$, which affects the two intermediate goods proportionately)
+or twist them ($\wh{z}_t$, which affects the two goods differently).
+Changes in risk twist the Pareto frontier, since risk affects the two goods differently,
+but not the consumption frontier, since it has no effect on quantities of intermediate goods.
+
+
+{\textit Dynamics of the Pareto weight.\/}
+We see the impact of recursive preferences in Figure \ref{fig:exchange-pareto-weight-two},
+where we graph $\log \lambda^*_t $ against time for a (very long) simulation of the model.
+The flat horizontal line refers to the additive case ($\alpha = \rho = -1$).
+As we know, the Pareto weight doesn't change in this case.
+The other line refers to the recursive case, and we see clear variation in the Pareto weight.
+We also see that the variation is both large and very persistent.
+%Persistence is important, as we'll see, in producing persistent movements in
+%the real exchange rate.
+
+This touches on a question that's been discussed extensively:
+Is the Pareto weight stable, or does one agent eventually consume everything?
+\citet{Anderson2005-of} and \citet{Borovicka2016-rr} document some of the difficulties
+of establishing stability in similar one-good settings.
+\citet{Colacito2011-zp} prove stability in a two-good
+world with elasticities of substitution between goods and over time equal to one.
+\citet{Colacito2013-yq}, \citet{Kollmann2015-sy}, and \citet{Tretvoll2011-lo,Tretvoll2015-lo,Tretvoll2018-dj}
+solve similar models numerically and report that the solutions are stable.
+We also find that they're stable, but extremely persistent.
+
+We get a sense of how stability works in Figure \ref{fig:change-pareto-weight-ra},
+where we plot the expected change in the log Pareto weight against its level.
+The exogenous state variables here have been set equal to their means.
+In the additive case, the expected (and actual) change is zero.
+The log Pareto weight is a martingale with no variance.
+With greater risk aversion, mean reversion becomes evident.
+If the Pareto weight is below its steady state value of one ($\log \lambda_t^* = 0$),
+it's expected to increase.
+If above, it's expected to decrease.
+The effect is stronger when we increase risk aversion to 50.
+There is also an evident nonlinearity in the solution,
+as there is in \citet[Figure 5]{Colacito2011-zp},
+but most of it occurs in regions of the state space we rarely reach.
+
+
+The elasticity of substitution between foreign and domestic intermediate goods
+also plays a role in persistence.
+See Figure \ref{fig:change-pareto-weight-arm}.
+With smaller values, mean reversion is slower.
+And with larger values, it's faster.
+As the elasticity increases, the line flattens out and we approach
+the one-good world with a constant Pareto weight.
+
+The intertemporal elasticity of substitution also has an effect,
+but with the numbers we've chosen the effect is smaller.
+See Figure \ref{fig:change-pareto-weight-ies}.
+Evidently smaller values of $\rho$, and larger values of the IES [$1/(1-\rho)$],
+lead to flatter lines.
+
+
+{\textit Consumption and exchange rate.\/}
+We noted earlier that the relation between the log consumption ratio [$\log (c_{2t}/c_{1t})$]
+and the log of the real exchange rate [$ \log e_t = \log (p_{2t}/p_{1t}) $]
+is mediated by the log Pareto weight ($\log \lambda^*_t$).
+See equation (\ref{eq:cons-rer}).
+In the additive case, the Pareto weight is constant and we have a
+perfect linear relationship between the two variables.
+We see exactly this in the line in Figure \ref{fig:exchange-cons-rer-two}.
+
+
+The scatter of points in the same figure represents the recursive case,
+where the Pareto weight acts like a wedge from the perspective of the additive model.
+With our numbers, the variation in the Pareto weight is enough to change
+a negative correlation of minus one between the consumption ratio and exchange rate
+to a slight positive correlation.
+\citet{Colacito2013-yq}, \citet{Kollmann2015-sy}, and \citet{Tretvoll2011-lo} show the same.
+If we increase risk aversion $1-\alpha$ to 50,
+the correlation becomes strongly positive.
+In the recursive model,
+we can produce any correlation we like by varying the risk aversion
+parameter.
+
+
+Recursive preferences also have an impact on exchange rate dynamics
+as the persistence in the Pareto weight is reflected in the real exchange rate.
+We see in Figure \ref{fig:rer-acfs} that the additive model is much less persistent:
+The half-life (where the autocorrelation function equals one-half) is about a year.
+By five years, the autocorrelation is essentially zero.
+Exchange rate dynamics reflect, in this case, the modest persistence of relative productivity $\wh{z}_t$.
+With recursive preferences, the exchange rate is much more persistent.
+In fact with these parameter values, it's virtually a martingale.
+We can reproduce any level of persistence we like by varying risk aversion
+between the two cases.
+There's a range of opinion, summarized nicely by \citet{Crucini2008-mi},
+about how much persistence we need for the model to be realistic.
+The larger point is that recursive preferences are a device that can deliver
+persistence in real exchange rates and macroeconomic variables in general.
+It's what an older literature would call a propagation mechanism.
+
+
+{\textit Responses to productivity and volatility shocks.\/}
+We get another perspective on the model's dynamics from impulse responses.
+Starting at the steady state, we increase one of the exogenous state variables
+by one standard deviation at date one, simulate the model for several periods,
+and compute the mean dynamics of all the variables in the model.
+This goes somewhat beyond traditional impulse responses in linear models in
+which the subsequent innovations are turned off.
+
+In Figure \ref{fig:irf-zhat}
+we describe responses to an increase in (the log of) relative productivity $\wh{z}_t$.
+The effect on future values of $\log \wh{z}_t$ declines at a constant rate
+as described by equation (\ref{eq:lom-zhat}).
+Neither average productivity $\bar{z}_t$ nor volatility $v_t$ change,
+so this implies an increase in $\log z_{1t}$ and an equal decrease in $\log z_{2t}$.
+The quantity of apples goes up, and the quantity of bananas goes down.
+Because of home bias, consumption goes up in country 1 (the apple eaters)
+and down in country 2 (banana eaters).
+The exchange rate rises as scarce bananas become more expensive.
+
+All of this would be true in the additive case as well.
+What's different is the response of the Pareto weight.
+It goes up as we compensate the agent in country 2 with promises of higher future consumption.
+This effect eventually wears off, but it does so very slowly.
+
+
+In Figure \ref{fig:irf-v}
+we describe the responses to an increase in volatility $v_t$.
+Here there's no change in the quantities of intermediate goods.
+In the additive case, there would be virtually no effect.
+In the recursive case, utility falls, but it falls more for country 1 because
+of its home bias in favor of the good whose supply has become riskier.
+The social planner responds by decreasing the Pareto weight
+on agent 2.
+Consumption therefore rises in country 1 and falls in country 2.
+The real exchange rate falls.
+This is entirely a demand-side effect.
+By increasing the weight on agent 1, the demand for apples goes up
+and the demand for bananas goes down.
+The magnitudes are small, but it's an interesting effect that we would like to explore
+further in a production economy, where supply can respond to
+changes in market conditions.

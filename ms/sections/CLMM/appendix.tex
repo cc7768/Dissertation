@@ -1,0 +1,690 @@
+%!TEX root = ../../dissertation.tex
+
+\section{New Keynesian Model} \label{app:NKModel}
+
+In A1-A7, we provide a description of Bellman and Euler equation algorithms, which we use to solve
+the neoclassical stochastic growth model with inelastic labor supply described in Section 2
+including i) envelope condition method iterating on value function (ECM-VF); ii) conventional value
+function interation (VFI); iii) endogenous grid method (EGM); iv) policy function iteration via
+envelope condition (ECM-PI); v) conventional policy function iteration via FOC (PI); vi) envelope
+condition method iterating on derivative of value function (ECM-DVF); vii) conventional Euler
+equation method (EE).
+
+\paragraph{A1: Envelope condition method (ECM).}
+
+\qquad
+
+\qquad
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 1. ECM.} \\ \hline
+\emph{Initialization.} \\
+\quad a. Choose an approximating function $\widehat{V}(\cdot ;b)\approx V$.
+\\
+\quad b. Choose integration nodes, $\varepsilon _{j}$, and weights, $\omega
+_{j}$, $j=1,...,J$. \\
+\quad c. Construct grid $\Gamma =\{k_{m},z_{m}\}_{m=1}^{M}$. \\
+\quad d. Make an initial guess on $b^{(1)}$. \\ \hline
+\emph{Iterative cycle. Computation of a solution.} \\ \hline
+\quad At iteration $i$, perform the following steps: \\
+\emph{Step 1. Computation of values of }$V$ \emph{on the grid.} \\
+\quad For $m=1,...,M,$ \\
+\quad a. Use $b^{\left( i\right) }$ to compute $\widehat{V}_{1}\left(
+k_{m},z_{m};b^{\left( i\right) }\right) $. \\
+\quad b. Compute the corresponding values of $c_{m}$ using \\
+\quad $c_{m}=u^{\prime -1}\left[ \frac{\widehat{V}_{1}\left(
+k_{m},z_{m};b^{\left( i\right) }\right) }{1-\delta +z_{m}f^{\prime }\left(
+k_{m}\right) }\right] .$ \\
+\quad c. Find $k_{m}^{\prime }$ using \\
+\quad $k_{m}^{\prime }=(1-\delta )k_{m}+z_{m}f\left( k_{m}\right) -c_{m}$.
+\\
+\quad d. Find value function on the grid \\
+\quad $\widehat{v}_{m}\equiv u\left( c_{m}\right) +\beta
+\sum_{j=1}^{J}\omega _{j}\widehat{V}\left( k_{m}^{\prime },z_{m}^{\rho }\exp
+\left( \varepsilon _{j}\right) ;b^{(i)}\right) .$ \\ \hline
+\emph{Step 2. Computation of }$b$\emph{\ that fits the value function on the
+grid. } \\
+\quad Run a regression to find $\widehat{b}:$ \\
+\quad $\widehat{b}=\arg \underset{b}{\min }\sum_{m=1}^{M}\Vert \widehat{v}
+_{m}-\widehat{V}(k_{m},z_{m};b)\Vert $. \\ \hline
+\emph{Step 3. Convergence check and fixed-point iteration.} \\
+\quad a. Check for convergence for $i\geq 2$: end Step 2 if \\
+\quad $\dfrac{1}{M}\sum_{m=1}^{M}\left \vert \dfrac{(k_{m}^{\prime
+})^{\left( i\right) }-(k_{m}^{\prime })^{\left( i-1\right) }}{(k_{m}^{\prime
+})^{\left( i-1\right) }}\right \vert <10^{-9}.$ \\
+\quad b. Use damping with $\xi =1$ to compute $b^{\left( i+1\right) }=(1-\xi
+)b^{\left( i\right) }+\xi \widehat{b}$. \\ \hline \hline
+\end{tabular}
+}
+
+\newpage
+
+\paragraph{A2: Value function iteration (VFI).}
+
+\qquad
+
+\qquad
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 2. VFI.} \\ \hline
+\emph{Initialization.} \\
+\quad a. Choose an approximating function $\widehat{V}(\cdot ;b)\approx V$.
+\\
+\quad b. Choose integration nodes, $\varepsilon _{j}$, and weights, $\omega
+_{j}$, $j=1,...,J$. \\
+\quad c. Construct a grid $\Gamma =\{k_{m},z_{m}\}_{m=1}^{M}$. \\
+\quad d. Make an initial guess on $b^{(1)}$. \\ \hline
+\emph{Iterative cycle. Computation of a solution.} \\ \hline
+\quad At iteration $i$, perform the following steps: \\
+\emph{Step 1. Computation of values of }$V$\emph{\ on the grid.} \\
+\quad For $m=1,...,M$, \\
+\quad a. Solve for $k_{m}^{\prime }$ satisfying \\
+\quad $u^{\prime }\left( (1-\delta )k_{m}+z_{m}f\left( k_{m}\right)
+-k_{m}^{\prime }\right) =\beta \sum_{j=1}^{J}\omega _{j}\widehat{V}
+_{1}\left( k_{m}^{\prime },z_{m}^{\rho }\exp \left( \varepsilon _{j}\right)
+;b^{(i)}\right) .$ \\
+\quad b. Find $c_{m}$ satisfying \\
+\quad $c_{m}=(1-\delta )k_{m}+z_{m}f\left( k_{m}\right) -k_{m}^{\prime }$.
+\\
+\quad c. Find value function on the grid \\
+\quad $\widehat{v}_{m}\equiv u\left( c_{m}\right) +\beta
+\sum_{j=1}^{J}\omega _{j}\widehat{V}\left( k_{m}^{\prime },z_{m}^{\rho }\exp
+\left( \varepsilon _{j}\right) ;b^{(i)}\right) .$ \\ \hline
+\emph{Step 2. Computation of }$b$\emph{\ that fits value function on the
+grid. } \\
+\quad Run a regression to find $\widehat{b}:$ \\
+\quad $\widehat{b}=\arg \underset{b}{\min }\sum_{m=1}^{M}\Vert \widehat{v}
+_{m}-\widehat{V}(k_{m},z_{m};b)\Vert $. \\ \hline
+\emph{Step 3. Convergence check and fixed-point iteration.} \\
+\quad a. Check for convergence for $i\geq 2$: end Step 2 if \\
+\quad $\dfrac{1}{M}\sum_{m=1}^{M}\left \vert \dfrac{(k_{m}^{\prime
+})^{\left( i\right) }-(k_{m}^{\prime })^{\left( i-1\right) }}{(k_{m}^{\prime
+})^{\left( i-1\right) }}\right \vert <10^{-9}.$ \\
+\quad b. Use damping with $\xi =1$ to compute $b^{\left( i+1\right) }=(1-\xi
+)b^{\left( i\right) }+\xi \widehat{b}$. \\ \hline \hline
+\end{tabular}
+}
+
+\newpage
+
+\paragraph{A3: Endogenous grid method (EGM).}
+
+\qquad
+
+\qquad
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 3. EGM.} \\ \hline
+\emph{Initialization.} \\
+\quad a. Choose an approximating function $\widehat{V}(\cdot ;b)\approx V$.
+\\
+\quad b. Choose integration nodes, $\varepsilon _{j}$, and weights, $\omega
+_{j}$, $j=1,...,J$. \\
+\quad c. Construct grid $\Gamma =\{k_{m}^{\prime },z_{m}\}_{m=1}^{M}$. \\
+\quad d. Make an initial guess on $b^{(1)}$. \\ \hline
+\emph{Iterative cycle. Computation of a solution.} \\ \hline
+\quad At iteration $i$, perform the following steps: \\
+\emph{Step 1. Computation of values of }$V$\emph{\ on the grid.} \\
+\quad For $m=1,...,M$, \\
+\quad a. Compute $\widehat{W}\left( k_{m}^{\prime },z_{m};b^{(i)}\right)
+\equiv \sum_{j=1}^{J}\omega _{j}\widehat{V}\left( k_{m}^{\prime
+},z_{m}^{\rho }\exp \left( \varepsilon _{j}\right) ;b^{(i)}\right) $ \\
+\quad and $\widehat{W}_{1}\left( k_{m}^{\prime },z_{m};b^{(i)}\right) \equiv
+\sum_{j=1}^{J}\omega _{j}\widehat{V}_{1}\left( k_{m}^{\prime },z_{m}^{\rho
+}\exp \left( \varepsilon _{j}\right) ;b^{(i)}\right) $. \\
+\quad b. Find $c_{m}=u^{\prime -1}\left[ \beta \widehat{W}_{1}\left(
+k_{m}^{\prime },z_{m};b^{(i)}\right) \right] $. \\
+\quad c. Use a solver to find $k_{m}$ satisfying \\
+\quad $(1-\delta )k_{m}+z_{m}f\left( k_{m}\right) =c_{m}+k_{m}^{\prime }$.
+\\
+\quad d. Find value function on the grid \\
+\quad $\widehat{v}_{m}\equiv u(c_{m})+\beta \widehat{W}\left( k_{m}^{\prime
+},z_{m};b^{(i)}\right) $. \\ \hline
+\emph{Step 2. Computation of }$b$\emph{\ that fits value function on the
+grid. } \\
+\quad Run a regression to find $\widehat{b}:$ \\
+\quad $\widehat{b}=\arg \underset{b}{\min }\sum_{m=1}^{M}\Vert \widehat{v}
+_{m}-\widehat{V}(k_{m},z_{m};b)\Vert $. \\ \hline
+\emph{Step 3. Convergence check and fixed-point iteration.} \\
+\quad a. Check for convergence for $i\geq 2$: end Step 2 if \\
+\quad $\dfrac{1}{M}\sum_{m=1}^{M}\left \vert \dfrac{(k_{m})^{\left( i\right)
+}-(k_{m})^{\left( i-1\right) }}{(k_{m})^{\left( i-1\right) }}\right \vert
+<10^{-9}.$ \\
+\quad b. Use damping with $\xi =1$ to compute $b^{\left( i+1\right) }=(1-\xi
+)b^{\left( i\right) }+\xi \widehat{b}$. \\ \hline \hline
+\end{tabular}
+}
+
+\newpage
+
+\paragraph{A4: Policy function iteration using envelope condition (PI-ECM)}
+
+\qquad
+
+\qquad
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 4. PI-ECM.} \\ \hline
+\emph{Initialization.} \\
+\quad a. Choose an approximating function $\widehat{V}(\cdot ;b)\approx V$
+and $\widehat{K}(\cdot ;v)\approx K$. \\
+\quad b. Choose integration nodes, $\varepsilon _{j}$, and weights, $\omega
+_{j}$, $j=1,...,J$. \\
+\quad c. Construct grid $\Gamma =\{k_{m},z_{m}\}_{m=1}^{M}$. \\
+\quad d. Make an initial guess on $v^{(1)}$ and $b^{(1)}$. \\ \hline
+\emph{Iterative cycle. Computation of a solution.} \\ \hline
+\quad At iteration $i$, perform the following steps: \\
+\emph{Step 1. Computation of values of }$V$ \emph{on the grid.} \\
+\quad For $m=1,...,M,$ \\
+\quad a. Use $v^{\left( i\right) }$ to compute $k_{m}^{\prime }=\widehat{K}
+\left( k_{m},z_{m};v^{\left( i\right) }\right) $. \\
+\quad b. Compute the corresponding values of $k_{m}^{\prime }$ using \\
+\quad $c_{m}=(1-\delta )k_{m}+z_{m}f\left( k_{m}\right) -k_{m}^{\prime }.$
+\\
+\quad c. Iterate on $b^{\left( i\right) }$ to find an approximate solution to
+\\
+\quad $\widehat{V}\left( k_{m},z_{m};b^{(i)}\right) =u\left( c_{m}\right)
++\beta \sum_{j=1}^{J}\omega _{j}\widehat{V}\left( k_{m}^{\prime
+},z_{m}^{\rho }\exp \left( \varepsilon _{j}\right) ;b^{(i)}\right) $. \\
+\quad d. Find policy function on the grid \\
+\quad $\widehat{k}_{m}^{\prime }=(1-\delta )k_{m}+z_{m}f\left( k_{m}\right)
+-u^{\prime -1}\left[ \frac{\widehat{V}_{1}\left( k_{m},z_{m};b^{\left(
+i\right) }\right) }{1-\delta +z_{m}f^{\prime }\left( k_{m}\right) }\right] .$
+\\ \hline
+\emph{Step 2. Computation of }$v$\emph{\ that fits the value function on the
+grid. } \\
+\quad Run a regression to find $\widehat{v}:$ \\
+\quad $\widehat{v}=\arg \underset{v}{\min }\sum_{m=1}^{M}\Vert \widehat{k}
+_{m}^{\prime }-\widehat{K}(k_{m},z_{m};v)\Vert $. \\ \hline
+\emph{Step 3. Convergence check and fixed-point iteration.} \\
+\quad a. Check for convergence for $i\geq 2$: end Step 2 if \\
+\quad $\dfrac{1}{M}\sum_{m=1}^{M}\left \vert \dfrac{(k_{m}^{\prime
+})^{\left( i\right) }-(k_{m}^{\prime })^{\left( i-1\right) }}{(k_{m}^{\prime
+})^{\left( i-1\right) }}\right \vert <10^{-9}.$ \\
+\quad b. Use damping with $\xi =1$ to compute $v^{\left( i+1\right) }=(1-\xi
+)v^{\left( i\right) }+\xi \widehat{v}$. \\ \hline \hline
+\end{tabular}
+}
+
+\newpage
+
+\paragraph{A5: Policy function iteration using first-order condition (PI-FOC)
+}
+
+\qquad
+
+\qquad
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 5. PI-FOC.} \\ \hline
+\emph{Initialization.} \\
+\quad a. Choose an approximating function $\widehat{V}(\cdot ;b)\approx V$
+and $\widehat{K}(\cdot ;v)\approx K$. \\
+\quad b. Choose integration nodes, $\varepsilon _{j}$, and weights, $\omega
+_{j}$, $j=1,...,J$. \\
+\quad c. Construct grid $\Gamma =\{k_{m},z_{m}\}_{m=1}^{M}$. \\
+\quad d. Make an initial guess on $v^{(1)}$ and $b^{(1)}$. \\ \hline
+\emph{Iterative cycle. Computation of a solution.} \\ \hline
+\quad At iteration $i$, perform the following steps: \\
+\emph{Step 1. Computation of values of }$V$ \emph{on the grid.} \\
+\quad For $m=1,...,M,$ \\
+\quad a. Use $v^{\left( i\right) }$ to compute $k_{m}^{\prime }=\widehat{K}
+\left( k_{m},z_{m};v^{\left( i\right) }\right) $. \\
+\quad b. Compute the corresponding values of $k_{m}^{\prime }$ using \\
+\quad $c_{m}=(1-\delta )k_{m}+z_{m}f\left( k_{m}\right) -k_{m}^{\prime }.$
+\\
+\quad c. Iterate on $b^{\left( i\right) }$ to find an approximate solution to
+\\
+\quad $\widehat{V}\left( k_{m},z_{m};b^{(i)}\right) =u\left( c_{m}\right)
++\beta \sum_{j=1}^{J}\omega _{j}\widehat{V}\left( k_{m}^{\prime
+},z_{m}^{\rho }\exp \left( \varepsilon _{j}\right) ;b^{(i)}\right) $. \\
+\quad d. Find policy function on the grid \\
+$u^{\prime }\left( (1-\delta )k_{m}+z_{m}f\left( k_{m}\right) -\widehat{k}
+_{m}^{\prime }\right) =\beta \sum_{j=1}^{J}\omega _{j}\widehat{V_{1}}\left(
+\widehat{k}_{m}^{\prime },z_{m}^{\rho }\exp \left( \varepsilon _{j}\right)
+;b^{(i)}\right) .$ \\ \hline
+\emph{Step 2. Computation of }$v$\emph{\ that fits the value function on the
+grid. } \\
+\quad Run a regression to find $\widehat{v}:$ \\
+\quad $\widehat{v}=\arg \underset{v}{\min }\sum_{m=1}^{M}\Vert \widehat{k}
+_{m}^{\prime }-\widehat{K}(k_{m},z_{m};v)\Vert $. \\ \hline
+\emph{Step 3. Convergence check and fixed-point iteration.} \\
+\quad a. Check for convergence for $i\geq 2$: end Step 2 if \\
+\quad $\dfrac{1}{M}\sum_{m=1}^{M}\left \vert \dfrac{(k_{m}^{\prime
+})^{\left( i\right) }-(k_{m}^{\prime })^{\left( i-1\right) }}{(k_{m}^{\prime
+})^{\left( i-1\right) }}\right \vert <10^{-9}.$ \\
+\quad b. Use damping with $\xi =1$ to compute $v^{\left( i+1\right) }=(1-\xi
+)v^{\left( i\right) }+\xi \widehat{v}$. \\ \hline \hline
+\end{tabular}
+}
+
+\newpage
+
+\paragraph{A6: Euler equation algorithm parameterizing $Q$.}
+
+\qquad
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 6. Euler equation algorithm parameterizing }$V_{1}.$ \\
+\hline
+\emph{Initialization.} \\
+\quad a. Choose an approximating function $\widehat{V}_{1}(\cdot ;b)\approx
+V_{1}$. \\
+\quad b. Choose integration nodes, $\varepsilon _{j}$, and weights, $\omega
+_{j}$, $j=1,...,J$. \\
+\quad c. Construct grid $\Gamma =\{k_{m},z_{m}\}_{m=1}^{M}$. \\
+\quad d. Make an initial guess on $b^{(1)}$. \\ \hline
+\emph{Iterative cycle. Computation of a solution.} \\ \hline
+\quad At iteration $i$, perform the following steps: \\
+\emph{Step 1. Computation of values of }$V_{1}$ \emph{on the grid.} \\
+\quad For $m=1,...,M,$ \\
+\quad a. Use $b^{\left( i\right) }$ to compute $\widehat{V}_{1}\left(
+k_{m},z_{m};b^{\left( i\right) }\right) $. \\
+\quad b. Find $k_{m}^{\prime }$ using \\
+\quad $k_{m}^{\prime }=\left( 1-\delta \right) k_{m}+z_{m}f\left(
+k_{m}\right) -u^{\prime -1}\left( \frac{\widehat{V}_{1}\left(
+k_{m},z_{m};b^{\left( i\right) }\right) }{1-\delta +z_{m}f\left(
+k_{m}\right) }\right) $ \\
+\quad c. Find the values of $v_{m}$ on the grid \\
+\quad $\widehat{v}_{1,m}\equiv \beta \left[ 1-\delta +zf^{\prime }\left(
+k_{m}\right) \right] \sum_{j=1}^{J}\omega _{j}\widehat{V}_{1}\left(
+k_{m}^{\prime },z_{m}^{\rho }\exp \left( \varepsilon _{j}\right)
+;b^{(i)}\right) $. \\ \hline
+\emph{Step 2. Computation of }$b$\emph{\ that fits the V}$_{1}$\emph{\
+function on the grid. } \\
+\quad Run a regression to find $\widehat{b}:$ \\
+\quad $\widehat{b}=\arg \underset{b}{\min }\sum_{m=1}^{M}\Vert \widehat{v}
+_{1,m}-\widehat{V}_{1}(k_{m},z_{m};b)\Vert $. \\ \hline
+\emph{Step 3. Convergence check and fixed-point iteration.} \\
+\quad a. Check for convergence for $i\geq 2$: end Step 2 if \\
+\quad $\dfrac{1}{M}\sum_{m=1}^{M}\left \vert \dfrac{(k_{m}^{\prime
+})^{\left( i\right) }-(k_{m}^{\prime })^{\left( i-1\right) }}{(k_{m}^{\prime
+})^{\left( i-1\right) }}\right \vert <10^{-9}.$ \\
+\quad b. Use damping with $\xi =1$ to compute $b^{\left( i+1\right) }=(1-\xi
+)b^{\left( i\right) }+\xi \widehat{b}$. \\ \hline \hline
+\end{tabular}
+}
+
+\qquad \newpage
+
+\paragraph{A7. Euler equation algorithm parameterizing $K$}
+
+\qquad
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 7. Euler equation algorithm parameterizing } $K$\textbf{.}
+\\ \hline
+\emph{Initialization.} \\
+\quad a. Choose approximating functions $\widehat{K}(\cdot ;v)\approx K$. \\
+\quad b. Choose integration nodes, $\varepsilon _{j}$, and weights, $\omega
+_{j}$, $j=1,...,J$. \\
+\quad c. Construct grid $\Gamma =\{k_{m},z_{m}\}_{m=1}^{M}$. \\
+\quad d. Make an initial guess on $v^{(1)}$. \\ \hline
+\emph{Step 1. Computation of values of }$\widehat{k}^{\prime }$ \emph{on the
+grid}. \\
+\quad For $m=1,...,M$, \\
+\quad a. Use $v^{\left( i\right) }$ to compute $\widehat{K}\left(
+k_{m},z_{m};v^{\left( i\right) }\right) $ and \\
+\quad $k_{m,j}^{\prime \prime }=\widehat{K}\left( \widehat{K}\left(
+k_{m},z_{m};v^{\left( i\right) }\right) ,z_{m}^{\rho }\exp \left( \epsilon
+_{j}\right) ;v^{\left( i\right) }\right) $, $j=1,...,J$. \\
+\quad b. Find $c_{m,j}^{\prime }$ using \\
+\quad $c_{m,j}^{\prime }=(1-\delta )\widehat{K}\left( k_{m},z_{m};v^{\left(
+i\right) }\right) +z_{m}f\left( \widehat{K}\left( k_{m},z_{m};v^{\left(
+i\right) }\right) \right) -k_{m,j}^{\prime \prime }$. \\
+\quad c. Find the values of $c_{m}$ on the grid \\
+\quad $u^{\prime }\left( c_{m}\right) =\beta \sum_{j=1}^{J}\omega
+_{j}u^{\prime }\left( c_{m,j}^{\prime }\right) \left[ 1-\delta +z_{m}^{\rho
+}\exp \left( \epsilon _{j}\right) f^{\prime }\left( \widehat{K}\left(
+k_{m},z_{m};v^{\left( i\right) }\right) \right) \right] .$ \\
+\quad d. Find the values of $k_{m}^{\prime }$ on the grid \\
+\quad $\widehat{k}_{m}^{\prime }=(1-\delta )k_{m}+z_{m}f\left( k_{m}\right)
+-c_{m}$. \\ \hline
+\emph{Step 2. Computation of }$v$\emph{\ that fits the capital function on
+the grid. } \\
+\quad a. Run a regression to find $\widehat{v}:$ \\
+\quad $\widehat{v}=\arg \underset{v}{\min }\sum_{m=1}^{M}\Vert \widehat{k}
+_{m}^{\prime }-\widehat{K}\left( k_{m},z_{m};v^{\left( i\right) }\right)
+\Vert $. \\
+\quad b. Use damping with $\xi =1$ to compute $v^{\left( i+1\right) }=(1-\xi
+)v^{\left( i\right) }+\xi \widehat{v}$. \\ \hline \hline
+\end{tabular}
+}
+
+\qquad \newpage
+
+\begin{center}
+\label{APNK}{\Large Appendix B: An Euler equation algorithm for solving a
+new Keynesian model}
+\end{center}
+
+We consider a new Keynesian model studied in Maliar and Maliar (2015). This is
+a stylized new Keynesian model with Calvo-type price frictions and a Taylor
+(1993) rule.
+
+\paragraph{The model.}
+
+The economy is populated by households, final-good firms, intermediate-good
+firms, monetary authority and government.
+
+\textit{Households. }The representative household solves
+
+\begin{gather}
+\underset{\left \{ C_{t},L_{t},B_{t}\right \} _{t=0,...,\infty }}{\max }E_{0}
+\overset{\infty }{\underset{t=0}{\sum }}\beta ^{t}\exp \left( \eta
+_{u,t}\right) \left[ \frac{C_{t}^{1-\gamma }-1}{1-\gamma }-\exp \left( \eta
+_{L,t}\right) \frac{L_{t}^{1+\vartheta }-1}{1+\vartheta }\right]  \label{uNK}
+\\
+\text{s.t. }P_{t}C_{t}+\frac{B_{t}}{\exp \left( \eta _{B,t}\right) R_{t}}
++T_{t}=B_{t-1}+W_{t}L_{t}+\Pi _{t},  \label{bcNK}
+\end{gather}
+
+where $\left( B_{0},\eta _{u,0},\eta _{L,0},\eta _{B,0}\right) $ is given; $
+C_{t}$, $L_{t}$, and $B_{t}$ are consumption, labor and nominal bond holdings,
+respectively; $P_{t}$, $W_{t}$ and $R_{t}$ are the commodity price, nominal
+wage and (gross) nominal interest rate, respectively; $\eta _{u,t}$ and $\eta
+_{L,t}$ are exogenous preference shocks to the overall momentary utility and
+disutility of labor, respectively; $\eta _{B,t}$ is an exogenous premium in the
+return to bonds; $T_{t}$ is lump-sum taxes; $\Pi _{t}$ is the profit of
+intermediate-good firms; $\beta \in \left( 0,1\right) $ is the discount factor;
+$\gamma >0$ and $\vartheta >0$ are the utility-function parameters. The
+processes for shocks are
+
+\begin{gather}
+\eta _{u,t+1}=\rho _{u}\eta _{u,t}+\epsilon _{u,t+1},\qquad \epsilon
+_{u,t+1}\sim \mathcal{N}\left( 0,\sigma _{u}^{2}\right) ,  \label{nuu} \\
+\eta _{L,t+1}=\rho _{L}\eta _{L,t}+\epsilon _{L,t+1},\qquad \epsilon
+_{L,t+1}\sim \mathcal{N}\left( 0,\sigma _{L}^{2}\right) ,  \label{nuL} \\
+\eta _{B,t+1}=\rho _{B}\eta _{B,t}+\epsilon _{B,t+1},\qquad \epsilon
+_{B,t+1}\sim \mathcal{N}\left( 0,\sigma _{B}^{2}\right) ,  \label{nuB}
+\end{gather}
+
+where $\rho _{u}$, $\rho _{L}$, $\rho _{B}$ are the autocorrelation
+coefficients, and $\sigma _{u}$, $\sigma _{L}$, $\sigma _{B}$ are the standard
+deviations of disturbances.
+
+\textit{Final-good firms. }Perfectly competitive final-good firms produce final
+goods using intermediate goods. A final-good firm buys $Y_{t}\left( i\right) $
+of an intermediate good $i\in \left[ 0,1\right] $ at price $P_{t}\left(
+i\right) $ and sells $Y_{t}$ of the final good at price $P_{t}$ in a perfectly
+competitive market. The profit-maximization problem is
+
+\begin{gather}
+\underset{Y_{t}\left( i\right) }{\max }\quad
+P_{t}Y_{t}-\int_{0}^{1}P_{t}\left( i\right) Y_{t}\left( i\right) di
+\label{maxfin} \\
+\text{s.t. }Y_{t}=\left( \int_{0}^{1}Y_{t}\left( i\right) ^{\frac{
+\varepsilon -1}{\varepsilon }}di\right) ^{\frac{\varepsilon }{\varepsilon -1}
+},  \label{bcfin}
+\end{gather}
+
+where (\ref{bcfin}) is a Dixit-Stiglitz aggregator function with $\varepsilon
+\geq 1$.
+
+\textit{Intermediate-good firms. }Monopolistic intermediate-good firms produce
+intermediate goods using labor and are subject to sticky prices. The firm $i$
+produces the intermediate good $i$. To choose labor in each period $ t$, the
+firm $i$ minimizes the nominal total cost, TC (net of government subsidy $v$),
+
+\begin{gather}
+\underset{L_{t}\left( i\right) }{\min }\quad \text{TC}\left( Y_{t}\left(
+i\right) \right) =\left( 1-v\right) W_{t}L_{t}\left( i\right)  \label{tc} \\
+\text{s.t. }Y_{t}\left( i\right) =\exp \left( \eta _{a,t}\right) L_{t}\left(
+i\right) ,  \label{tech} \\
+\eta _{a,t+1}=\rho _{a}\eta _{a,t}+\epsilon _{a,t+1},\qquad \epsilon
+_{a,t+1}\sim \mathcal{N}\left( 0,\sigma _{a}^{2}\right) ,  \label{nua}
+\end{gather}
+
+where $L_{t}\left( i\right) $ is the labor input; $\exp \left( \eta
+_{a,t}\right) $ is the productivity level; $\rho _{a}$ is the autocorrelation
+coefficient; and $\sigma _{a}$ is the standard deviation of the disturbance.
+The firms are subject to Calvo-type price setting: a fraction $1-\theta $ of
+the firms sets prices optimally, $P_{t}\left( i\right) =\widetilde{P}_{t}$, for
+$i\in \left[ 0,1\right] $, and the fraction $\theta $ is not allowed to change
+the price and maintains the same price as in the previous period, $P_{t}\left(
+i\right) =P_{t-1}\left( i\right) $, for $i\in \left[ 0,1\right] $. A
+reoptimizing firm $i\in \left[ 0,1\right] $ maximizes the current value of the
+profit over the time when $ \widetilde{P}_{t}$ remains effective,
+
+\begin{gather}
+\underset{\widetilde{P}_{t}}{\max }\quad \underset{j=0}{\overset{\infty }{
+\mathop{\displaystyle \sum } }}\beta ^{j}\theta ^{j}E_{t}\left \{ \Lambda
+_{t+j}\left[ \widetilde{P}_{t}Y_{t+j}\left( i\right) -P_{t+j}\text{mc}
+_{t+j}Y_{t+j}\left( i\right) \right] \right \}  \label{maxmon} \\
+\text{s.t. }Y_{t}\left( i\right) =Y_{t}\left( \frac{P_{t}\left( i\right) }{
+P_{t}}\right) ^{-\varepsilon },  \label{bcmon}
+\end{gather}
+
+where (\ref{bcmon}) is the demand for an intermediate good $i$ following from
+(\ref{maxfin}), (\ref{bcfin}); $\Lambda _{t+j}$ is the Lagrange multiplier on
+the household's budget constraint (\ref{bcNK}); mc$_{t+j}$ is the real marginal
+cost of output at time $t+j$ (which is identical across the firms).
+
+\textit{Government. }Government finances a stochastic stream of public
+consumption by levying lump-sum taxes and by issuing nominal debt. The
+government budget constraint is
+
+\begin{equation}
+T_{t}+\frac{B_{t}}{\exp \left( \eta _{B,t}\right) R_{t}}=P_{t}\frac{
+\overline{G}Y_{t}}{\exp \left( \eta _{G,t}\right) }+B_{t-1}+vW_{t}L_{t},
+\label{Gbc}
+\end{equation}
+
+where $\frac{\overline{G}Y_{t}}{\exp \left( \eta _{G,t}\right) }=G_{t}$ is
+government spending, $vW_{t}L_{t}$ is the subsidy to the intermediate-good
+firms, and $\eta _{G,t}$ is a government-spending shock,
+
+\begin{equation}
+\eta _{G,t+1}=\rho _{G}\eta _{G,t}+\epsilon _{G,t+1},\qquad \epsilon
+_{G,t+1}\sim \mathcal{N}\left( 0,\sigma _{G}^{2}\right) ,  \label{nuG}
+\end{equation}
+
+where $\rho _{R}$ is the autocorrelation coefficient, and $\sigma _{R}$ is the
+standard deviation of disturbance.
+
+\textit{Monetary authority. }The monetary authority follows a Taylor rule with
+a zero lower bound (ZLB) on the nominal interest rate:
+
+\begin{equation}
+R_{t}=\max \left \{ R_{\ast }\left( \frac{R_{t-1}}{R_{\ast }}\right) ^{\mu }
+\left[ \left( \frac{\pi _{t}}{\pi _{\ast }}\right) ^{\phi _{\pi }}\left(
+\frac{Y_{t}}{Y_{N,t}}\right) ^{\phi _{y}}\right] ^{1-\mu }\exp \left( \eta
+_{R,t}\right) ,1\right \} ,  \label{Tr2}
+\end{equation}
+
+where $R_{\ast }$ is the long-run value of the gross nominal interest rate; $
+\pi _{\ast }$ is the target inflation; $Y_{N,t}$ is the natural level of
+output; and $\eta _{R,t}$ is a monetary shock,
+
+\begin{equation}
+\eta _{R,t+1}=\rho _{R}\eta _{R,t}+\epsilon _{R,t+1},\qquad \epsilon
+_{R,t+1}\sim \mathcal{N}\left( 0,\sigma _{R}^{2}\right) ,  \label{nuR}
+\end{equation}
+
+where $\rho _{R}$ is the autocorrelation coefficient, and $\sigma _{R}$ is the
+standard deviation of disturbance.
+
+\textit{Natural level of output. }The natural level of output $Y_{N,t}$ is the
+level of output in an otherwise identical economy but without distortions. It
+is a solution to the following planner's problem
+
+\begin{gather}
+\underset{\left \{ C_{t},L_{t}\right \} _{t=0,...,\infty }}{\max }E_{0}
+\overset{\infty }{\underset{t=0}{\sum }}\beta ^{t}\exp \left( \eta
+_{u,t}\right) \left[ \frac{C_{t}^{1-\gamma }-1}{1-\gamma }-\exp \left( \eta
+_{L,t}\right) \frac{L_{t}^{1+\vartheta }-1}{1+\vartheta }\right]  \label{Pob}
+\\
+\text{s.t. }C_{t}=\exp \left( \eta _{a,t}\right) L_{t}-G_{t},  \label{Pbc}
+\end{gather}
+
+where $G_{t}=\frac{\overline{G}Y_{t}}{\exp \left( \eta _{G,t}\right) }$ is
+given, and $\eta _{u,t+1}$, $\eta _{L,t+1}$, $\eta _{a,t+1}$, and $\eta _{G,t}$
+follow the processes (\ref{nuu}), (\ref{nuL}), (\ref{nua}), and (\ref {nuG}),
+respectively.
+
+\paragraph{Parameterization and implementation details}
+
+Most of the parameters are calibrated using the estimates of Del Negro et al.
+(2007, Table 1, column "DSGE posterior"); namely, we assume $\gamma =1$ and
+$\vartheta =2.09$ in the utility function (\ref{uNK}); $\phi _{y}=0.07$, $\phi
+_{\pi }=2.21$, and $\mu =0.82$ in the Taylor rule (\ref{Tr2}); $ \varepsilon
+=4.45$ in the production function of the final-good firm (\ref {bcfin});
+$\theta =0.83$ (the fraction of the intermediate-good firms affected by price
+stickiness); $\overline{G}=0.23$ in the government budget constraint
+(\ref{Gbc}); and $\rho _{u}=0.92$, $\rho _{G}=0.95$, $\rho _{L}=0.25$, $\sigma
+_{u}=0.54\%$, $\sigma _{G}=0.38\%$, $\sigma _{L}=18.21\%$ (the latter is a
+lower estimate of Del Negro et al., 2007, Table 1, column "DSGE posterior"),
+and $\sigma _{L}=40.54\%$ (an average estimate of Del Negro et al., 2007) in
+the processes for shocks (\ref{nuu}), (\ref{nuG}) and (\ref{nuL}). From Smets
+and Wouters (2007), we take the values of $\rho _{a}=0.95$, $\rho _{B}=0.22$,
+$\rho _{R}=0.15$, $\sigma _{a}=0.45\%$, $ \sigma _{B}=0.23\%$ and $\sigma
+_{R}=0.28\%$ in the processes for shocks ( \ref{nua}), (\ref{nuB}) and
+(\ref{nuR}). We set the discount factor at $ \beta =0.99$. To parameterize the
+Taylor rule (\ref{Tr2}), we use the steady-state interest rate $R_{\ast
+}=\frac{\pi _{\ast }}{\beta }$, and we consider two alternative values of the
+target inflation, $\pi _{\ast }=1$ (a zero net inflation target) and $\pi
+_{\ast }=1.0598$ (this estimate comes from Del Negro et al., 2007).
+
+To approximate the equilibrium policy rules, we use a family of ordinary
+polynomials. To compute conditional expectations in Euler equations (\ref
+{NK1}), (\ref{NK2}) and (\ref{NK5}), we use a monomial integration rule (either
+a formula with $2N$ nodes or the one with $2N^{2}+1$ nodes); see Judd, Maliar
+and Maliar (Quantitative Economics, 2011) for a detailed description of the
+monomial integration formulas. To compute a solution, we use two alternative
+grids: one is a random grid composed of uniformely distributed points (i.e., we
+make independent random draws for all variables in the grid within the given
+range), and the other is a quasi-Monte Carlo grid (namely, a Sobol grid that
+fills in a given multidimensional hypercube). In Step 2b, the damping parameter
+is set at $\xi =0.1$, and the convergence parameter is set at $\varpi
+=10^{-7}$. The solution algorithm is described in Appendix.
+
+\paragraph{Computational method}
+
+In Appendix B, we describe an Euler equation algorithm, which we use to solve
+the new Keynesian model described in Section 3.
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{An algorithm iterating on the Euler equation} \\ \hline
+\textit{Step 1. Initialization.} \\ \hline
+{\quad a. Choose }$\left( {\Delta }_{{-1}}{,R}_{{-1}}{,\eta }_{{u,0}}{,\eta }
+_{{L,0}}{,\eta }_{{B,0}}{,\eta }_{{a,0}}{,\eta }_{{R,0}}{,\eta }_{{G,0}
+}\right) ${\ and }${T}${.} \\
+{\quad b. Draw }$\left \{ {\epsilon }_{{u,t+1}}{,\epsilon }_{{L,t+1}}{
+,\epsilon }_{{B,t+1}}{,\epsilon }_{{a,t+1}}{,\epsilon }_{{R,t+1}}{,\epsilon }
+_{{G,t+1}}\right \} _{{t=0,...,T-1}}${. } \\
+{\quad \quad Compute and fix }$\left \{ {\eta }_{{u,t+1}}{,\eta }_{{L,t+1}}{
+,\eta }_{{B,t+1}}{,\eta }_{{a,t+1}}{,\eta }_{{R,t+1}}{,\eta }_{{G,t+1}
+}\right \} _{{t=0,...,T-1}}${.} \\
+{\quad c. Choose approximating functions }${S\approx }\widehat{{S}}\left( {
+\cdot ;b}^{{S}}\right) ${, }${F\approx }\widehat{{F}}\left( {\cdot ;b}^{{F}
+}\right) ${, MU}${\approx }\widehat{\text{{MU}}}\left( {\cdot ;b}^{\text{{MU}
+}}\right) ${.} \\
+{\quad d. Make initial guesses on }${b}^{{S}}${, }${b}^{{F}}${, }${b}^{\text{
+{MU}}}${. } \\
+{\quad e. Choose integration nodes, }$\left \{ {\epsilon }_{{u,j}}{,\epsilon
+}_{{L,j}}{,\epsilon }_{{B,j}}{,\epsilon }_{a,j}{,\epsilon }_{{R,j}}{
+,\epsilon }_{{G,j}}\right \} _{{j=1,...,J}}${\ and weights, }$\left \{ {
+\omega }_{{j}}\right \} _{{j=1,...,J}}${.} \\ \hline
+{\quad f. Constuct a grid }${\Gamma }=\left \{ {\Delta }_{{m}}{,R}_{{m}}{
+,\eta }_{{u,m}}{,\eta }_{{L,m}}{,\eta }_{{B,m}}{,\eta }_{{a,m}}{,\eta }_{{R,m
+}}{,\eta }_{{G,m}}\right \} _{{m=1,...,M}}\equiv \left \{ {x}_{{m}}\right \}
+_{{m=1,...,M}}${\ } \\ \hline
+\textit{Step 2. Computation of a solution for }$S$\textit{, }$F$\textit{, MU.
+} \\ \hline
+{\quad a. At iteration }${i}${, for }${m=1,...,M}${, compute} \\
+\quad -- ${S}_{{m}}=\widehat{{S}}\left( {x}_{{m}}{;b}^{{S}}\right) ${, }${F}
+_{{m}}=\widehat{{F}}\left( {x}_{{m}}{;b}^{{F}}\right) ${, }${C}_{{m}}=\left[
+\widehat{\text{{MU}}}\left( {x}_{{m}}{;b}^{\text{{MU}}}\right) \right] ^{{
+-1/\gamma }}${;} \\
+\quad -- ${\pi }_{{m}}$ {from} $\frac{{S}_{m}}{{F}_{m}}{=}\left[ \frac{{
+1-\theta \pi }_{m}^{\varepsilon -1}}{{1-\theta }}\right] ^{\frac{1}{
+1-\varepsilon }}${\ and }${\Delta }_{{m}}^{\prime }{=}\left[ \left( {
+1-\theta }\right) \left[ \frac{{1-\theta \pi }_{m}^{\varepsilon -1}}{{
+1-\theta }}\right] ^{\frac{\varepsilon }{\varepsilon -1}}{+\theta }\frac{{
+\pi }_{m}^{\varepsilon }}{{\Delta }_{m}}\right] ^{{-1}}${;} \\
+\quad -- ${Y}_{{m}}=\left( {1}-\frac{\overline{G}}{\exp \left( \eta
+_{G,m}\right) }\right) ^{{-1}}{C}_{{m}}${, and }${L}_{{m}}={Y}_{{m}}\left[ {
+\exp }\left( {\eta }_{{a,m}}\right) {\Delta }_{{m}}^{{\prime }}\right] ^{-1}$
+{;} \\
+\quad --{\ }${Y}_{{N},{m}}=\left[ \frac{{\exp }\left( {\eta }_{a,m}\right)
+^{1+\vartheta }}{\left[ {\exp }\left( {\eta }_{{G,m}}\right) \right]
+^{-\gamma }{\exp }\left( {\eta }_{{L,m}}\right) }\right] ^{\frac{1}{
+\vartheta +\gamma }}${;} \\
+{\quad }--{\ }${R}_{{m}}^{{\prime }}={\max }\left \{ {1,}\text{ }{\Phi }_{{m}
+}\right \} ${, }${\Phi }_{{m}}{=R}_{\ast }\left( \frac{R_{m}}{R_{\ast }}
+\right) ^{{\mu }}\left[ \left( \frac{\pi _{m}}{\pi _{\ast }}\right) ^{{\phi }
+_{\pi }}\left( \frac{Y_{m}}{Y_{N,m}}\right) ^{{\phi }_{y}}\right] ^{{1-\mu }}
+{\exp }\left( {\eta }_{{R,m}}\right) ${;} \\
+{\quad }--{\ }${x}_{{m,j}}^{{\prime }}=\left( \Delta _{{m}}^{{\prime }},{R}_{
+{m}}^{{\prime }},{\eta }_{{u,m,j}}^{{\prime }},\eta _{{L,m,j}}^{{\prime }
+},\eta _{{B,m,j}}^{{\prime }},\eta _{{a,m,j}}^{{\prime }},\eta _{{R,m,j}}^{{
+\prime }},\eta _{{G,m,j}}^{{\prime }}\right) ${\ for all }${j}${;} \\
+{\quad }--{\ }${S}_{{m,j}}^{{\prime }}{=}\widehat{{S}}\left( {x}_{{m,j}}^{{
+\prime }}{;b}^{{S}}\right) ${, }${F}_{{m,j}}^{{\prime }}=\widehat{{F}}\left(
+{x}_{{m,j}}^{{\prime }}{;b}^{{F}}\right) ${, }${C}_{{m,j}}^{{\prime }}{=}
+\left[ \widehat{\text{{MU}}}\left( {x}_{{m,j}}^{{\prime }}{;b}^{\text{{MU}}
+}\right) \right] ^{{-1/\gamma }}${;} \\
+{\quad }-- ${\pi }_{{m,j}}^{{\prime }}${\ from }$\frac{{S}_{m,j}^{\prime }}{{
+F}_{m,j}^{\prime }}{=}\left[ \frac{{1-\theta }\left( \pi _{m,j}^{^{\prime
+}}\right) ^{\varepsilon -1}}{{1-\theta }}\right] ^{\frac{{1}}{{1-\varepsilon
+}}}${;} \\
+\quad -- $\widehat{{S}}_{{m}}{=}\frac{{\exp }\left( {\eta }_{{u,m}}{+\eta }_{
+{L,m}}\right) }{{\exp }\left( {\eta }_{{a,m}}\right) }{L}_{{m}}^{{\vartheta }
+}{Y}_{{m}}{+\beta \theta }\underset{{j=1}}{\overset{{J}}{\sum }}{\omega }_{{j
+}}{\cdot }\left \{ \left( {\pi }_{{m,j}}^{{\prime }}\right) ^{{\varepsilon }}
+{S}_{{m,j}}^{{\prime }}\right \} ,$ \\
+\quad -- $\widehat{{F}}_{{m}}={\exp }\left( {\eta }_{{u,m}}\right) {C}_{{m}
+}^{{-\gamma }}{Y}_{{m}}{+\beta \theta }\underset{{j=1}}{\overset{{J}}{\sum }}
+{\omega }_{{j}}{\cdot }\left \{ \left( {\pi }_{{m,j}}^{^{\prime }}\right) ^{{
+\varepsilon -1}}{F}_{{m,j}}^{{\prime }}\right \} {,}$ \\
+\quad -- $\widehat{{C}}_{{m}}^{{-\gamma }}{=}\frac{{\beta \exp }\left( \eta
+_{{B,m}}\right) {R}_{{m}}^{{\prime }}}{{\exp }\left( {\eta }_{{u,m}}\right) }
+\underset{{j=1}}{\overset{{J}}{\sum }}{\omega }_{{j}}\cdot \left[ \frac{
+\left( {C}_{{m,j}}^{\prime }\right) ^{{-\gamma }}{\exp }\left( {\eta }_{{
+u,m,j}}^{{\prime }}\right) }{{\pi }_{{m,j}}^{{\prime }}}\right] .$ \\
+\quad {b. Find }${b}^{{S}}$, ${b}^{{F}}$, ${b}^{\text{{MU}}}$ {that solve
+the system in Step 2a}. \\
+\quad -- {Get: }$\widehat{{b}}^{{S}}\equiv {\arg }\underset{{b}^{{S}}}{{\min
+}}\sum_{{m=1}}^{{M}}\left \Vert \widehat{{S}}_{{m}}-\widehat{{S}}\left( {x}_{
+{m}};{b}^{{S}}\right) \right \Vert ${. Similarly, get }$\widehat{{b}}^{{F}}${
+\ and }$\widehat{{b}}^{\text{{MU}}}${.} \\
+\quad -- {Use damping to compute }${b}^{\left( {i+1}\right) }=\left( {1-\xi }
+\right) {b}^{\left( {i}\right) }{+\xi }\widehat{{b}} ${, where }${b}\equiv
+\left( \widehat{{b}}^{{S}},\widehat{{b}}^{{F}},\widehat{{b}}^{\text{{MU}}
+}\right) ${.} \\
+\quad -- {Check for convergence: end Step 2 if} \\ \hline
+\quad $\frac{{1}}{{M}}{\max }\left \{ \mathop{\displaystyle \sum } \limits_{{
+m=1}}^{{M}}\left \vert \frac{\left( {S}_{{m}}\right) ^{\left( {i+1}\right)
+}-\left( {S}_{{m}}\right) ^{\left( i\right) }}{\left( {S}_{{m}}\right)
+^{\left( i\right) }}\right \vert {,}\mathop{\displaystyle \sum } \limits_{{
+m=1}}^{{M}}\left \vert \frac{\left( {F}_{{m}}\right) ^{\left( i+1\right)
+}-\left( {F}_{{m}}\right) ^{\left( i\right) }}{\left( {F}_{{m}}\right)
+^{\left( i\right) }}\right \vert {,}\mathop{\displaystyle \sum } \limits_{{
+m=1}}^{{M}}\left \vert \frac{\left( \text{{MU}}_{{m}}\right) ^{\left( {i+1}
+\right) }-\left( \text{{MU}}_{{m}}\right) ^{\left( {i}\right) }}{\left(
+\text{{MU}}_{{m}}\right) ^{\left( {i}\right) }}\right \vert \right \} {
+<\varpi }$. \\ \hline
+\textit{Iterate on Step 2 until convergence.} \\ \hline \hline
+\end{tabular}
+}
+
+We compute residuals on a stochastic simulation of $10,200$ observations (we
+eliminate the first $200$ observations). In the test, we use a monomial rule
+$M2$ with $2\cdot 6^{2}+1$ nodes which is more accurate than the other monomial
+rule $M1$.

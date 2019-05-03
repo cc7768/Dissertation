@@ -1,0 +1,258 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Programming languages in economics}
+
+In this section, we provide a brief description of the three programming
+languages discussed in this paper, MATLAB, Python and Julia. We provide step-by-step
+instructions of how to install Julia and Python and a description of the accompanying
+software in our corresponding notebooks; see \href{http://notes.quantecon.org}{QuantEcon Notebook site}.
+
+\subsection{Matlab}
+
+In our experience, Matlab is the programming language that most economists
+currently use. The most compelling reason for this is that it is a
+\textquotedblleft batteries included\textquotedblright solution. What we mean
+by \textquotedblleft batteries included\textquotedblright is that Matlab
+provides a code editing and execution environment, plotting capabilities, and a
+vast catalog of pre-written numerical routines. For example, in this project,
+we were able to leverage built-in routines to construct Sobol sequences
+(quasi-Monte Carlo grids) and for doing numerical optimization. Another benefit
+is that, because so many other economists already use Matlab, collaborating on
+research code with others is efficient. There are two main examples of this.
+The first is that Dynare, which is mostly used via it's Matlab interface, has become widely used
+across academia and policy institutions facilitating communication and sharing
+of models. The second is that because many algorithms and routines have been
+previously written in Matlab, it should be easy for researchers to adapt these
+pieces of code to new projects.
+
+Matlab, however, is not a perfect language for economists. Some of its
+downsides are:
+
+\begin{itemize}
+
+  \item \textit{Commercial.} As a commercial product, in order to use Matlab
+  users must first obtain a non-free license. This can be costly if an
+  institution does not already have a license available for use.
+
+  \item \textit{Closed source.} Users cannot look at the Matlab source code to
+  study (or change) the implementation of built-in routines.
+
+  \item \textit{Restricted parallel programming possibilities (due to limited
+  license availability).} As computer hardware becomes more powerful and
+  computer resources in the cloud become more accessible, economists are
+  increasingly implementing parallel versions of their algorithms. While basic
+  parallelism is convenient in Matlab, running code at scale requires one
+  license per process. This increases the cost of large scale computations.
+  \footnote{ As an example, if one wanted to run a Matlab program on 16
+  optimized processors on the Amazon Compute Cloud, then in addition to paying
+  \$0.80/hour for the processor time, it would cost an additional \$0.20/hour
+  per processor to license each processor bringing the total from \$0.80/hour
+  to \$4.00/hour. For details see
+  \href{https://www.mathworks.com/products/parallel-computing/parallel-computing-on-the-cloud/distriben-ec2-pricing.html}
+  {Matlab's pricing site} and
+  \href{https://aws.amazon.com/ec2/pricing/on-demand/} {Amazon's pricing
+  site}.}
+
+  \item \textit{Limited notion of community packages.} Apart from the official Matlab toolboxes,
+  Matlab does not have a well-developed system of add-on packages.\footnote{Matlab does however host
+  an open file exchange called {Matlab Central}. Matlab Central has 365,000 current contributors and
+  code that is available to do many tasks that are not included in the base Matlab package, but they
+  do not provide the same package management services that are available within Python or Julia.}
+  Using external libraries requires users to download and place the files in the same directory as
+  the scripts they are running or to manage the path Matlab searches when calling functions. Although
+  not insurmountable, this friction discourages good software development by making it difficult to
+  build and reuse modular libraries.
+
+  \item \textit{Mainly a numerical programming language.} Tasks outside of this
+  purview can be more difficult than in a more general programming language.
+
+\end{itemize}
+
+\subsection{Python}
+
+While Matlab has long been widely used in economics, Python has been steadily
+gaining users in economics during recent years. Some of Python's most
+compelling selling points are as follows:
+
+\begin{itemize}
+
+  \item \textit{A mature and rich package ecosystem}. At the time of writing,
+  Python has 112,232 registered packages that perform a variety of tasks and can
+  be easily downloaded and installed.
+
+  \item \textit{Advanced data manipulation and numerics libraries.} For example,
+  \texttt{pandas} is a very powerful library containing data structures and
+  algorithms for doing data analysis. \texttt{numpy} and \texttt{scipy} are the
+  base of array-based numerical computing in Python and provide linear algebra,
+  optimization, and other foundational numerical algorithms. \texttt{matplotlib}
+  is the main plotting library.
+
+  \item \textit{Many users and ample learning resources.} Python is one of the
+  top five most widely used programming languages in the world. This large user
+  base is beneficial to economists because of the libraries mentioned above and
+  the sheer volume of learning materials and resources available online for
+  learning Python. As one point of data, at the time of writing there are
+  696,984 questions tagged with Python on
+  \url{http://stackoverflow.com}\footnote{ This is a popular question-and-answer website for programming.}, while there are only 68,403 for Matlab and
+  2,659 for Julia.
+
+  \item \textit{Wide adoption in the private sector.} This is beneficial
+  because industry resources are being applied to enhance the language and
+  create powerful tools economists can leverage in their computational code.
+
+  \item \textit{Open source.} This means that the source code is publicly
+  available on the internet and it is 100 percent free to view, install,
+  distribute and use.
+
+\end{itemize}
+
+Python is not perfect, however. Some of its shortcomings are:
+
+\begin{itemize}
+
+  \item \textit{External libraries.} External libraries are needed for
+  efficient numerical computation. This means that users need to identify which
+  libraries to use, know how to install them properly, and load them into their
+  codes. Fortunately this is not as difficult as it sounds thanks to scientific
+  python distributions like \href{https://www.continuum.io/downloads}
+  {Anaconda} that come with Python and all the most common scientific packages
+  installed and pre-configured.
+
+  \item \textit{Slower than other languages for certain types of algorithms.}
+  This can often be circumvented by vectorizing operations (as in Matlab) or by
+  leveraging tools such as \href{http://numba.pydata.org}{numba} or
+  \href{http://cython.org} {Cython} to compile Python code into a fast and
+  efficient machine code. In many cases this is a suitable approach, but it
+  does require extra effort on behalf of the programmer. In other cases, it is
+  difficult or impossible to express only the slower parts of an algorithm
+  using these tools.
+
+\end{itemize}
+
+\subsection{Julia}
+
+The most recently released language of the three is Julia. While Julia has not
+yet reached a stable 1.0 release, many enthusiastic economists are starting to
+pick it up because of the benefits that it offers. The list of Julia's
+strengths is extensive and includes the following:
+
+\begin{itemize}
+
+  \item \textit{All of Julia is based around just-in-time (JIT) compilation}\footnote{Just-in-time
+  compilation means that a function is compiled the first time it is called and
+  all subsequent calls to that function are calls to faster.}. Since all Julia
+  code is compiled before it is executed, Julia has the potential to run at the
+  same speed as languages like C or Fortran.\footnote{ See
+  \url{https://julialang.org/benchmarks/} for some example benchmarks.}
+  \footnote{ There has been work to add just-in-time compilation to both Matlab
+  and Python, but, because it isn't native to either language, it does not work
+  as generically as it does in Julia.}
+
+  \item \textit{Most of Julia is written in Julia.} This offers at least two
+  main benefits: (1) core language features and constructs are written and
+  defined using the same tools available to user code; (2) users can look to the
+  implementation of Julia itself to see best practices and tips to make their
+  own code better. One consequence of this that is often surprising to Matlab
+  or Python users is that a Julia user can write a routine in Julia that
+  performs as well, or often better, than implementations in common libraries.
+  In other words, Julia users do not need to reach to a library for every
+  operation, because writing the subroutine in Julia can be at least as
+  performant.
+
+  \item \textit{Flexibility. }Of the three languages that we analyze, Julia is
+  the most expressive and flexible. It features advanced computer science
+  concepts such as meta-programming (see below) and multiple dispatch (a choice
+  of which method to execute when a function is applied; such a choice is made
+  using all of a function's arguments, not just the first one).
+
+  \item \textit{Similarity to Matlab}. Julia's syntax is intentionally similar
+  to that of Matlab. In fact, in many instances, copying and pasting Matlab
+  code produces the same result in Julia as in Matlab. This was an intentional
+  decision intended to allow Matlab users to transition seamlessly from Matlab
+  to Julia.
+
+  \item \textit{Built in parallel and multi-threaded programming constructs.}
+  Having support at the language level for both distributed and shared memory
+  parallel processing means running code in serial or in parallel is often a
+  one word change to the user's code. Also, because Julia is open source like
+  Python, its programs can scale up to run on arbitrarily many processes
+  without incurring the additional costs from licensing.
+
+  \item \textit{Meta-programming.} One relatively advanced and compelling
+  feature that is unique to Julia (amongst the languages considered here) is
+  meta-programming. A language that allows meta-programming treats the code
+  that is executed as data that can be manipulated by the program itself. This
+  means users can write code that writes the code that will be run. The most
+  complete example of how we leveraged this feature for this project was in
+  implementing routines to compute basis functions for complete polynomial. In
+  Python and Matlab, our implementation was quite naive. We allow for a
+  complete polynomial of degree between two and five and write out one \texttt{
+  for} loop for each degree. The structure of each loop is identical. In
+  contrast, the Julia's version of this routine allows an arbitrary degree
+  complete polynomial. To achieve this, we leverage Julia's meta-programming
+  capabilities, receive the desired degree of complete polynomial from the user
+  and then instruct Julia to emit code that contains that many for loops --
+  each having the same structure as the hand-written loops in our Python and
+  Matlab versions. This results in the complete polynomial Julia routines
+  having less code written by us and being more flexible and generic.
+
+\end{itemize}
+
+Despite many promising features, there are still some shortcomings to Julia.
+These include:
+
+\begin{itemize}
+
+  \item \textit{Lack of stability.} Julia is still very young, it was first
+  made public in 2011 and has not reached a stable 1.0 release.\footnote{ The
+  Julia team anticipates releasing version 1.0 in Q2 2018.}
+
+  \item \textit{Slow compile times.} Because the JIT compiler aggressively
+  optimizes the machine code for each function that is executed, it can feel
+  sluggish when doing rapid iterative development (make a change, run code,
+  make a change, run code, etc\ldots ) because you pay the fixed compile cost
+  after each edit.
+
+  \item \textit{Julia must be able to infer a type for each variable in a
+  function }in order to emit fast code\textit{.} This is not usually a problem,
+  but sometimes if you are careless then the code will run slower than it
+  should ---{\ though, even in the worst case, it is still often as fast as Matlab or Python}.
+
+  \item \textit{The package system is still emerging.} Many of the packages
+  throughout the Julia community are surprisingly advanced given that Julia has
+  still not reached a stable release, but they are usually not as polished as
+  what you would find in the Matlab sponsored toolboxes or the best Python
+  packages. That being said, we have not found package availability to be
+  prohibitive for our work.\footnote{ When routines are not available, it often
+  isn't much extra work to code up an implementation by hand; see the
+  discussion above.}
+
+  \item \textit{Lack of tooling.} Unlike the more mature languages Matlab and
+  Python, Julia currently lacks polished developer tools like an integrated
+  development environment (IDE) or debugger. These are actively being worked on
+  and will hopefully emerge soon after the Julia 1.0 release.
+
+\end{itemize}
+
+\subsection{Syntax comparison}
+
+Julia and Matlab have many syntax elements in common. For example, if one wants
+to perform matrix multiplication of two matrices $A$ and $B$ then one can
+simply write \texttt{A*B}, but if one wants to perform element wise
+multiplication then one writes \texttt{A.*B}. Additionally, blocks are started
+with the same words (\texttt{for}, \texttt{if}, \texttt{while}) and terminated
+with the word \texttt{end}. These similarities make it very easy to translate
+code from Matlab to Julia and vice-versa. The one major difference between
+Julia and Matlab is that Julia uses square brackets to index into arrays
+(\texttt{A[i, j]}) while Matlab uses parenthesis (\texttt{A(i, j)}).
+
+On the other hand, Python differs slightly in its conventions. In Python
+\texttt{A*B} represents element-wise multiplication between matrices while
+\texttt{A@B} represents matrix multiplications.\footnote{ The use of \texttt{@}
+for matrix multiplication was added in Python version 3.5. Readers who have
+seen or written Python code written for Python versions earlier than version
+3.5 might have come across \texttt{A.dot(B)} or \texttt{np.dot(A, B)} instead.}
+Additionally, rather than depend on \texttt{end} to denote the end of blocks,
+Python forces each new block to be indented four spaces from the previous one.
+Despite these differences, we found that syntax differences did not present a
+large obstacle for writing code in all three languages.

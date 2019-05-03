@@ -1,0 +1,85 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Introduction}
+
+We explore the effects of recursive preferences and risk
+in an otherwise standard two-country exchange economy.
+We focus on the behavior of the (relative) Pareto weight,
+which characterizes consumption allocations across countries.
+When preferences are additive over time and across states, as they typically are,
+the Pareto weight is constant in frictionless environments.
+But when preferences are recursive
+and agents consume different goods,
+the Pareto weight can fluctuate even in frictionless environments.
+This variation in the Pareto weight acts like a wedge from the perspective
+of an additive model.
+Among the potential byproducts are changes in the behavior
+of consumption and the exchange rate.
+
+The natural comparison is with models that use capital market frictions
+to account for the anomalous features of the standard  model.
+\citet{Baxter1995-nl}, \citet{Corsetti2008-lx},
+\citet{Heathcote2002-aw}, \citet{Kehoe2002-lq},
+and \citet{Kose2006-os}
+are well-known examples.
+The frictions in these papers might be viewed as devices to produce variation in the Pareto weight,
+which is then reflected in prices and quantities.
+In the language of \citet{Chari2007-kq},
+variations in Pareto weights would appear as wedges in the frictionless model.
+The question for both approaches is whether these wedges are similar to those we observe when we
+confront frictionless models with evidence.
+Ultimately we would like to understand how the two approaches compare,
+but for now we're simply trying to understand the behavior of the Pareto weight in models
+with recursive preferences.
+
+
+We build in an obvious way on earlier work
+with multi-good economies by
+\citet{Colacito2013-yq,Colacito2011-zp,Colacito2014-ph,Kollmann2015-sy},
+and \citet{Tretvoll2011-lo,Tretvoll2015-lo,Tretvoll2018-dj}.
+We show how their models work and introduce some modest extensions.
+We also build on the fundamental work on recursive risk-sharing by
+\citet{Anderson2005-of}, \citet{Borovicka2016-rr},
+and \citet{Collin-dufresne2015-gt}.
+These papers study one-good worlds,
+and in that respect are simpler than work with multi-good international models,
+but they lay out the mathematical structure of recursive risk-sharing problems.
+The last paper in the list also describes an effective computational method
+that we adapt to our environment.
+
+One byproduct is a clearer picture of what drives the dynamics
+of the Pareto weights.
+In many one-good economies, Pareto weights aren't stable.
+Eventually one agent consumes everything.
+One of the insights of \citet{Colacito2013-yq}
+is that home bias and imperfect substitutability between goods
+can produce stable processes for Pareto weights and consumption shares.
+That's true here, as well, but we also show how changes in risk aversion
+and intertemporal substitutability affect
+the dynamics of the Pareto weight.
+Relative to the additive case, increasing risk aversion
+or decreasing intertemporal substitution
+generates more persistence in the real exchange rate.
+Whether this persistence is welcome depends on one's view
+of the evidence.
+
+Risk is a particularly interesting object in this context.
+Random fluctuations in the relative supply of foreign and domestic goods
+also affect demand --- with recursive preferences --- through their impact on future utility.
+As in many dynamic models, it's not clear how (if?)
+we might separate the concepts of supply and demand.
+A change in the conditional variance of future endowments, however, works only though the second channel;
+supplies (endowments) do not change.
+Risk affects allocations of goods through its impact on the Pareto weight
+without any direct impact on their supply.
+
+All of these results are based on global numerical solutions to the Pareto problem.
+These solutions take much more computer time than the perturbation methods used in most
+related work,
+but they come with greater assurance that the solution is accurate even
+in states far from the mean of the distribution.
+
+Notation and terminology.  We use Latin letters for variables and Greek letters for parameters.
+Variables without time subscripts are means of logs.
+We use the term steady state to refer to the mean of the log of a variable.
+Thus steady state $x$ refers to the mean value of $\log x_t$.

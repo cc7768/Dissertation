@@ -1,0 +1,224 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Features and parameter values}
+
+
+We describe some of the salient features of the model
+and the benchmark parameter values we use later on.
+
+
+\subsection{Features}
+
+{\textit Consumption frontier.\/}
+The resource constraints define a possibilities frontier for consumption.
+We picture several examples in Figure \ref{fig:consumption-frontier}
+with $z_{1t} = z_{2t} = 1$.
+In each case, we compute the maximum quantity
+$c_{1t}$ consistent with a given quantity $c_{2t}$,
+the resource constraints (\ref{eq:resource-a},\ref{eq:resource-b}),
+and the Armington aggregators (\ref{eq:armington-1},\ref{eq:armington-2}).
+The shape depends on the aggregator.
+When $\omega = 1/2$, the two final goods are the same and the tradeoff is linear.
+When $\omega \neq 1/2$, the frontier is concave.
+The degree of concavity depends on the elasticity of substitution $ 1/(1-\sigma)$
+in the Armington aggregator.
+
+
+In a competitive equilibrium, the slope of the consumption frontier
+is (minus) the relative price of consumption in the two countries, $p_{2t}/p_{1t} = e_t$,
+the real exchange rate.
+From the figure, we can imagine variation in this price
+produced either by moving along the frontier or by changing the frontier through
+movements in the quantities of intermediate goods.
+
+{\textit Marginal rates of substitution.\/}
+Competitive equilibria and Pareto optima equate agents' marginal rates of substitution.
+With recursive preferences, the intertemporal marginal rate of substitution of agent $j$ is
+\begin{eqnarray}
+    m_{jt+1} &=& \beta \left( \frac{c_{jt+1}}{c_{jt}}\right)^{\rho-1}
+              \left( \frac{U_{jt+1}}{\mu_{t}(U_{jt+1})} \right)^{\alpha-\rho} .
+              \label{eq:mrs}
+\end{eqnarray}
+The last term summarizes the impact of recursive preferences.
+If $\alpha=\rho$, preferences are additive and the term disappears.
+Otherwise anything that affects future utility can play a role in the marginal rate
+of substitution, hence in allocations.
+For example, a change in risk affects future utility which, in turn, alters optimal consumption allocations and market clearing prices.
+Persistence is critical here, because more persistent shocks have a larger
+impact on future utility.
+The discount factor $\beta$ is similar:  the larger it is, the greater the weight on
+future utility and the greater the impact on the marginal rate of substitution.
+
+Note, too, the dynamics built into the recursive term.
+Its log is a risk adjustment plus white noise.
+The log of the numerator is
+\begin{eqnarray*}
+    \log U_{jt+1} &=&  E_t (\log U_{jt+1}) + \big[\log U_{jt+1} - E_t (\log U_{jt+1})\big] ,
+\end{eqnarray*}
+the mean plus a white noise innovation.
+The log of the denominator is
+\begin{eqnarray*}
+    \log \mu_t (U_{jt+1})
+            &=&
+            \alpha^{-1} \log E_t (e^{\alpha \log U_{jt+1}})   \\
+                        &=& E_t (\log U_{jt+1}) +
+            \alpha^{-1} \big[ \log E_t (e^{\alpha \log U_{jt+1}}) - E_t (\alpha \log U_{jt+1}) \big] .
+%            \underbrace{\mbox{risk adjustment}}_{\alpha \mbox{Var}_{t} (\log U_{t+1})/2}
+\end{eqnarray*}
+The term in square brackets is the entropy of $U_{jt+1}^\alpha$ and is positive.
+We multiply by $\alpha$ to get what we term the risk adjustment, which is negative if $\alpha$ is.
+The difference then is the innovation minus the risk adjustment.
+The innovation increases the volatility of the intertemporal marginal rate of substitution,
+which is the primary source of success in asset pricing
+applications.
+
+The marginal rate of substitution (\ref{eq:mrs}) is measured in units of agent $j$'s consumption good,
+whose price is $p_{jt}$.
+We refer to the relative price of the two consumption goods as the real exchange rate:
+$ e_t = p_{2t}/p_{1t} $.
+The two marginal rates of substitution are then connected by
+$ m_{2t+1} = (e_{t+1}/e_t) m_{1t+1}$.
+We'll derive this in the next section,
+but it should be evident here that the dynamics of the exchange rate reflect the
+marginal rates of substitution.
+If the two marginal rates of substitution are close to white noise, as we suggested,
+then the depreciation rate $e_{t+1}/e_t$ has the same property.
+
+
+{\textit Productivity dynamics.\/}
+One way to think about our log productivity process (\ref{eq:lom-z})
+is that their average is a martingale and their difference is stable.
+Denote half the sum and half the difference by
+\begin{eqnarray*}
+    \log \bar{z} &=& (\log z_1 + \log z_2)/2 \\
+    \log \wh{z}  &=& (\log z_1 - \log z_2)/2  .
+\end{eqnarray*}
+Then we can express the underlying productivities
+by $\log z_1 = \log \bar{z} + \log \wh{z}$ and $\log z_2 = \log \bar{z} - \log \wh{z} $.
+Equation (\ref{eq:lom-z}) implies that half the sum,
+\begin{eqnarray*}
+    \log \bar{z}_{t+1} &=& \log g + \log \bar{z}_t + (v_t^{1/2} w_{1t+1} + v^{1/2} w_{2t+1})/2 ,
+\end{eqnarray*}
+is a martingale with drift.
+The difference,
+\begin{eqnarray}
+    \log \wh{z}_{t+1}  &=& (1-2\gamma) \log \wh{z}_t + (v_t^{1/2} w_{1t+1} - v^{1/2} w_{2t+1})/2 ,
+    \label{eq:lom-zhat}
+\end{eqnarray}
+is stable, which tells us $\log z_{1t}$ and $\log z_{2t}$ are cointegrated.
+Given the linear homogeneity of the model, changes in $\bar{z}$ affect consumption
+quantities proportionately, with no effect on their relative price, the exchange rate.
+Changes in relative productivity $\wh{z}$, however,
+affect consumption quantities differentially and therefore affect the real exchange rate
+as well.
+
+{\textit Pareto problems.\/}
+We compute competitive equilibria in this environment by finding
+Pareto optimal allocations and their supporting prices.
+ In a two-agent Pareto problem,
+we maximize one agent's utility subject to
+(i)~the other agent getting at least some promised level of utility
+(the promise-keeping constraint)
+and (ii)~the productive capacity of the economy (the resource constraints and shocks).
+The Lagrangian for this problem is
+\begin{eqnarray*}
+ \mathcal{L} &=& U_{1t} + \lambda_{t} (U_{2t} - \overline{U}) + \mbox{resource constraints and shocks} ,
+\end{eqnarray*}
+with $\lambda_t$ the multiplier on the promise-keeping constraint.
+If utility functions are strictly concave,
+this is equivalent to traditional Mantel-Negishi maximization of their weighted average,
+\begin{eqnarray*}
+    \theta_{1t} U_{1t} + \theta_{2t} U_{2t} ,
+\end{eqnarray*}
+with positive Pareto weights ($\theta_{1t}, \theta_{2t})$.
+Evidently $\lambda_t$ in the previous problem plays the same role as $ \theta_{2t}/\theta_{1t}$.
+We refer to $\lambda_t$ as the Pareto weight,
+although in terms of the latter version we might call it the relative Pareto weight.
+
+
+{\textit Transforming utility.\/}
+We find it convenient to use an hd1 time aggregator, but with additive preferences
+(the special case $\rho = \alpha$)
+it's more common to transform utility to
+$ {U}^{*}_{jt} = U_{jt}^\rho/\rho$.
+With this transformation, equation (\ref{eq:time-agg}) becomes
+\begin{eqnarray}
+    {U}^{*}_{jt} &=& (1-\beta) c_{jt}^\rho/\rho
+            + \beta \big[ E_t (U_{jt+1}^{* \alpha/\rho}) \big]^{\rho/\alpha} .
+    \label{eq:utility-additive}
+\end{eqnarray}
+When $\rho=\alpha$ this takes the familiar additive form.
+
+The transformation also changes the look of derivatives.
+When we represent preferences with $U_{jt}$, marginal utility is
+\begin{eqnarray*}
+    \partial U_{jt} /\partial c_{jt} &=& U_{jt}^{1-\rho} (1-\beta) c_{jt}^{\rho-1} .
+\end{eqnarray*}
+When we use ${U}^*_{jt}$, marginal utility takes the simpler form
+\begin{eqnarray*}
+    \partial {U}^*_{jt} /\partial c_{jt} &=&  (1-\beta) c_{jt}^{\rho-1} .
+\end{eqnarray*}
+We'll use this insight later on to simplify some of the expressions we get
+using the hd1 form of the time aggregator.
+This includes the Pareto weight, which is defined for a specific
+utility function.
+
+
+\subsection{Parameter values}
+
+We make only a modest effort to use realistic parameter values.
+The goal instead is to highlight the effects of recursive preferences and
+stochastic volatility with parameter values in the ballpark of those used
+elsewhere in the literature.
+We summarize these choices in Table \ref{tab:benchmark}.
+The time interval is one quarter.
+
+{\textit Preferences.\/}
+We use $\rho=-1$ (implying an IES of one-half)
+and $\alpha = -9$ (implying risk aversion of 10).
+The former is a common value in business cycle modeling; \citet{Kydland1982-xy}, for example.
+The latter is widely used in asset pricing; \citet{Bansal2004-mb} is the standard reference.
+The key feature of this configuration is that $\alpha-\rho < 0$.
+We set $\beta = 0.98$.
+
+
+{\textit Technology.\/}
+The Armington aggregator plays a central role here,
+specifically the elasticity of substitution $1/(1-\sigma)$
+between foreign and domestic intermediate goods.
+A wide range of elasticities have been used in the literature.
+Some earlier work used elasticities greater than one.
+\citet{Colacito2011-zp,Colacito2013-yq} and \citet{Kollmann2015-sy} use an elasticity of one.
+\citet[Section 3.2]{Heathcote2002-aw}, \citet[Table 1]{Tretvoll2018-dj}, and \citet[Table 3]{Tretvoll2015-lo} suggest
+smaller values.
+We start with an elasticity of one ($\sigma = 0$),
+but consider other values, particularly when we explore the interaction
+of the elasticity and the dynamics of the Pareto weight.
+
+Given a choice of $\sigma$, we set the share parameter $\omega$ like this.
+First-order conditions equate prices to marginal products:
+\begin{eqnarray*}
+    p_{1t} &=& c_{1t}^{1-\sigma} (1-\omega) a_{1t}^{\sigma-1} \\
+    p_{2t} &=& c_{1t}^{1-\sigma} \omega b_{1t}^{\sigma-1}
+\end{eqnarray*}
+In a symmetric steady state with import share $s_m = b_1/(a_1 + b_1)$
+and relative price $ p_{2t}/p_{1t} = 1$,
+the ratio of these two equations implies
+\begin{eqnarray}
+    \left( \frac{1-\omega}{\omega} \right) &=& \left( \frac{1-s_m}{s_m} \right)^{1-\sigma} .
+    \label{eq:share-calculation}
+\end{eqnarray}
+We set $s_m = 0.1$.  Given a value for $\sigma$, the import share nails down $\omega$.
+One consequence of this calculation is that the parameter $\omega$ approaches one-half
+as $\sigma$ approaches one (and the elasticity of substitution approaches infinity).
+
+
+{\textit Shocks.}
+The mean growth rate is $\log g = 0.004 $:  0.4\% per quarter.
+The number comes from \citet[Table 4]{Tallarini2000-xx} and is estimated with US data.
+We set the persistence parameter $\gamma$ that governs productivity dynamics equal to 0.1,
+which implies an autocorrelation of $1-2\gamma = 0.8$ for $\log \wh{z}$.
+\citet[Table 5]{Rabanal2011-pm} estimate $\gamma$ to be less
+than 0.01, which implies significantly greater persistence.
+The stochastic volatility process (\ref{eq:lom-v}) is based on \citet{Jurado2015-hy}
+as described in \citet[Section 5.3]{Backus2015-yx}.

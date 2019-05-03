@@ -1,0 +1,123 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Introduction}
+
+There is a growing interest among economists in global nonlinear solution
+methods. Value function discretization is the most well-known example of a
+global nonlinear solution method, but there are a variety of other iterative
+and Euler-equation based methods that differ in the way they approximate,
+interpolate, integrate and construct nonlinear solutions. These methods solve
+economic models on grids of points that cover a relevant area of the state
+space, and they generally produce more accurate solutions than perturbation
+methods which typically build approximations around a single point.\footnote{
+The accuracy of local perturbation solutions can decrease rapidly away from
+steady state even in relatively smooth models; see \cite{KKK2011}. In models
+with stronger nonlinearities, such as new Keynesian models, approximation
+errors can reach hundreds of percent under empirically relevant
+parameterizations; see \cite{JMM2017}. In models of labor search, a global
+solution is important for accurate capturing even first moments of equilibrium
+dynamics; see \cite{PZ2017}} Also, global methods are useful for solving some
+models in which perturbation methods are either not applicable or their
+applications are limited.\footnote{ For example, perturbation methods are not
+well suitable for analyzing sovereign default problems (e.g.,
+\cite{Arellano2008}) and portfolio choice problems (e.g., \cite{HK2013}). There
+are perturbation-based methods that can deal with occasionally binding
+constraints but they are limited to the first-order approximation. For example,
+see \cite{LS2011} and \cite{GI2015}.} Finally, the recent developments of numerical
+techniques for dealing with high-dimensional data has greatly extended the
+class of models that can be studied with global solution methods. In
+particular, it is now possible to construct global nonlinear solutions to
+economic models with dozens of state variables that are intractable with
+conventional global solution methods (such as value-function discretization)
+due to the curse of dimensionality.\footnote{ See \cite{MM2014} for a survey of
+numerical techniques that are tractable in problems with high dimensionality
+and see \cite{LMM2017} for an example of constructing a global nonlinear
+solution to a large-scale projection model of the Bank of Canada.}
+
+However, global nonlinear solution methods are more difficult to automate than
+perturbation methods, and their implementation requires more substantial
+programming from researchers. In particular, there is still no consensus in the
+profession on what software to use for implementing global solution methods,
+unlike for perturbation methods where a common choice is the Dynare or IRIS platforms.
+Because of this, an important aspect of the implementation of a global solution method is the
+choice of programming language to use. Traditionally, Matlab is used in
+economics, although some researchers have also used Fortan and C. Recently,
+Python and Julia have begun to see a more widespread use in the economics
+literature.\footnote{ For example, Python and Julia are used in the
+\textit{Quantitative economics} lecture site of Tom Sargent and John
+Stachurski. Python is used to produce the \textit{Heterogeneous Agents
+Resources and toolKit} (HARK) by the team led by Christopher Carroll.}
+
+In this paper, we pursue two goals: First, we provide a comparison between
+solution methods implemented in Matlab, Python and Julia in the context of two
+popular applications: a neoclassical growth model and a new Keynesian model.
+Our goal is to help economic researchers choose the programming language that
+is best suited to their own situation, and, if needed, help them transition
+from one programming language to another. The readers can see and compare how
+the same algorithm is implemented in different languages and, as a result, will
+understand some of the unique aspects of each language and choose the one which
+best fits their needs.\footnote{ Additionally, we provide carefully elaborated
+notebooks with a description of our code and algorithms on the
+\href{http://notes.quantecon.org}{QuantEcon Notebook site}\dots} The
+implementation, structure and number of lines of code are similar across all
+three languages.
+
+Second, we provide a carefully documented collection of routines for Matlab,
+Python and Julia that can be used for constructing global nonlinear solutions
+with a special emphasis on modern techniques for problems with high
+dimensionality. In particular, our code includes routines for constructing
+random and quasi-random grids, low-cost monomial integration methods,
+approximating functions using complete polynomials, as well as routines for
+computing the numerical accuracy of solutions. Much of this code is generic in
+a way which allows it to be easily portable to other applications including
+problems with kinks and occasionally binding constraints. Our examples are
+solved using a variety of solution techniques including: conventional policy
+function iteration, conventional value function iteration, an Euler equation method,
+the endogenous grid method of \cite{Carroll2006}, and several variants of the
+envelope condition method of \cite{MM2015}.
+
+\cite{AF2014} is closely related to our work. In their paper, the authors
+compare 18 different programming languages by implementing the same algorithm --
+value-function discretization -- to solve the stochastic neoclassical growth
+model and by reporting the CPU time needed to solve the model. They find that
+the choice of a programming language plays an important role in computation
+time: the fastest language in their study (C++) solves the model over 450 times
+faster than the slowest language (R). The present work extends \cite{AF2014} by
+analyzing a variety of algorithms and also by solving a larger (in terms of the
+number of state variables) model. Similar to \cite{AF2014}, we find that the
+choice of a programming language may have important effects in terms of speed,
+however, we do not observe such huge differences across the three languages
+considered. In addition to speed comparisons, we also discuss the key features
+of each language that might be useful for economists.
+
+We build on the existing Matlab codes accompanying \cite{AMMT2016} and
+\cite{MM2015}. We improve on these codes, and provide new routines that have
+not been analyzed previously in the literature. First, for the neoclassical
+growth model, we implement seven different methods in all three programming languages, whereas \cite{AMMT2016} is limited to Matlab implementation of the envelope condition method.
+Furthermore, for the new Keynesian model, we modify the method proposed in \cite{MM2015} to operate on random and quasi-random
+grids covering a fixed hypercube, instead of operating on the high probability area of the state space. The Matlab code developed in the present paper achieves an almost a 60-time speed up over the original code in \cite{MM2015},
+while still producing highly accurate solutions. Our code is sufficiently fast
+to be used for the estimation of a moderately-large new Keynesian model with 8
+state variables. It takes us just a few seconds to construct the solution, including the model with active zero lower bound on the nominal interest rate.
+
+Our overall experience with each language was comparable, though it is useful
+to recognize that each language has it specific strengths. Both Julia and
+Python are open-source which facilitates transparency and reproducibility. For
+reasons to be discussed later, Julia outperforms both Matlab and Python in
+algorithms that require numerical solvers or optimizers. Python benefits from
+an active community and strong package ecosystem which makes finding the right
+tools easy. Finally, Matlab benefits from extensive documentation, technical
+support, and various built in toolboxes. Ultimately, the best choice of
+programming language depends on various features including: model size,
+solution complexity, ease of writing, and co-author preferences. Regardless of
+the programming language chosen, our experience shows that transitioning
+between each of the three languages we consider should not require a
+substantial learning effort.
+
+The rest of the paper is organized as follows. In Section 2, we describe the
+three languages, Matlab, Python and Julia. In Section 3, we outline seven
+algorithms we implement to solve a variant of the standard neoclassical
+stochastic growth model. In Section 4, we present an algorithm for solving a
+medium-scale new Keynesian model with a zero lower bound on nominal interest
+rates and describe the results of our analysis. Finally, in Section 5 we
+conclude.

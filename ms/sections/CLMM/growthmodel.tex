@@ -1,0 +1,325 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Comparison using a neoclassical growth model}
+
+The neoclassical growth model is often used as a benchmark to measure the
+effectiveness of a solution method. We keep with this tradition and analyze the
+stochastic neoclassical growth model with seven alternative solution methods,
+which are outlined in \cite{AMMT2016}. Each method is implemented in Julia,
+Matlab, and Python which allows us to see how the performance of different
+solution methods may vary by programming language.
+
+\subsection{The model}
+
+We consider a dynamic programming problem of finding the value function,
+$V$, that solves the Bellman equation,
+
+\begin{align}
+  V \left(k, z\right) &= \max_{c, k^{\prime }} u\left(c\right) +\beta E\left[ V\left( k^{\prime },z^{\prime }\right) \right] \label{vf} \\
+  \text{s.t.\quad}k^{\prime } &= \left( 1-\delta \right) k + z f\left( k\right) - c \label{bc} \\
+  \ln z^{\prime} &= \rho \ln z + \varepsilon^{\prime },\qquad \varepsilon^{\prime } \sim \mathcal{N}\left( 0,\sigma ^{2}\right), \label{ts}
+\end{align}
+
+where $k$, $c$ and $z$ are capital, consumption and productivity level,
+respectively; $\beta \in \left( 0,1\right) $; $\delta \in \left( 0,1\right] $ ;
+$\rho \in \left( -1,1\right) $; $\sigma \geq 0$; the utility and production
+functions, $u$ and $f$, respectively, are strictly increasing, continuously
+differentiable and strictly concave. The primes on variables denote next-period
+values, and $E\left[ V\left( k^{\prime },z^{\prime }\right) \right] $ is an
+expectation conditional on state $\left( k,z\right) $.
+
+\paragraph{Optimality conditions.}
+
+The first order condition (FOC) and envelope condition (EC) of the problem
+(\ref{vf})-(\ref{ts}), respectively, are
+
+\begin{equation}
+  u^{\prime}\left(c\right) = \beta E \left[ V_{1}\left(k^{\prime }, z^{\prime}\right) \right] \label{f2}
+\end{equation}
+
+\begin{equation}
+  V_{1}\left(k, z\right) = u^{\prime }\left( c\right) \left[ 1-\delta + zf^{\prime }\left( k\right) \right]. \label{f3}
+\end{equation}%
+
+By combining (\ref{f2}) and (\ref{f3}), we obtain the Euler equation%
+
+\begin{equation}
+  u^{\prime }\left(c\right) = \beta E\left[ u^{\prime }\left( c^{\prime}\right) \left[ 1-\delta +z^{\prime }f^{\prime }\left( k^{\prime} \right) \right] \right]. \label{f23}
+\end{equation}
+
+\paragraph{Parameterization and implementation details.}
+
+We parameterize the model (\ref{vf})-(\ref{ts}) by using a Constant Relative
+Risk Aversion (CRRA) utility function, $u\left( c\right) =\frac{c^{1-\gamma
+}-1}{1-\gamma }$, and a Cobb-Douglas production function, $f\left( k\right)
+=Ak^{\alpha }$. We choose parameters to be set at $A=\frac{1/\beta -(1-\delta
+)}{\alpha }$, $\alpha =1/3$, $\beta =0.99$, $\delta =0.025$, $ \rho =0.95$ and
+$\sigma =0.01$. As a solution domain, we use a rectangular, uniformly spaced
+grid of $10\times 10$ points for capital and productivity between 0.9 and 1.1
+for both variables.
+
+We integrate by using a $10$-node Gauss-Hermite quadrature rule and approximate
+the policy and value functions by using complete ordinary polynomials up to
+degree 5. As an initial guess, we use a linear approximation to the capital
+policy function. To solve for polynomial coefficients, we use fixed-point
+iteration.
+
+All computations are performed using Julia v0.6.0, Matlab version 9.2.0
+(R2017a), and Python 3.6 on a MacBook Pro with a 2.7 GHz Intel Core i7
+processor and 16 GB of RAM. For Julia and Python, the particular package
+versions can be found in the corresponding notebooks submitted on QuantEcon's Notebook site\footnote{The
+\href{http://notes.quantecon.org/submission/5b5f71779cd7f00015be6350}{Matlab notebook},
+\href{http://notes.quantecon.org/submission/5b5f70db9cd7f00015be634e}{Python notebook},
+\href{http://notes.quantecon.org/submission/5b5f711d9cd7f00015be634f}{Julia notebook}}.
+
+\subsection{Value iterative methods}
+
+We analyze three value iterative algorithms for solving the model: (1)
+conventional value function iteration method analyzed in e.g., \cite{AF2014} ;
+(2) a variant of envelope condition method (ECM) of \cite{MM2013} that finds a
+solution to Bellman equation by iterating on value function; and (3) endogenous
+grid method (EGM) of \cite{Carroll2006}. We present a brief description of each
+algorithm below. A detailed description of each algorithm is included in
+Appendix A.
+
+\subsubsection{Conventional Value Function Iteration}
+
+Conventional VFI constructs the policy rule for consumption by combining FOC
+(\ref{f2}) and budget constraint (\ref{bc}):
+
+\qquad \newline
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 1. Conventional VFI} \\ \hline
+Given $V$, for each point $\left( k,z\right) $, define the following recursion: \\
+\quad i). Numerically solve for $c$ satisfying $u^{\prime }\left(c\right) =\beta E \left[ V_{1}\left( \left( 1-\delta \right) k+zf\left( k\right) -c,z^{\prime }\right) \right] $. \\
+\quad ii). Find $k^{\prime }=\left( 1-\delta \right) k+zf\left( k\right) -c$. \\
+\quad iii). Find $\widehat{V}\left( k,z\right) =u\left( c\right) +\beta E \left[ V\left( k^{\prime },z^{\prime }\right) \right] $. \\
+Iterate on i)-iii) until convergence $\widehat{V}=V$. \\ \hline \hline
+\end{tabular}
+}
+
+\qquad \newline
+
+\subsubsection{Envelope Condition Method}
+
+ECM, proposed in \cite{MM2013}, finds consumption from envelope
+condition (\ref{f3}) and budget constraint (\ref{bc}). In this specific model,
+the consumption function can be constructed analytically:
+
+\qquad \newline
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 2. ECM-VF} \\ \hline
+Given $V$, for each point $\left( k,z\right) $, define the following recursion: \\
+\quad i). Find $c=u^{\prime -1}\left[ \frac{V_{1}\left( k,z\right) }{1-\delta +zf^{\prime }\left( k\right) }\right]$. \\
+\quad ii). Find $k^{\prime }=\left( 1-\delta \right) k+zf\left( k\right) -c$. \\
+\quad iii). Find $\widehat{V}\left( k,z\right) =u\left( c\right) +\beta E \left[ V\left( k^{\prime },z^{\prime }\right) \right]$. \\
+Iterate on i)-iii) until convergence $\widehat{V}=V$. \\ \hline \hline
+\end{tabular}
+}
+
+\qquad \newline
+
+\subsubsection{Endogenous Grid Method}
+
+Finally, EGM of \cite{Carroll2006} constructs a grid on $\left( k^{\prime
+},z\right) $ by fixing the future endogenous state variable $k^{\prime }$ and
+by treating the current endogenous state variable $k$ as unknown; see also
+\cite{BF2007} for a discussion of the EGM method. Since $k^{\prime }$ is fixed,
+EGM computes $E\left[ V_{1}\left( k^{\prime },z^{\prime }\right) \right] $
+up-front and thus can avoid costly interpolation and approximation of
+expectation in a root finding procedure.
+
+\qquad \newline
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 3. EGM of Carroll (2005)} \\ \hline
+Given $V$, for each point $\left( k^{\prime },z\right) $, define the
+following recursion: \\
+\quad i). Find $c=u^{\prime -1}\left \{ \beta E\left[ V_{1}\left( k^{\prime}, z^{\prime }\right) \right] \right \}$. \\
+\quad ii). Solve for $k$ satisfying $k^{\prime }=\left( 1-\delta \right)k + zf\left(k\right) - c$. \\
+\quad iii). Find $\widehat{V}\left( k,z\right) =u\left( c\right) +\beta E \left[ V\left( k^{\prime },z^{\prime }\right) \right]$. \\
+Iterate on i)-iii) until convergence $\widehat{V}=V$. \\ \hline \hline
+\end{tabular}%
+}
+
+\qquad \newline
+
+In Step ii) of EGM, we still need to find $k$ numerically. However, for the
+studied model, \cite{Carroll2006} shows a change of variables that makes it
+possible to avoid finding $k$ numerically on each iteration (except of the
+very last iteration). In order to streamline our code, we do not use this
+change of variables so the running time of our version of the EGM method
+will be considerably larger than for the version of the method in \cite
+{Carroll2006}. However, this fact does not distort our comparison analysis
+since we use the same implementation in all three languages.
+
+\subsubsection{Comparison results of Matlab, Python and Julia for value iterative methods}
+
+The results from our comparison of the three iterative methods are in Table
+\ref{clmm:Table1}. Conventional VFI is the most time consuming in all three
+languages because it requires us to find the root of (\ref{f2}) for each $(k,
+z)$. Given $(k, z)$, each evaluation of equation (\ref{f2}) requires the computer
+to compute conditional expectation by interpolating over the $t+1$ values.
+Numerical root finders must do this repeatedly. The reason EGM performs better
+than VFI is that it is easier to solve equation (\ref{f2}) with respect to $c$
+given $\left(k^{\prime}, z\right)$ than to solve it with respect to $c$ given
+$(k, z)$ because we only need to evaluate conditional expectation once if
+we know $k^{\prime}$. The ECM method requires no numerical solver which is why
+it is so efficient relative to the other two methods.\footnote{A version of the
+envelope condition argument is used in \cite{AHLLM2017} to construct a new
+class of fast and efficient numerical methods for solving dynamic economic
+models in continuous time.}
+
+Julia produces solutions between 5 and 50 times faster than Matlab and Python
+for VFI and EGM. The reasons Julia performs so much better on these two
+algorithms is because the entire language is built on JIT compilation. This
+means that the repeated calls to the Julia objective
+function are cheap (relative to an interpreted language like Matlab or Python)
+because these subsequent function calls execute already compiled machine code.
+
+Our results for the ECM show similar performance for all three languages. The
+main reason for this is that the method does not require a non-linear solver to
+compute the policy for consumption and computations can be vectorized. The
+vectorization puts the languages on more similar footing because they all end
+up calling out to the same high performant BLAS routines implemented in C or
+Fortran.
+
+
+\subsection{Policy iterating methods}
+
+We analyze four algorithms that construct policy functions for the standard
+neoclassical stochastic growth model: Algorithm 4 is a conventional policy iteration (PI)
+method, e.g., \cite{SR2004}; Algorithm 5 is a variant of ECM that implements policy
+iteration; Algorithm 6 is a version of ECM that solve for derivative of value function
+instead of value function itself; Algorithm 7 an Euler equation algorithm. Again we
+give a brief description of each algorithm but a more detailed description of
+these algorithms is provided in Appendix A.
+
+\subsubsection{Conventional Policy Iteration}
+
+Conventional policy iteration constructs a solution to the Bellman equation by
+iterating on the consumption function using FOC (\ref{f2}).
+
+\qquad \newline
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 4. Conventional PI} \\ \hline
+Given $C$, for each point $\left( k,z\right) $, define the following
+recursion: \\
+\quad i). Find $K\left(k, z\right) = \left( 1 - \delta \right)k + z f\left(k\right) - C\left( k,z\right)$ \\
+\quad ii). Solve for $V$ satisfying $V\left(k, z\right) = u\left(C\left(k, z\right) \right) + \beta E\left[V\left(K\left(k, z\right), z^{\prime} \right) \right]$ \\
+\quad iii). Find $\widehat{C}$ satisfying $u^{\prime }\left( \widehat{C}\left( k,z\right) \right) =\beta E\left[ V_{1}\left( \left( 1-\delta \right)k + z f\left(k\right) - \widehat{C}\left(k, z\right), z^{\prime}\right) \right]
+$ \\
+Iterate on i)-iii) until convergence $\widehat{C}=C$. \\ \hline \hline
+\end{tabular}%
+}
+
+\qquad
+
+\subsubsection{ECM Policy Iteration}
+
+ECM-PI the variant of ECM that performs PI instead of VFI. It constructs a
+solution to the Bellman equation by iterating on the consumption function using
+EC (\ref{f3}).
+
+\qquad \newline
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 5. ECM-PI} \\ \hline
+Given $C$, for each point $\left( k,z\right) $, define the following
+recursion: \\
+\quad i). Find $K\left(k, z\right) = \left( 1 - \delta \right) k+zf\left(k\right) - C\left(k, z\right)$ \\
+\quad ii). Solve for $V$ satisfying $V\left(k, z\right) = u\left( C\left(k, z\right) \right) + \beta E\left[ V\left(K\left(k, z\right), z^{\prime}\right) \right]$ \\
+\quad iii). Find $\widehat{C}\left(k, z\right) = u^{\prime -1}\left[\frac{V_{1}\left(k, z\right)}{1 - \delta + z f^{\prime }\left(k\right)}\right]$ \\
+Iterate on i)-iii) until convergence $\widehat{C}=C$. \\ \hline \hline
+\end{tabular}%
+}
+
+\qquad
+
+\subsubsection{Derivative Policy Iteration}
+
+The ECM analysis also suggests a useful recursion for the derivative of value
+function. We first construct consumption function $C\left(k, z\right)$
+satisfying FOC (\ref{f2}) under the current value function
+
+\begin{align}
+\beta E\left[V_{1}\left( k^{\prime },z^{\prime }\right) \right] = u^{\prime }\left(C\left(k, z\right) \right), \label{vk4}
+\end{align}
+
+and we then use (\ref{f3}) to obtain the derivative of value function for next
+iteration. This leads to a solution method that we call ECM-DVF.
+
+The main difference between ECM-DVF from the previously studied ECM-VF consists
+in that we iterate on $V_{1}$ without computing $V$ on each iteration. We only
+compute $V$ at the very end, when both $V_{1}$ and the optimal policy functions
+are constructed. Again, neither numerical maximization nor a numerical solver
+is necessary under ECM-DVF but only direct calculations. Similarly to PI
+methods, Euler equation methods do not solve for value function but only for
+decision (policy) functions. One possible decision function is a derivative of
+value function. Thus, the ECM-DVF recursion (\ref{vk4}) can be also viewed as
+an Euler equation written in terms of the derivative of value function.
+
+\qquad \newline
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 6. ECM-DVF} \\ \hline
+Given $V_{1}$ for each point $\left( k,z\right) $, define the following recursion: \\
+\quad i). Find $c = u^{\prime -1}\left[ \frac{V_{1}\left(k, z\right)}{1 - \delta +z f^{ prime}\left(k\right) }\right]$ \\
+\quad ii). Find $k^{\prime }=\left( 1-\delta \right) k+zf\left( k\right) -c$ \\
+\quad iii). Find $\widehat{V}_{1}\left(k, z\right) =\beta \left[ 1-\delta +z f^{\prime }\left(k\right) \right] E \left[V_{1}\left(k^{\prime}, z^{\prime }\right) \right]$ \\
+Iterate on i)-iii) until convergence $\widehat{V}_{1}=V_{1}$ \\
+Given the converged policy functions, find $V$ satisfying $V\left(k, z\right) = u\left(c\right) + \beta E \left[V\left(k^{\prime }, z^{\prime}\right) \right]$ \\ \hline \hline
+\end{tabular}
+}
+
+\subsubsection{Euler Equation Methods}
+
+Policy iteration has similarity to Euler equation methods; see \cite
+{Judd1998}, \cite{Santos1999} for a general discussion of such methods. Euler
+equation methods approximate policy functions for consumption $ c=C\left(
+k,z\right) $, capital $k^{\prime }=K\left( k,z\right) $ (or other policy
+functions) to satisfy (\ref{bc}), (\ref{ts}) and (\ref{f23}). Below, we provide
+an example of Euler equation method (many other recursions for such methods are
+possible).
+
+\qquad \newline
+
+{\small
+\begin{tabular}{l}
+\hline \hline
+\textbf{Algorithm 7. Euler equation algorithms} \\ \hline
+Given $C\left( k,z\right) $, for each point $\left( k,z\right) $, define the
+following recursion: \\
+\quad i). Find $K\left(k, z\right) =\left(1 - \delta\right) k + z f\left(k\right) -C\left( k,z\right)$ \\
+\quad ii). Find $c^{\prime} = C\left(K\left(k, z\right), z^{\prime}\right)$ \\
+\quad iii). Find $\widehat{C}\left(k, z\right) = u^{\prime -1}\left \{\beta E \left[ u^{\prime}\left(c^{\prime}\right) \left(1 - \delta + z^{\prime} f^{\prime}\left(k^{\prime}\right) \right) \right] \right \}$ \\
+Iterate on i)-iii) until convergence $\widehat{C}=C$. \\ \hline \hline
+\end{tabular}
+}
+
+\subsubsection{Comparison results of Matlab, Python and Julia for policy iterative methods}
+
+In Table \ref{clmm:Table2}, we see that conventional PI performs the worst because it relies on a
+numerical solver, but, as with the value iterative methods, this reliance is less problematic for
+Julia than for Matlab or Python.
+
+Overall, we found that the speed of most algorithms was comparable across all three languages. The
+exception was that Julia performed significantly better than the other programs whenever there was
+any numerical optimization or root-finding involved. However, these speedups came at the cost of
+spending a (relatively small) amount of extra time being careful about how the code was written to
+ensure that the Julia compiler is able to infer the type of each variable in the most time-intensive
+parts of the program.
