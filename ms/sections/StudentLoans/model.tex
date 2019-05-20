@@ -1,0 +1,386 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Model} \label{sec:model}
+
+Our goal is to gain insight into the benefits and costs of different student loan repayment
+policies. In particular, we are interested in how the costs associated with adverse selection in the
+college entrance decision, and moral hazard in the debt accumulation decision, compare with the
+benefits of reduced period-by-period repayment burdens, and the improved cross-individual insurance,
+that occur when using IDR.
+
+As previously discussed, the college attendance portion of the model was originally presented in
+\cite{HendricksLeukhina2017}. The novel addition is our inclusion of a risky labor market where
+individuals are potentially subject to periods of low income and are forced to repay their student
+loans according to the prespecified student loan plan.
+
+We find it helpful to start with a brief outline of the model's timeline and decisions before
+the formal definition of the model.
+
+
+\subsection{Model Outline}
+
+  The model is a discrete time, overlapping generations model. All individuals in the model begin as
+  high school graduates. Upon graduating from high school, they observe stochastic characteristics
+  that identify their idiosyncratic type and use these characteristics to decide whether to enroll
+  in college or not.
+
+  If the high school graduate chooses not to enroll in college, they immediately begin working in
+  the labor market as a high school worker.
+
+  If the high school graduate chooses to enroll in college, it follows that they become a college
+  student. Each period that an individual is a college student they choose whether to continue their
+  studies or to drop out. If the student drops out, they enter the labor market as a college dropout
+  worker. If the student chooses to continue, they choose an amount of student loans to accumulate,
+  an amount of (dis)savings, and a number of hours to work. They finance their consumption and
+  education costs using their savings, student loans, and any earnings they receive from employment
+  during college. They then observe their grades for the period which they use in their decision in
+  the following period about whether to continue in college or dropout. If the student accumulates
+  enough credits while in college, then they enter the labor market as a college graduate worker.
+
+  Each type of worker receives risky labor income that depends on their education level and
+  idiosyncratic characteristics. They all have access to non-contingent savings which can be used to
+  smooth their lifetime consumption. Any individual who accumulated student loans
+  is required to pay them back according to a specified student loan repayment plan.
+
+  We now present a formal description of the model. For notational convenience, once we have
+  described the idiosyncratic types that define each agent, we will describe the model in reverse
+  chronological order.
+
+
+\subsection{Agent Types}
+
+  Each agent lives for $T$ periods and has preferences given by:
+
+  \begin{align*}
+    V = \sum_{t=1}^T \beta^{t-1} \left(
+      \mathcal{I}_{\text{In College}} (u_c(c_t) + v_c(v_t)) +
+      \mathcal{I}_{\text{Period becomes worker}} U_{s} +
+      \mathcal{I}_{\text{Labor Market}} u(c_t)
+    \right)
+  \end{align*}
+
+  $U_s$ is an education specific utility level with $s \in \{\text{HS}, \text{CD}, \text{CG}\}$
+  where HS stands for high school worker, CD stands for college dropout, and CG stands for college
+  graduate. $u_c$ and $v_c$ are the utility function for consumption and labor, respectively, during
+  an individual's college life. $u$ is the worker's utility function for consumption.
+
+  Individuals in this model graduate high school at time $t=1$. At this time, they draw three
+  idiosyncratic states:
+
+  \begin{enumerate}
+    \item Ability level ($a$): An individual's ability level is distributed as $N(0, 1)$. The
+    individual's ability level determines the probability with which a student passes each of their
+    classes and affects their earnings once they are in the labor market. The ability level is
+    unobserved until an individual enters the labor market.
+    \item Type ($j$): An individual's type, $j \sim G_J$, determines a signal about their ability
+    ($m$), initial wealth level ($k_1$), the base cost of attending college ($q$), and the financial
+    transfers they receive from their parents for 6 periods after high school graduation ($z$).
+    Additionally, we treat $m$ as unobservable to the econometrician, rather, the econometrician
+    will observe a noisy signal about $m$ given by $\text{GPA} \sim N(m, \sigma^2_{\text{GPA}})$.
+    \item Initial financial shock ($\zeta_1$): The financial state, $\zeta_1 \sim G_\zeta$,
+    determines scholarships and work opportunities for a college student.
+  \end{enumerate}
+
+
+\subsection{Workers}
+
+  Workers are subject to risky labor market income. The income process has permanent and transitory
+  components and depends on an individual's ability level and the number of credits earned during
+  college. At age $t$, individual $i$ with ability level $a$, earned $n$ college credits, education
+  level $s$, with permanent income component $w_{i, t}$, and transitory income component
+  $\varepsilon^y_{i, t}$ receives pre-tax income:
+
+  $$y_{i, t} = exp(\theta^s(t) + \phi_s a + \mu n + w_{i, t} + \varepsilon^{s, y}_{i, t})$$
+
+  The transitory component of income is independent and identically distributed according to
+  $\varepsilon^{s, y}_{i, t} \sim N(0, \sigma^2_{s, y})$. The permanent component of income follows
+  a random walk:
+
+  \begin{align*}
+    w_{i, t} &= w_{i, t-1} + \varepsilon^{s, w}_{i, t}
+  \end{align*}
+
+  where $\varepsilon^w_{i, t} \sim N(0, \sigma^2_{s, w})$. $\theta^s(t)$ is an age specific
+  component of income.
+
+  There are progressive labor income taxes in the economy, an individual who makes $y_{i, t}$
+  receives $\tilde{y}_{i, t} = \lambda y_{i, t}^{1 - \tau}$.
+
+  Workers can smooth out consumption using a risk-free asset, $k_t$, which pays the risk-free
+  interest rate, $r$.
+
+
+  \subsubsection{High School Workers}
+
+    High school workers are completely described by the features above and their Bellman equation
+    is given by:
+
+    \begin{align*}
+      V^{HS}_t(k_t, w_t, \varepsilon^y_t) &= \max_{k_{t+1}} u(c_t) + \beta E \left[ V^{HS}_{t+1}(k_{t+1}, w_{t+1}, \varepsilon^{HS, y}_{t+1}) \right] \\
+      &\text{subject to } \\
+      c_t &= (1 + r) k_t + \tilde{y}_t - k_{t+1} \\
+      w_{t+1} &= w_t + \varepsilon^{HS, w}_{t+1}
+    \end{align*}
+
+
+  \subsubsection{College Dropout/Graduate Workers}
+
+    College dropout and college graduate workers may have accumulated student loans during their
+    time in college. These loans must be paid off during the working phase of their life according
+    to the specified repayment plan. The interest rate on student loans is $r_{sd}$ and it is
+    potentially different than the interest rate on the risk-free asset.
+
+    Let $\rho(d_t, S_t, \tilde{y}_t)$ be the amount that a worker with outstanding student loans
+    of $d_t$, $S_t$ payments left to make, and $\tilde{y}_t$ of after tax income is required to
+    make. Let $\Gamma(d_t, S_t, \tilde{y}_t)$ be a function that determines the evolution of $S_t$.
+    We allow both of these functions to depend on these three variable so that both IDR and AMR are
+    special cases of the repayment function.
+
+    We write the college dropout's/graduate's Bellman equation below:
+
+    \begin{align*}
+      V^{C?}_t(k_t, d_t, S_t, w_t, \varepsilon^y_t) &= \max_{k_{t+1}} u(c_t) + \beta E \left[ V^{s}_{t+1}(k_{t+1}, d_{t+1}, S_{t+1}, w_{t+1}, \varepsilon^{s, y}_{t+1}) \right] \\
+      &\text{subject to } \\
+      c_t + k_{t+1} &= (1 + r) k_t + \tilde{y}_t + \rho(d_t, S_t, \tilde{y}_t) \\
+      w_{t+1} &= w_t + \varepsilon^{s, w}_{t+1} \\
+      d_{t+1} &= (1 + r_{sd}) (d_t - \rho(d_t, S_t, \tilde{y}_t))
+      S_{t+1} &= \Gamma_S(d_t, S_t, \tilde{y}_t)
+    \end{align*}
+
+    where $C?$ can either represent $CD$ for college dropout or $CG$ for college graduate.
+
+
+\subsection{College Student}
+
+  The life of a college student closely follows \cite{HendricksLeukhina2017}.
+
+  Individuals who choose to enroll in college begin each period of college with $d_t$ in outstanding
+  student loans, $k_t$ savings, $n_t$ college credits, $\zeta_t$ as their financial state, and are
+  of type $j$. Each period an individual is enrolled in college they must first decide whether to
+  dropout to become a college dropout worker or to continue as a college student. If they choose to
+  continue then they choose how much to accumulate in student loans ($d_t$), their savings for the
+  next period ($k_{t+1}$), and how many hours they will work ($v_t$).
+
+  While in college, an individual's budget constraint is given by
+
+  \begin{align*}
+      c_t + CoC(q(j), \zeta_t) + k_{t+1} + d_{t+1} &\leq
+      (1 + r) k_t + (1 + r_{sd}) d_t + w_{\text{coll}} v_t + z(j)
+  \end{align*}
+
+  where $c_t$ is the individual's time $t$ consumption, $CoC(q(j), \zeta_t)$ is the cost of college
+  for an individual of type $j$ with financial state $\zeta_t$, and $z(j)$ are the transfers paid to
+  the individual from their parents. The financial state $\zeta_t$ follows a Markov chain.
+
+  Each period a student is enrolled, they take $n_c$ credits and pass each class with a probability
+  that depends on their ability level, $p(a)$. This probability is given by
+
+  $$p(a) = \gamma_{\text{min}} + \frac{1 - \gamma_{\text{min}}}{1 + \gamma_1 e^{-\gamma_2 a}}$$
+
+  with $\gamma_1, \gamma_2 > 0$ which implies $\frac{\partial p(a)}{\partial a} > 0$.
+
+  A student's college credits for the following period are given by
+
+  $$n_{t+1} = n_t + \tilde{n}_t$$
+
+  where $\tilde{n}_t$ is a draw from a Binomial distribution with $n_c$ draws and a probability
+  $p(a)$ of success. Any student who acquires $n_{\text{grad}}$ credits graduates and becomes a
+  college graduate worker.
+
+  Recall that an individual's ability level is unknown to them. The individuals in the model are
+  Bayesians and use the information about how many classes they pass each period to update their
+  beliefs about their ability level. In particular, an agent of age $t$, type $j$, and who has
+  accumulated $n_t$ credits so far believes that they have ability level $a_i$ with probability
+
+  \begin{align*}
+    \text{prob}(a_i | j, n_t) &= \frac{\text{prob}(j, n_t | a_i) \text{prob}(a)}{\text{prob}(j, n)} \\
+    &= \frac{\text{prob}(j | a_i) \text{prob}(n_t | a_i) \text{prob}(a_i)}{\sum_{\tilde{a} \in A} \text{prob}(j, n | \tilde{a}) \text{prob}(\tilde{a})} \\
+    &= \frac{\text{prob}(j | a_i) \text{prob}(n_t | a_i) \text{prob}(a_i)}{\sum_{\tilde{a} \in A} \text{prob}(j | \tilde{a}) \text{prob}(n_t | \tilde{a}) \text{prob}(\tilde{a})} \\
+  \end{align*}
+
+  We now describe the college student's problem as two Bellman equations.
+
+  The first Bellman equation represents the college student's value of having $d_t$ in student
+  loans, $k_t$ in savings, $n_t$ credits, financial state $\zeta_t$, and being type $j$ after having
+  chosen to continue school in period $t$. As described earlier, they maximize with respect to their
+  choice of student loans for tomorrow, savings for tomorrow, and how much to work today:
+
+  \begin{align*}
+    V^S_t(k_t, n_t, \zeta_t, j) &= \max_{d_{t+1}, k_{t+1}, v_t \in \Omega(\zeta_t)}
+      u_c(c_t) + v_c(v_t) +
+      \beta E \left[ V_{t+1}^{S-}(d_{t+1}, k_{t+1}, n_{t+1}, \zeta_{t+1}, j) \right] \\
+    &\text{ subject to } \\
+    c_t + CoC(q(j), \zeta_t) + k_{t+1} + d_{t+1} &\leq
+      (1 + r) k_t + (1 + r_{sd}) d_t + w_{\text{coll}} v_t + z(j) \\
+    d_{t+1} \geq \underbar{D} \\
+    d_{t+1} - d_{t} \geq \underbar{d}
+  \end{align*}
+
+  Notice that we impose per-period and cumulative limits to the amount of student loans that an
+  individual can accumulate. They cannot accumulate more than $\underbar{D}$ during school and
+  cannot accumulate more than $\underbar{d}$ during any given period.
+
+  The second Bellman equation, $V^{S-}_t$, represents the college student's value of having $d_t$ in
+  student loans, $k_t$ in savings, $n_t$ credits, financial state $\zeta_t$, and being of type $j$
+  before making the dropout decision in period $t$
+
+  \begin{align*}
+    V_t^{S-}(d_t, k_t, n_t, \zeta_t, j) &= \begin{cases}
+      E \left[ V_t^{CG}(\tilde{k}_t, d_t, \bar{S}, w_t, \varepsilon^{CG, y}_t) + U_{CG} \right]
+        \quad\text{ if } n_t \geq n_{\text{grad}} \\
+      E\left[ \max \{
+          V_t^{CD}(\tilde{k}_t, d_t, \bar{S}, w_t, \varepsilon^{CD, y}_{t}) + U_{CD} + \pi_c \eta_D,
+          V_t^S(d_t, k_t, n_t, \zeta_t, j) + \pi_c \eta_C \} \right]
+        \quad\text{ else }
+    \end{cases}
+  \end{align*}
+
+  The first element of this Bellman equation gives the value associated with having successfully
+  accumulated $n_{\text{grad}}$ credits and becoming a graduate worker. The second element presents
+  the problem associated with deciding between dropping out of college or continuing as a college
+  student. The dropout/continue decision is formulated as a discrete choice where there are
+  stochastic shocks to the utility of dropping out or continuing, $\pi_c \eta_D$ and $\pi_c \eta_C$,
+  respectively. $\eta_D$ and $\eta_C$ are distributed as independent draws from an standard type I
+  extreme value distribution with scale parameter $\pi_c$.
+
+  There are some important notes to make at this point about the initial states of both the college
+  dropout and graduate worker's problem.
+
+  \begin{itemize}
+    \item $\bar{S}$ is the number of periods that an individual who leaves college has left to repay
+      their student loans and is set by the student loan repayment policy.
+    \item The initial transitory income component is given by
+      $\varepsilon^{s, y}_{t} \sim N(0, \sigma^2_{s, y})$
+    \item The initial permanent income component, $w_t$, will be given by
+      $\phi_s a + \mu n + \varepsilon^{s, w}_{t}$ --- Permanent income follows a random walk, so
+      this is consistent with the process described earlier\footnote{We encourage the interested
+      reader to show their equivalence.}
+    \item The intial risk-free holdings of the worker are $\tilde{k}_t$, not $k_t$. We assume that
+      when an individual enters the work force, they receive the present discounted value of all
+      future parental transfers\footnote{
+      $\tilde{k}_t = k_t + \sum_{\tau=t}^6 \left(\frac{1}{1+r} \right)^{\tau - t} z(j)$}. This, like
+      the previous comment about the permanent income component, are assumptions that allows us to
+      reduce the dimensionality of the value function.
+  \end{itemize}
+
+  Additionally, we assume that college students cannot stay enrolled for more than $\bar{T}_C$
+  periods.
+
+
+%
+% Enrollment decision
+%
+\subsection{College Enrollment}
+
+  After observing the idiosyncratic states, $(j, \zeta_1)$, an individual must decide whether to
+  enter college or begin working as a high school worker.
+
+  If they choose to enroll as a college student, they begin with 0 accumulated student loans, $k_1$
+  savings, 0 college credits, $\zeta_1$ as their financial state, and as a type $j$ individual.
+
+  If they choose to be a high school worker, they begin with $\tilde{k}_1 = k_1 + \sum_{t=0}^6
+  \left(\frac{1}{1+r}\right)^t z(j)$ assets\footnote{As described in the college student problem,
+  $z(j)$ denotes the amount of parental transfers to the student. We assume they receive the net
+  present value equivalent of the parental transfers they would have received over 6 periods
+  independent of college enrollment.}, $w_1 = \phi_{HS} a + \varepsilon^{HS, w}_1$ as their
+  initial permanent income component, and $\varepsilon^{HS, y}_1$ as their initial transitory income
+  component.
+
+  They receive random utility shocks, $\eta_{HS}$ and $\eta_{EN}$, to the value of being a high
+  school worker and the value of enrolling in college. $\eta_{HS}$ and $\eta_2$ are i.i.d. draws
+  from a type I extreme value with scale parameter $\pi_E$.
+
+  The individual's ex-ante value function is given by
+
+  \begin{align*}
+    V^{-}(\zeta_1, j) = E \left[ \max \{
+      V_1^{S-}(0, k_1, 0, \zeta_1, j) + \pi_E \eta_{EN},
+      V_1^{HS}(\tilde{k}_1, w_1, \varepsilon^{HS, y}_1) + U_{HS} + \pi_E \eta_{HS}
+    \} \right]
+  \end{align*}
+
+
+% \subsection{Government}
+%
+%   There is a government that funds an exogenous specified amount of government expenditures, $G$,
+%   and funds the student loan program.
+%
+%   They do this by imposing the progressive labor tax on all workers in the economy and collecting
+%   the student loan repayments. As mentioned earlier, one variable of interest that arises in this
+%   economy is the student loan subsidization rate. For a cohort of size $I$, let
+%   $\bar{d} = \sum_{i=1}^{I} d_{i, \tau_i}$ where $\tau_i$ is the age at which individual $i$ left
+%   college then the subsidization rate is given by
+%
+%   \begin{align*}
+%     \delta_{sl} = \frac
+%         {\bar{d} - \sum_{i=1}^I \sum_{t=\tau_i}^{T} \left(\frac{1}{1+r}\right)^{t - \tau_i} \rho(d_{i, t}, S_{i, t}, \tilde{y}_{i, t})}
+%         {\bar{d}}
+%   \end{align*}
+%
+%   If $\delta_{sl} > 0$ then the government gives out more money than they get in return which implies
+%   that they are subsidizing educaction. If $\delta_{sl} < 0$ then the government receives more than
+%   they loan out in present discounted value.
+%
+
+
+\subsection{Repayment plans}
+
+  As we have previously mentioned, the two student loan plans that we'd like to discuss using our
+  framework are
+
+  \begin{enumerate}
+    \item \textbf{AMR}: The standard plan which takes the loan amount at the end of college and
+    amortizes the payments over 10 years.
+    \item \textbf{IDR}: The REPAYE plan which takes asks individuals to pay 10\% of their disposable
+    income until either the debt is repaid of they've made 20 years of payments. Any debt remaining
+    after 20 years of payment is forgiven.
+  \end{enumerate}
+
+  We describe each of the repayment plans in terms of their $\rho$ and $\Gamma_S$ functions. One
+  comment that applies to both sets of functions is that $S_t$ is bounded below by 0 and
+  $\rho(d_t, 0, \tilde{y}_t) = 0$ $\forall d_t, \tilde{y}_t$.
+
+
+  \subsubsection{Standard Repayment Plan} \label{subsubsec:amr}
+
+    The standard repayment plan amortizes the amount of debt so that the payment is the same every
+    month for 10 years. In our model, the time scale is annual, so we convert these payments into
+    annual amounts. One difficult that we face is that the student loan system is incredibly complex
+    in what happens during periods in which a borrower cannot make payments. This becomes slightly
+    less important in our model since the time period is equivalent to a year --- very few people in
+    our model cannot make their payments --- however, it still requires a decision about which
+    features of the student loan program we should include. Ultimately, we choose to address this in
+    what we view as the simplest solution: we assume that if an individual cannot make their
+    payment, they are forced to use all of their labor income, but not personal savings, towards
+    making the loan repayment. We view this as a compromise that in some ways is the ``worst
+    feasible'' case for AMR\footnote{In reality, the government cannot capture 100\% of your labor
+    income, but it can garnish a certain percent of your wage and make claims on your tax refunds}.
+    Future work will explore what happens when we can analyze the model at a monthly frequency and
+    what would happen with a more detailed model of the student loans system.
+
+    Below we present the $\rho$ and $\Gamma_S$ functions we use in the model with the standard
+    repayment plan
+
+    \begin{align*}
+      \rho(d_t, S_t, \tilde{y}_t) &=
+        \begin{cases}
+          \tilde{y}_t \quad\text{ if } \tilde{y}_t \leq d_t \frac{r_{sd}}{1 - \left(\frac{1}{1 + r_{sd}} \right)^{S_t}} \\
+          d_t \frac{r_{sd}}{1 - \left(\frac{1}{1 + r_{sd}} \right)^{S_t}} \quad\text{ else }
+        \end{cases} \\
+      \Gamma_S(d_t, S_t, \tilde{y}_t) &=
+        \begin{cases}
+          S_t \quad\text{ if } \tilde{y}_t \leq d_t \frac{r_{sd}}{1 - \left(\frac{1}{1 + r_{sd}} \right)^{S_t}} \\
+          S_t - 1 \quad\text{ else }
+        \end{cases}
+    \end{align*}
+
+
+  \subsubsection{REPAYE Plan} \label{subsubsec:idr}
+
+    The REPAYE plan involves less decisions because it is relatively simple. It can be described by
+    the following functions:
+
+    \begin{align*}
+      \rho(d_t, S_t, \tilde{y}_t) &= \max \{ 0, \psi (\tilde{y}_t - 1.5 y_\text{poverty}) \} \\
+      \Gamma_S(d_t, S_t, \tilde{y}_t) &= S_t - 1
+    \end{align*}

@@ -1,0 +1,223 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Introduction} \label{sec:intro}
+
+Income driven student loan repayment (IDR) plans have gained broad support in the United States,
+including support by politicians from both major political parties. The key benefit of IDR is that
+it provides insurance against making infeasible loan payments during times in which an individual is
+experiencing unlucky labor market outcomes such as unemployment or underemployment. We focus on
+potentially unintended consequences of such policies by investigating how this insurance changes
+individual behavior for those considering, or already enrolled, in college. We do this by building a
+detailed model of pre, intra, and post college life and we use this model to understand potential
+trade-offs that arise from IDR by answering questions such as, ``Does IDR improve student
+outcomes?'', ``If we see improvements, how much does it cost to achieve these improvements?'', and
+``Could other policies achieve similar improvements at a lower cost?''
+
+
+\subsection{Student Loans in the U.S.}
+
+  Currently, there are two main categories of student loan repayment plans in the U.S:
+
+  \begin{enumerate}
+    \item \textbf{Time-based payments}: These plans have a predetermined sequence of payments that
+    an individual is expected to make, regardless of income. These payments typically begin after
+    a short grace period once a student leaves college. The plan that borrowers are automatically
+    enrolled in is a time based payment plan which requires individuals to make constant monthly
+    payments for 10 years. We will refer to this plan as the amortized repayment (AMR) plan. There
+    are other fixed payment plans where the payment starts low and increases over time, but the
+    majority of borrowers are in the AMR plan.
+    \item \textbf{Income-driven Plans}: These payment plans tie the monthly payment to the amount
+    that an individual earns in each month. The plans each require an individual to pay a
+    pre-specified percentage of their income until their debt is paid off or until they have made a
+    certain number of payments. The plans differ in the percentage of income paid each month and
+    the number of payments until forgiveness. The plan we will focus on\footnote{We focus on this
+    plan because it is the most recent and all new IDR debt is held in this plan.}, known as REPAYE,
+    requires that an individual pay 10\% of their disposable income and for no more than 20 years.
+  \end{enumerate}
+
+  Until recently, almost all student loans were held in the AMR plan. However, the government began
+  increasing support for IDR in 2008 and 2009 in response to an increase in the number of
+  individuals who were struggling to make their student loan payments due to the worsening labor
+  market conditions associated with the 2008 recession. In Figure~\ref{fig:idr_enrollment}, we see
+  how quickly participation in IDR plans has increased over the last 5 years. In 2014, approximately
+  10\% of borrowers (20\% of loan dollars) were enrolled in an IDR plan, but, by the end of 2018,
+  this percentage had increased to 30\% of borrowers (50\% of loan dollars).
+
+  As the participation rate in IDR plans has increased, so has the estimated cost of running them.
+  In 2012, the Department of Education (ED) estimated that it would require a \$1.2 billion subsidy
+  to offer IDR to the 2012 loan cohort, but by 2017 that estimate had been revised to over \$3
+  billion dollars due to higher than expected participation and other circumstances\footnote{There
+  were increases of similar magnitude in the expected subsidy for each cohort from 2009 to 2017\dots
+  See Figure~\ref{fig:subsidy_original_v_revised}}. In a report\footnote{See \cite{GAO-17-22}} on
+  the costs of IDR, the Government Accountability Office (GAO) raised a concern about how the
+  inaccuracy of ED's forecasts impacted the ED budget. ED, while sharing this concern, highlighted
+  the difficulty of forecasting these costs in their response to the GAO:
+
+  \begin{quote}
+      \dots there are a number of factors that make forecasting future IDR participation inherently
+      difficult\dots entails behavioral effects that are extremely difficult to incorporate
+      and project into the future
+  \end{quote}
+
+  This inherent difficulty of forecasting individual behavior motivates our approach of using a
+  structural model that can account for changes in individual behavior.
+
+\subsection{Results Preview}
+
+  In our model, when we move from an economy that uses only AMR to an economy that only uses IDR,
+  the cost of running the student loan program increases by 15\% per cohort. This increase in cost
+  is accompanied by a 1 percentage point increase in the enrollment rate and almost no change in
+  college completion rates.
+
+  The reason that IDR plans have such a small effect on college enrollment is two fold: First,
+  individuals who attend college have precise information about the probability with which they will
+  graduate from college. Since the returns to college in this model are relatively high, those who
+  have a high probability of success already choose to attend college even though they face the
+  possibility of burdensome student loan repayments. Second, the probabilty of experiencing periods
+  of ``burdensome student loan repayments'' is relatively low. This means that the difference in the
+  value functions associated with repaying your student loan under the AMR and IDR plans is low
+  enough that enrollment behavior does not significantly change. Additionally, those with a low
+  probability of graduating have no reason to enroll in school because, while they would gain access
+  to student loans, they would be forced to pay their yearly tuition costs without any significant
+  increase in their earnings potential.
+
+  While the effect of IDR on student outcomes is relatively small, there are non-trivial effects on
+  the cost of running the student loans program. Since the probability of enrollment changes very
+  little across individuals in our economy, we are examining a similar population of students ---
+  The question becomes, ``Why do the same individuals take out more debt under IDR than AMR?'' The
+  answer is that we have changed the incentives around debt accumulation. Under the AMR plan, all
+  students expect that they will repay the debt or, if not, they will experience times in which the
+  loan payments make up a large fraction of their income. This discourages students from taking on
+  more debt than they expect to be able to repay. When students are allowed to repay according to an
+  IDR plan, many students still expect to repay their loans, however, they know that if they were to
+  experience unlucky labor market outcomes, then they wouldn't be forced to endure periods of low
+  consumption and may never be expected to fully repay the loan. This creates a disconnect between
+  the marginal cost and marginal benefit of an additional dollar of debt, This disconnect
+  incentivizes a higher fraction of students to accumulate some debt, from 46\% under AMR to 70\%
+  under IDR, and also encourages more debt accumulation among those who take out loans, from
+  \$11,750 under AMR to \$13,700 under IR. Notably, these effects are largest for those who are
+  least likely to graduate from college in our model.
+
+  As with any model, we note that these numbers should be taken with a grain of salt. They depend on
+  the particular structure of our model, while the model is not necessarily sensitive to
+  perturbations of the parameters, it does depend on the labor income processes and the model's
+  timescale in meaningful ways. We view our model as a vehicle for studying these types of higher
+  education policies and these results as an initial attempt at understanding the effects that IDR
+  might have on pre and intra college behavior. Future work to improve certain aspects of the labor
+  market in this model would have high returns for our understanding of IDR.
+
+
+\subsection{Related literature}
+
+  There has been great interest in the effects of IDR on higher education financing. Insightful
+  discussions of these programs, their proposed implementations, and some of these implications can
+  be found in: \cite{ChapmanHarding1993}, \cite{Chapman1994}, \cite{BarrChapmanDeardenDynarski2018},
+  and \cite{Dynarski2014}.
+
+  We reiterate that the core argument in favor of IDR is based on the repayment burden\footnote{See
+  Section~\ref{sec:example} for the precise definition of a repayment burden} imposed on borrowers
+  by time based plans. According to work done in \cite{ChapmanDearden2017} and
+  \cite{ChapmanLounkaew2015}, under an AMR plan, the repayment burden for individuals who earn at
+  the 10th percentile in the United States with a student loan of a typical size can be in excess
+  0.75. This means that, in order for certain individuals not to become delinquent on their student
+  loans, they must put 75\% of their income towards paying down their student loans. IDR plans
+  mitigate these type of risk by placing an upper bound on the repayment burden.
+
+  This paper follows a literature that uses dynamic structural models to understand aspects of
+  higher education including papers such as, \cite{KeaneWolpin2001}, \cite{Arcidiacono2005},
+  \cite{Ionescu2009}, \cite{ChatterjeeIonescu2012}, and \cite{FerreyraGarrigaManuelli2017}.
+  Recently, work done by \cite{FindeisenSachs2016}, \cite{HeijdraKindermannReijnders2017},
+  \cite{Ji2017}, \cite{LuoMongey2019}, and \cite{Liu2016} have used these types of dynamic
+  structural models to think about the implications of IDR and other related student loan related
+  policies. We discuss some relevant work below.
+
+  In both \cite{Ji2017} and \cite{LuoMongey2019}, the authors build a model of post-graduation labor
+  markets and consider the effects that student debt has on the wages that graduates accept. In
+  \cite{Ji2017}, the author finds that higher student debt leads to graduates accepting a lower wage
+  quickly after graduation so that they can pay off their debt. In \cite{LuoMongey2019}, the
+  authors find that, once you incorporate job satisfaction, graduates with high debt seek a higher
+  wage job with a lower job satisfaction. In both papers, the authors analyze the effects associated
+  with moving all loans from an AMR system to an IDR system and find that the IDR plans relieve
+  some of the pressure and that the relationships they find between debt and labor market outcomes
+  become smaller due to the insurance provided by IDR. Both of these papers focus only on the role
+  of IDR on decisions made by college graduates and do not include endogenous enrollment or debt
+  decisions which are central to the questions asked in this paper.
+
+  \cite{HeijdraKindermannReijnders2017} uses a heterogeneous agent model with college attendance and
+  human capital accumulation. In their model, rather than an IDR they use a tax levied specifically
+  on those who attended college --- this differs from the standard IDR in the sense that it is
+  collected indefinitely and not stopped after an individual finishes paying off their debt. They
+  find that, relative to the current student loan system in the U.S., the graduate tax improves
+  ex-ante welfare for all individuals in the economy. There are a few important distinctions in what
+  we do. They allow individuals to choose between no higher education, an associate's degree, or a
+  bachelor's degree, but do not include dropout risk or endogenous debt accumulation. Moreover, we
+  believe it would be difficult to implement a pure graduate tax due to political constraints --- as
+  mentioned in \cite{BarrChapmanDeardenDynarski2018}, graduate taxes effectively impose an infinite
+  interest rate since they can never be repaid.
+
+  Two other closely related papers that we think are worth mentioning are
+  \cite{ChatterjeeIonescu2012} and \cite{CaiChapmanWang2018}.
+
+  \cite{ChatterjeeIonescu2012} build a model of college attendance with the purpose of analyzing how
+  the risk of dropping out and the associated negative labor market outcomes affects the decision to
+  enroll in college. While these authors do not directly analyze an IDR, they do consider a related
+  policy which involves forgiving the debt of college dropouts. They find that even though this plan
+  induces some shirking by college students, that alleviating some of the potentially negative
+  outcomes associated with dropping out encourages more individuals to attempt college and raises
+  welfare by more than 2\%.
+
+  \cite{CaiChapmanWang2018} asks very similar questions to the questions we ask in this paper in the
+  context of implementing an IDR plan for student loans in China. They have panel data that includes
+  the yearly earnings and education level for individuals in China. They use this data to estimate
+  an income process and then explore what the implied government subsidies and repayment burdens
+  would be for different repayment plans under an assumed level of student loans. The main
+  differences between what they do and what we do in this paper is that (1) we consider potential
+  selection effects by allowing for individuals to differ in their ability and earnings potential
+  and (2) the amount of student loans accumulated in our model is endogenous whereas they focus on
+  what would happen for a typical level of debt.
+
+  Finally, the foundation of our structural model builds on \cite{HendricksLeukhina2017}. In that
+  paper, the authors use a model of college enrollment and attendance to determine how predictable
+  an individual's success in college is given the information that they have upon graduating from
+  high school. They depend on a detailed description of the pre and intra college decisions and the
+  tradeoffs induced by these decisions to answer their question. These tradeoffs are important in
+  the context of our question about the cost of different student loan plans, however, in their
+  model there is no labor market risk and all uncertainty is resolved once an individual leaves
+  college --- however, risky labor income is crucial to the question at hand since it is one of the
+  key benefits of the IDR plan and the most risky aspect of the AMR plan. To address this, we extend
+  their model by explicitly modeling the working stage of life using a Bewley-Hugget-Aiyagari model
+  with idiosyncratic labor market risk and incomplete financial markets.
+
+  In fact, \cite{HendricksLeukhina2017} envision exactly this type of follow up to their work, they
+  say,
+
+  \begin{quote}
+    \dots Since our model captures the distribution of risks and returns associated with entering
+    college, it provides a starting point for the study of college related policies, such as income
+    contingent loans or dual enrollment programs. However, the model abstracts from two features
+    that may be important for policy analysis. \dots
+
+    \dots The first feature is study effort\dots The second feature is earnings risk during the work
+    phase. One motivation of making college loans income contingent is to alleviate the tight budget
+    constraints of young workers who may be borrowing constrained\dots
+  \end{quote}
+
+  One additional benefit of building directly on their work is that pieces of their calibration were
+  done with proprietary data that we do not have access to, and by building on their model, we can
+  inherit some of these hard to determine parameter values.
+
+
+\subsection{Paper Outline}
+
+  The paper is organized as follows:
+
+  In Section~\ref{sec:example}, we will work through a hypothetical situation involving a cohort
+  of student loans to define some of the outcomes of interest. This example highlights the outcomes
+  that will be of interest once we are comparing different repayment plans.
+
+  We then describe a model similar to \cite{HendricksLeukhina2017} in Section~\ref{sec:model} and in
+  Section~\ref{sec:calibration} we describe the assumptions and parameter choices for the baseline
+  model.
+
+  We discuss the outcomes of this model and the differences between AMR and IDR in
+  Section~\ref{sec:results} and then conclude in Section~\ref{sec:conclusion}.

@@ -1,0 +1,114 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Student Loan Examples} \label{sec:example}
+
+In this section, we present two hypothetical examples to motivate what comes in later sections:
+
+First, we present an example describing a single student loan borrower. We use this example to
+highlight how different loan repayment plans might have an effect on the payments made by borrowers
+and use our example to define the \textit{repayment burden}.
+
+After discussing an example using a single student, we walk through an example involving an entire
+cohort of individuals. We use this cohort example as a vehicle to define certain metrics which we
+can use to evaluate the outcomes of loan repayment plans in our model.
+
+
+\subsection{Single Individual}
+
+  Consider a recent college graduate that accumulated \$29,000 of student loans that have a 6.8\%
+  interest rate. After graduation, she begins working at a job that pays \$35,000 per year. For
+  simplicity, we will assume that her income grows at 3\% annually and ignore taxes. This
+  means that during her first year of employment her monthly income would be \$2,900 per month.
+
+  Under the AMR plan, her monthly payment would be approximately \$300. The \textit{repayment
+  burden} is the monthly payment divided by the monthly income. In this case, the repayment
+  burden is $\frac{300}{2900} \approx 0.10$. One compelling feature of the IDR is that it places a
+  strict upper bound on the repayment burden and avoids occurences of the required loan payments
+  being large relative to an individual's income. In our individual's case, the payment required
+  under the IDR plan would be\footnote{Disposable income is defined as 1.5 times the poverty level
+  of income. For a single adult in the United States, the poverty level is around \$12,000} $0.10
+  \times (2,990 - \frac{18,000}{12}) \approx 140$ which leads to a repayment burden of about
+  0.05\footnote{Note that the repayment burden is not fixed at 0.10 because the IDR rate is a
+  marginal cost and the repayment burden is an average cost.}.
+
+  In Figure~\ref{fig:loan_repayment}, we see how the repayment burden evolves over time for both
+  loan repayment plans. We chose our numbers so that the student in our example had the average
+  amount of debt for a college graduate and the 25th percentile earnings of a recent college
+  graduate. Of course, it is also important to recognize that the repayment burdens we computed
+  assume that the individual maintains her employment and does not experience bouts of unemployment
+  --- under the AMR as her monthly income goes to 0, the repayment burden goes to $\infty$.
+
+  We also can see that in our example the IDR plan spreads payments over a much longer horizon (17
+  years) than the AMR plan (10 years). One implication of this is that, if an individual fully
+  repays her debt, then the individual will typically pay more\footnote{If their income is high
+  enough that they repay their loan sooner than 10 years under IDR then they will pay less overall.}
+  under IDR (\$46,500) than they would under AMR (\$37,500). Of course, if debt is forgiven at the
+  end of 20 years then it is still possible that the overall payments are less.
+
+
+\subsection{Cohort} \label{subsec:cohort}
+
+  For our purposes we will define a cohort as all graduating high school students in a particular
+  year. Consider a cohort that consists of 100,000 individuals. Suppose that 50,000 of these
+  individuals choose to enroll in college and 25,000 successfully graduate from college. We define
+  the following measures of student outcomes within a cohort:
+
+  \begin{itemize}
+    \item \textit{Enrollment rate}: The enrollment rate is defined as the number of individuals in
+          a cohort who enroll in college divided by total number of individuals in cohort. In our
+          example, the enrollment rate would be 0.50.
+    \item \textit{Completion rate}: The completion rate is defined as the number of individuals in
+          a cohort who graduate from college divided by total number of individuals in cohort. In
+          the example, the completion rate would be 0.25.
+    \item \textit{Graduate rate}: The graduation rate is defined as the number of individuals in a
+          cohort who graduate from college divided by the number of individuals who enroll in
+          college. In our example, the graduate rate would be 0.50.
+  \end{itemize}
+
+  Suppose that of the 50,000 students who enroll in school, 30,000 of the students take out some
+  amount of student loans and that the total amount of loans accumulated by the cohort totals to
+  \$150,000,000. We now define some measures of how much debt a particular cohort takes on while in
+  college.
+
+  \begin{itemize}
+    \item \textit{Fraction in debt}: The fraction in debt is measured as the number of students who
+          accumulated debt divided by the number of students who enrolled in college. In our
+          example, the fraction in debt is 0.60.
+    \item \textit{Average debt}: The average debt is measured as the total amount of loans
+          accumulated by a cohort divided by the number of students who took out debt. In our
+          example, the average debt is \$5,000.
+  \end{itemize}
+
+  Finally, suppose that over the course of the loan lifetimes, the cohort makes payments that are
+  worth \$140,000,000 in present discounted value. We then compute the implied \textit{government
+  subsidy}, $\Delta_{SL}$, as the difference in the amount of loans issued and the present
+  discounted value of payments made by the cohort\footnote{An important note to make here is that if
+  all student loans were repaid, then this subsidy would be negative. This is because the interest
+  rate on student loans is typically higher than the interest rate used to compute government
+  subsidies according to the Federal Credit Reform Act, so the present discounted value of the loan
+  payments would exceed the cost of borrowing that money.}. In our example, the goverment subsidy is
+  \$10,000,000. Furthermore, as mentioned before, the government subsidy can be composed into
+  several relevant components:
+
+  \begin{align} \label{eq:gov_subsidy}
+    \Delta_{SL} &= \underbrace{\frac{\sum_i (d_i - X_i)}{\sum_i d_i}}_{\text{subsidy rate}} \times
+                   \underbrace{\frac{\sum_i d_i}{N_d}}_{\text{average debt}} \times
+                   \underbrace{\frac{N_d}{N_e}}_{\text{fraction in debt}} \times
+                   \underbrace{\frac{N_e}{N}}_{\text{enrollment rate}} \times
+                   N
+  \end{align}
+
+  where $d_i$ is the amount of student debt held be individual $i$, $X_i$ is the present discounted
+  value of the payments made by individual $i$, $N_d$ is the number of students who take out loans
+  while in school, $N_e$ is the number of students enrolled in college, and $N$ is the number of
+  individuals in the cohort.
+
+  The only feature of this decomposition that we have not previously seen is the \textit{subsidy
+  rate}. As we see in Equation~\ref{eq:gov_subsidy}, the subsidy rate is defined as the government
+  subsidy divided by the total amount of debt issued in the economy. In our example, this is
+  $\frac{150,000,000 - 140,000,000}{150,000,000} \approx 0.067$.
+
+  We will use this decomposition in Section~\ref{sec:results} to understand which channels are most
+  important for understanding how the government subsidy changes when we move from AMR to IDR. This
+  understanding will also help us propose alternate policies that achieve some of the risk
+  mitigation benefits without incurring the extra costs implied by our model.
