@@ -51,9 +51,12 @@
   \usepackage{latexsym}
   \usepackage{listings}
   \usepackage{pdflscape}
+  \usepackage{pgf}
   \usepackage{tgtermes}
   \usepackage{threeparttable}
+  \usepackage{titling}
   \usepackage{tikz}
+  \usepackage{vmargin}
 
   % New commands
   \newcommand{\cmark}{\ding{51}} % Nice checkmark for tables
@@ -262,7 +265,7 @@ Laura L. Veldkamp\\
   with an 8-dimensional state-space in mere seconds which makes it possible to perform model
   calibration.
 
-  In Chapter 3, `The Cost of Income-Driven Repayment for Student Loans,'
+  In Chapter 3, `The Cost of Income-Driven Repayment for Student Loans,' I
 
 \newpage
 
@@ -350,7 +353,11 @@ Laura L. Veldkamp\\
 % CHAPTER 3
 \chapter{Student Loans}
 
-Add stuff here
+  \input{sections/StudentLoans/intro}
+  \input{sections/StudentLoans/background}
+  \input{sections/StudentLoans/calibration}
+  \input{sections/StudentLoans/results}
+  \input{sections/StudentLoans/conclusion}
 
 \newpage
 \clearpage
@@ -376,6 +383,12 @@ Add stuff here
 
 \newpage
 \clearpage
+
+% APPENDIX 3
+\chapter{Supplementary Material for Chapter 3} \label{sec:Appendix3}
+
+  \input{sections/StudentLoans/appendix.tex}
+  \input{sections/StudentLoans/tables_and_figs.tex}
 
 \end{appendices}
 

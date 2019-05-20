@@ -1,0 +1,212 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Repayment Plan Comparison} \label{sec:results}
+
+Now that we have presented the model and understand which aspects of the data it successfully
+replicates, we proceed to perform some counterfactuals. We will analyze how the outcomes from
+Section~\ref{sec:example} differ according to the student loan repayment plan used in the economy.
+In particular, we will consider three versions of our economy:
+
+\begin{enumerate}
+  \item The first, \textit{AMR}, is our baseline model and uses the AMR plan
+        previously described for student loan repayment.
+  \item The second, \textit{LC}, is a model which uses the income driven repayment
+        plan previously described, but the individuals in the model use decision rules from the
+        \textit{AMR} model.
+  \item The third, \textit{IDR}, is a model which uses the income driven repayment plan for student
+        loan repayment and individuals use their optimal decisions rules.
+\end{enumerate}
+
+Comparing the \textit{AMR} and \textit{IDR} versions of our economy will inform us about how the
+outcomes differ across the two student student loan repayment plans. However, we think it is useful
+to also include compare these outcomes with the outcomes under \textit{LC} as well because this is
+how many policy analysts have previously evaluated IDR plans; they use the observed outcomes from
+those who have already attended and left college and evaluate the outcomes of new repayment policies
+using the decisions individuals made under previous policies\footnote{This type of policy analysis
+is exactly what \cite{Lucas1976} was concerned about when he wrote, ``Given that the structure of an
+econometric model consists of optimal decision rules of economic agents, and that optimal decision
+rules vary systematically with changes in the structure of series relevant to the decision maker, it
+follows that any change in policy will systematically alter the structure of econometric models.''}.
+In contrast, comparing \textit{AMR} and \textit{IDR} accounts for the changes associated with
+individuals responding to changes in their environment and, by doing this, can potentially capture
+features that ED is currently missing in their forecasts.
+
+In the subsections that follow, we will focus on comparing \textit{AMR} against \textit{IDR} and
+will return to \textit{LC} in Section~\ref{subsec:idr_lc}.
+
+
+\subsection{Enrollment, completion, and graduation} \label{subsec:ecg}
+
+  We begin by thinking about the implications the different student loan repayment plans have for
+  the student outcomes discussed in Section~\ref{sec:example}. Table~\ref{table:students} shows how
+  these outcomes differ for the \textit{AMR} and \textit{IDR} economies. The table shows that, in
+  the aggregate, the enrollment increases by 1 percentage point in \textit{IDR} relative to
+  \textit{AMR} and that there are no significant changes in either the completion or graduation
+  rates.
+
+  There are two reasons that the change in enrollment rates is small
+
+  First, there is relatively little uncertainty about an individual's probability of successfully
+  graduating from college. In Figure~\ref{fig:scatter_ep_vs_p}, we confirm this by plotting the
+  individual's expected probability of passing ($\int_a p(a) d F(a | j)$) against their actual
+  probability of passing ($p(a)$).\footnote{The high precision of the ability signals is a result of
+  \cite{HendricksLeukhina2017}}. Individuals with a low ability signal find it not to be optimal to
+  attend college no matter what the repayment method is because they are relatively certain about
+  their inability to graduate and, as a college dropout, they would receive the same income process
+  as the high school workers but must also pay tuition and the utility cost for being a college
+  dropout, $U_{\text{CD}}$.
+
+  Secondly, enrollment rates are determined by the relative value of being a college student and
+  high school worker\footnote{If the value of being a college student is given by $V^S$ and the
+  value of being a high school worker is $V^{HS}$ then the discrete choice shock specification in
+  our model leads the probability of enrolling to be $\frac{\exp(V^S)}{\exp(V^{HS}) + \exp(V^S)}$}.
+  Since the value of being a high school worker is unaffected by the college repayment plans, the
+  change in probability must come through the value of being a college student. The value of being a
+  college student is affected only indirectly through the value of being a college dropout/graduate
+  worker with a given repayment plan. In our model, IDR does not provide high value insurance
+  because the estimated income process places low probability on individuals experiencing ``low''
+  incomes. We demonstrate this in Figure~\ref{fig:vfs_enrollment} by plotting the difference in the
+  value functions associated with being a college dropout in an economy under IDR and AMR across
+  various income levels and we then overlay the probability distribution of these incomes for the
+  individual most likely to experience low income. We continue to reiterate the caveat that there
+  are aspects of labor income that do not appear in our model due to its yearly frequency. At a
+  monthly frequency one could include unemployment and other features that would increase the value
+  of this insurance by increasing the probability that individuals experience periods of low labor
+  income, so we view these results as a lower bound on the value of this insurance.
+
+  The fact that there is almost no change in the completion or graduation rates follows closely from
+  the small change in the enrollment rates coupled with the small changes associated with the value
+  of being a college dropout/graduate. Since the enrollment rate changes very little, no more than
+  2\% for any type in our model, a very similar group of students choose to attend college and,
+  since the value of being a college dropout/graduate has changed little, the probability that they
+  dropout in any given period also changes little.
+
+
+\subsection{Debt decisions} \label{subsec:dd}
+
+  We next examine how the different repayment plans affect decisions for debt accumulation for
+  college students. We see in Table~\ref{table:debt} that the fraction of college students who exit
+  with debt increases from 46\% to 70\% and the average debt held by these students goes from
+  \$11,750 to \$13,740. This outcome is not particularly surprising --- lowering the risk associated
+  with having more debt, incentivizes students to accumulate debt while in school. However,
+  understanding the composition of these changes will improve our understanding of what drives the
+  change in the government subsidy of the student loan program.
+
+  In Figure~\ref{fig:debt_by_gpa} we display the change in the fraction of students with debt and
+  average debt levels by the individual's HS GPA quartile. We see that there are increases across
+  the board in both variables, however, the largest effects come from a change in behavior by those
+  with the lowest GPA levels. The bottom quartile sees a 50 percentage point increase in the
+  fraction of students who take out loans and a \$4,000 increase in the average debt levels while
+  the top quartile only sees an increase of 11 percentage points and \$1,500, respectively.
+
+  To understand why this happens, let's now consider the marginal benefit and marginal cost of an
+  additional dollar of student loans. The marginal benefit of an additional dollar of debt is some
+  mix of the extra consumption and less hours worked during the period the debt is accumulated. The
+  marginal cost of an additional dollar of debt is the present discounted value of the corresponding
+  payments that would be made. In Figure~\ref{fig:expected_repayment}, we plot the ratio of an
+  additional dollar of debt divided by the present discounted value of the payments made. Loans made
+  under AMR are almost always fully recovered so the ratio is 1, but under IDR there is positive
+  probability that an individual will not be required to fully repay their loan.
+
+  Suppose for a moment that the individual was given perfect knowledge of their income realizations
+  during their last year of college and that they knew that, given their current debt level,
+  some amount of their loan would be forgiven. This knowledge implies
+  $\frac{\partial V^{C?}_t}{\partial d_t} = 0$ which, in turn, means that the individual loses
+  nothing from accumulating additional debt (but benefits from additional consumption during
+  school). Obviously, this example is more dramatic than what would typically occur in our model but
+  we can show that there exists some bound, $\tilde{D}$, such that as
+  $\lim_{d \rightarrow \tilde{D}}$ we see
+  $\frac{\partial V^{C?}_t(k_t, d_t, S_t, w_t, \varepsilon^y_t)}{\partial d_t} \rightarrow 0$. Since
+  both income and GPA are positively correlated with ability level, the individuals who are least
+  likely to repay their loans are those from the lowest HS GPA quartiles. This results in students
+  from the lowest HS GPA quartiles having the largest increase in incentives to accumulate
+  additional debt which is what we observe in our model.
+
+
+\subsection{Cost of IDR}
+
+  Finally, we turn to thinking about the relative cost of these two policies to the government. We
+  write the percent change in the government subsidy associated with moving from \textit{AMR}
+  to \textit{IDR} as:
+
+  \begin{align*}
+    \text{\% Change in } \Delta_{SL} &= 1 - \left( \frac{\Delta^{IDR}_{SL}}{\Delta^{AMR}_{SL}} \right) \\
+  \end{align*}
+
+  In our model, the government subsidy for the \textit{IDR} economy is 15\% larger than in the
+  \textit{AMR} economy.
+
+  We can decompose this into the four components described in Section~\ref{subsec:cohort} --- the
+  enrollment rate ($\tilde{N}_e$), the fraction of students with debt ($\tilde{N}_d$), the average
+  debt among students with debt ($\bar{d}$), and the subsidy rate ($\delta_{SL}$) --- to write the
+  percent change as the product of the ratios of each component:
+
+  \begin{align*}
+    \text{\% Change in } \Delta_{SL} &= 1 -
+      \left( \frac{\tilde{N}^{IDR}_e}{\tilde{N}^{AMR}_e} \right) \times
+      \left( \frac{\tilde{N}^{IDR}_d}{\tilde{N}^{AMR}_d} \right) \times
+      \left( \frac{\bar{d}^{IDR}}{\bar{d}^{AMR}} \right) \times
+      \left( \frac{\delta^{IDR}_{SL}}{\delta^{AMR}_{SL}} \right)
+  \end{align*}
+
+  In Section~\ref{subsec:ecg} and Section~\ref{subsec:dd}, we've already discussed how each of these
+  components changes except for the subsidy rate. In Table~\ref{table:cost}, we report the
+  government subsidy rates and a per person cost\footnote{We choose to use a per person cost rather
+  than report the full subsidy because the amount of subsidy is dependent on the number of
+  individuals are in the simulated cohort --- If one wanted to estimate how large this subsidy would
+  be for a cohort of high school graduates, this number could be multiplied by the cohort size} for
+  each of the different economies.
+
+  One unexpected feature of our model that is worth discussing is that the student loan program has
+  a negative subsidy (positive returns) for the government. While there are certain components of
+  the U.S. student loan portfolio that have a negative subsidy rate\footnote{For example, the
+  estimated subsidy on Federal Direct Loans issued in 2017 that are being repaid using the AMR plan
+  is approximately -15 billion dollars, see \cite{GAO-17-22}. If one divided this -15 billion by the
+  total number of Federal Direct Loans issued that were being repaid using IDR then we would get a
+  negative subsidy rate.}, this is not broadly true in the U.S. and should be seen as a shortcoming
+  of our model. The negative subsidy rate is likely tied to two components of our model: First, the
+  government can perfectly enforce its student loan program and there is no option for default in
+  the \textit{AMR} economy. Second, everyone in our model participates in labor market for an
+  extended amount of time and makes their payments. This outcome reinforces to us the fact that
+  expanding the model to capture additional features of the loan repayment system or labor market
+  could be useful in evaluating these proposals, but this significantly increases the computational
+  difficulty of the model. Rather than get distracted with these improvements, we focus on the
+  behavioral changes that occur and highlight possible channels that ED could use to improve their
+  own forecasts.
+
+  In Section~\ref{subsec:dd} we highlighted the heterogeneity in the changes of debt accumulation
+  by HS GPA quartile. In Table\ref{table:subsidy_gpa}, we show how the subsidy rates change by the
+  student loan repayment plan for different HS GPA quartiles. The key takeaway is that the majority
+  of the increase in the required government subsidy comes from those in low HS GPA quartiles ---
+  The largest of which comes from an almost 200\% increase in the required subsidy rate to students
+  from the lowest GPA quartile.
+
+  The final exercise we do is ask, ``How much could the subsidy rate decrease, holding the other
+  changes that occur under \textit{IDR}, constant, without increasing the government subsidy beyond
+  its \textit{AMR} value?'' In order to not increase the government subsidy, we need:
+
+  \begin{align*}
+      \left( \frac{\tilde{N}^{IDR}_e}{\tilde{N}^{AMR}_e} \right) \times
+      \left( \frac{\tilde{N}^{IDR}_d}{\tilde{N}^{AMR}_d} \right) \times
+      \left( \frac{\bar{d}^{IDR}}{\bar{d}^{AMR}} \right) \times
+      \left( \frac{\delta^{IDR}_{SL}}{\delta^{AMR}_{SL}} \right) &= 1
+  \end{align*}
+
+  This would require a government subsidy rate of -0.07 under \textit{IDR} which is significantly
+  lower than the -0.13 from \textit{AMR}. The reason that a subsidy rate of -0.07 can maintain the
+  same goverment subsidy is that we have increased the volume of student loans in the economy by
+  changing what fraction of students accumulate debt and how much debt they accumulate. In fact, one
+  way that this subsidy rate can be achieved under the \textit{IDR} plan is by simply offering IDR
+  to only the top three GPA quartiles.
+
+
+\subsection{Lucas Critique} \label{subsec:idr_lc}
+
+  We now return briefly to the \textit{LC} model. Recall that in this model we use IDR to repay the
+  loans made in the economy, but the individuals in our model make decisions as if they were in the
+  \textit{AMR} economy. Since the decision rules by the agents have not changed, there are no
+  changes to the enrollment/dropout decisions and no changes to the amount of debt accumulated. In
+  this economy, the government subsidy still increases, due to limit on the repayment burden and
+  eventual forgiveness, but it only increases by 8\% rather than 15\%. We believe that this helps
+  reiterate ED's point that in order to accurately evaluate the cost of the IDR plans, there must be
+  an understanding of what implications they have on individual behavior.

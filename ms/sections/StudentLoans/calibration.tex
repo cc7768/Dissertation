@@ -1,0 +1,136 @@
+%!TEX root = ../../dissertation.tex
+
+\section{Calibration} \label{sec:calibration}
+
+The structural model laid out in Section \ref{sec:model} is dependent on many parameters and several
+distributional assumptions. In an attempt to prevent ourselves from leveraging this fact too much
+and to avoid overfitting the data, we use, where possible, parameter values and distributional
+assumptions that have been previously used in peer-reviewed research anywhere possible. This won't
+work for all of the model parameters since certain parameters are sensitive to the model
+specificiation. For example, the discrete choice shocks, $\pi_e$ and $\pi_c$, need to be determined
+for our particular model because the effect they have on choices is dependent on the model's Bellman
+equations. For parameters that we can't determine externally, we use a simulated method of moments
+approach and aim to match certain moments from the data.
+
+We describe the data sources we use and how we computed the relevant moments in
+Appendix~\ref{sec:data_appendix}.
+
+
+\subsection{Distributional Assumptions}
+
+  We discretize the types by drawing $N_j=200$ types, $j := (m^j, k_1^j, q^j, z^j)$, distributed
+  according to the following distribution:
+
+  Let $\{ \varepsilon_j^m, \varepsilon_j^k, \varepsilon_j^q, \varepsilon_j^z \}_j$ be independent
+  and identically distributed standard normals\footnote{In practice, we draw the $\varepsilon$s
+  using Sobol sequences rather than randomly to provide better coverage of the type space}. Then
+
+  \begin{align*}
+    k^j &= \max \{0, \mu_k + \sigma_k \frac{\varepsilon_j^k + \alpha_{km} \varepsilon_j^m}{\sqrt{1 + \alpha_{km}^2}} \} \\
+    m^j &= \frac{\varepsilon_j^m + \alpha_{mq} \varepsilon_j^q + \alpha_{mz} \varepsilon_j^z}{\sqrt{1 + \alpha_{mq}^2 + \alpha_{mz}^2}} \\
+    q^j &= \mu_q + \sigma_q \frac{\varepsilon_j^q + \alpha_{qz} \varepsilon_j^z}{\sqrt{1 + \alpha_{qz}^2}} \\
+    z^j &= \max \{0, \mu_z + \sigma_z \varepsilon_j^z \}
+  \end{align*}
+
+  Additionally, we assume that an individual's ability, conditional on their GPA ($m$) is drawn from
+
+  $$a \sim N(\rho m, \sqrt{1 - \rho^2})$$
+
+  where $\rho := \frac{\alpha_{am}}{\sqrt{1 + \alpha_{am}^2}}$ is the correlation between $a$ and
+  $m$. We do this by choosing $N_a=9$ discrete levels of $a$\footnote{We choose these values of $a$
+  such that $a \in \{\bar{a}_1, \dots, \bar{a}_{N_a}$ with $\bar{a}_1 < \bar{a}_2 < \dots <
+  \bar{a}_{N_a}$ such that each ability level is drawn with equal probability} and computing the
+  implied joint probability distribution over the discrete $a, j$ pairs.
+
+  We discretize $\zeta$ into $N_\zeta=4$ possible values. A value $\zeta_i$ determines two financial
+  states of college $dq^i$ and $\Omega_v^i$. We choose the form of the per-period cost of college as
+  $q(j, \zeta_i) = q_j + dq^i$. $\Omega_v$ represents the choice set of hours that an individual can
+  choose to work while in school and is chosen to match various levels of part-time to
+  full-time\footnote{For more details on how these values were determined, see
+  \cite{HendricksLeukhina2017}}. $\zeta$ follows a Markov chain, so the cost of college and the
+  hours an individual can work while in college potentially fluctuate while they are enrolled.
+
+  We assume the age specific components of income for each education level, $\theta^s(t)$, follows a
+  cubic polynomial in age as in \cite{Guvenen2009} and others
+
+  $$\theta^s(t) = \theta^s_0 + \theta^s_1 \text{age} + \theta^s_2 \frac{\text{age}^2}{100} + \theta^s_3 \frac{\text{age}^3}{1000}$$
+
+
+\subsection{Parameters}
+
+  The model parameters are determined in three stages:
+
+
+  \subsubsection{Previous Knowledge}
+
+    The previous knowledge parameters consist of parameters that are either widely used or come from
+    specific research papers. The model does not seem to be particularly sensitive to small
+    deviations of these parameters.
+
+    These parameters are listed in Table~\ref{table:pk}.
+
+
+  \subsubsection{Externally Calibrated}
+
+    Our externally calibrated parameters are parameters that have some form of a data counterpart
+    that can be used to line the model up with the data. This ensures that the model will match a
+    particular piece of the data, but that it cannot use these parameters to match unrelated pieces
+    of data. We now briefly describe how we determined parameters that fell in this category and
+    the associated values can be found in Table~\ref{table:ec}.
+
+    We find the age specific component of income by following standard procedures for
+    estimating a dynamic income process. We use PSID data on family income and restrict the sample
+    to working age (24-60) males and remove those who have certain irregularities such as too low
+    of yearly earnings or too many hours worked\footnote{We follow decisions made by
+    \cite{Guvenen2009} and \cite{Hryshko2012} when selecting a subsample to work with}. We needed
+    to compute the age specific components on our own because the income dynamics literature
+    typically focuses on the residual income so these values were not reported.
+
+    We choose to set the number of classes per year to 6 with each class worth 6 hours of
+    credit\footnote{This in effect means that each course in our model corresponds to 2 courses in
+    the data since most courses in college are worth 3-4 hours of credit} in the data. This means
+    the maximum number of hours an individual can earn in a given year is 36 which, according to
+    \cite{HendricksLeukhina2017}, is the 90th percentile of credits earned. Additionally, we set the
+    maximum amount of time that students can stay in school to 6 years since less than 5\% of
+    college graduates take more time than this to graduate.
+
+    The data used in \cite{HendricksLeukhina2017} corresponds to students who were in college in the
+    mid to late 1980s. We follow their lead and set the cumulative student loan limit to -\$19,750
+    (in 2000 dollars) which approximately matches the 1986 limit of \$12,500.
+
+    A list of the externally calibrated parameters can be found in Table~\ref{table:ec}
+
+
+  \subsubsection{Internally Calibrated}
+
+    The final group of parameters are parameters that do not have any data based counterpart. We
+    determine values for these parameters by choosing certain features of the data that we think are
+    informative about these parameters and then numerically minimize the difference between these
+    features in the data and in our model.
+
+    This includes the parameters $\delta_c$, $\delta_v$, $\pi_e$, $\pi_c$, $U_{HS}$, $U_{CD}$,
+    $U_{CG}$, $\alpha_{km}$, $\mu_k$, and $\sigma_k$. We choose these jointly to match statistics on
+    enrollment by HS GPA quartiles, completion by HS GPA quartiles, yearly dropout rates, yearly
+    dropout rates by HS GPA quartiles, yearly fractions of college students with student loans,
+    yearly average student loans, and college earnings. The parameter values for these parameters
+    can be found in Table~\ref{table:ic}.
+
+
+\subsection{Model Fit}
+
+  The data and model values for the moments we described are displayed in
+  Tables~\ref{table:moments}. Overall, we find that our model is able to accurately capture the
+  moments of the data that we are interested in. We discuss some specific examples below:
+
+  A mixture of the discrete choice shocks and disutility of being a college dropout/graduate helps
+  us successfully match the enrollment and drop out rates quite accurately. While the overall yearly
+  drop out rate matches quite well, we do slightly worse for the dropout rates by year and HS GPA
+  quartile. In particular, our model predicts that those in the low GPA quartiles drop out a little
+  slower than in the data, but those in the high GPA quartiles drop out a little more quickly than
+  in the data. Additionally, we consider it a success that using the credit accumulation parameters
+  from \cite{HendricksLeukhina2017} results in us accurately matching the educational fractions and
+  completion rates.
+
+  One feature that we struggled to match was that in our model too few people accumulated debt
+  during their first year of college (11\% of students in our model had debt after the first year
+  whereas the data says that 26\% of students have debt after their first year).
