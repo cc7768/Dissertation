@@ -73,57 +73,25 @@
 
   \begin{frame} \frametitle{Introduction}
 
-    \textbf{Environment}: Typical two country, two (tradeable) goods, infinite horizon model (a la
-    Backus Kehoe Kydland 1994). Incorporate recursive preferences following Colacito Croce
-    2011/2013, Tretvoll 2011/2015
+    \textbf{Environment}: Recursive preferences in a typical two country, two (tradeable) goods,
+    exchange economy (a la Backus Kehoe Kydland 1994).
 
-    \vspace{0.5cm}
+    \vspace{0.25cm}
 
     \textbf{Want}: Understand the stochastic process that governs the relative pareto weights in a
     two country economy with recursive preferences
 
-  \end{frame}
+    \vspace{0.5cm}
 
-  \begin{frame} \frametitle{Pareto weight process}
+    \textbf{What did we learn?}:
 
-    \textbf{Stochastic process for pareto weights}:
-
-    \begin{align*}
-      \log \lambda_{t+1}^{*} &= \log \lambda_{t}^* + (\rho - \alpha) \left[ log\left( \frac{U_{t+1}}{\mu(U_{t+1})} \right) - \log \left( \frac{J_{t+1}}{\mu(J_{t+1})} \right) \right] \\
-    \end{align*}
-
-    \vspace{-0.15cm}
-
-    \textbf{Additive Case}: $\alpha = \rho$ implies $\log \lambda_{t+1}^* = \log \lambda_t^*$
-
-    \vspace{0.25cm}
-
-    \textbf{Rewrite}: Stochastic process can be rewritten as white noise plus a risk adjustment ---
-    If no risk adjustment then process would have unit root.
-
-  \end{frame}
-
-  \begin{frame} \frametitle{Stable pareto weights}
-
-    In one good models pareto weights are unstable and one agent eventually consumes everything. It
-    turns out that in two good model that is not true (but they are extremely persistent)!
-
-    \begin{center}
-      \begin{figure}[htb]
-        \includegraphics[width=0.8\textwidth]{../ms/images/BCFL/policy_at_ss_one_axis.pdf}
-      \end{figure}
-    \end{center}
-
-  \end{frame}
-
-  \begin{frame} \frametitle{Backus-Smith puzzle}
-
-    Backus-Smith puzzle: Theory (with additive preferences) predicts negative relationship between
-    exchange rate and relative consumption but approximately 0 in data
-
-    \begin{figure}[htb]
-      \includegraphics[width=0.8\textwidth]{../ms/images/BCFL/con_v_fxr_alpha9.pdf}
-    \end{figure}
+    \begin{itemize}
+        \item While in one-good models pareto weights are unstable, a risk adjustment associated
+        with the addition of a second good implies stability of the stochastic process governing
+        pareto weights.
+        \item Time-varying pareto weights imply a ``wedge'' in model that can help address various
+        puzzles --- One example is the Backus-Smith puzzle
+    \end{itemize}
 
   \end{frame}
 
@@ -135,58 +103,31 @@
   \begin{frame} \frametitle{Global solutions}
 
     Global solutions allow more accurate characterizations of model dynamics than perturbation
-    methods --- Many questions require this accuracy:
+    methods. Certain models/questions should not use less accurate methods --- For example, models
+    of labor search, sovereign default, and certain classes of NK models.
 
     \vspace{0.25cm}
 
-    \begin{itemize}
-      \item Labor search models: Petrosky-Nadeau Zhang (Forthcoming)
-      \item Sovereign default models: Arellano et al (2016)
-      \item Certain classes of NK models: Judd et al 2017
-    \end{itemize}
+    \textbf{Want}: Global solution method that can work reasonably well for ``medium-sized'' (8
+    state variable model) so these models can be calibrated.
+
+    \vspace{0.25cm}
+
+    \textbf{Solution}: Perturbation of \textit{Epsilon-distinguishable sets} methods. Rather than
+    simulate to get grid, use pseudo-random points in hypercube.
+
+    \vspace{0.25cm}
+
+    \textbf{Performance}: See 50x speed up related to EDS and can solve 8-state model in
+    about a second.
 
   \end{frame}
 
-  \begin{frame} \frametitle{Epsilon-distinguishable sets}
-
-    Maliar Maliar 2015 introduces \textit{Epsilon-distinguishable sets} for creating non-tensor
-    grids to solve high dimensional state problems
-
-    \begin{figure}
-      \includegraphics[width=0.8\textwidth]{../ms/images/CLMM/Figure1-eps-converted-to.pdf}
-    \end{figure}
-
-  \end{frame}
-
-  \begin{frame} \frametitle{Pseudo-random grids}
-
-    \textit{Epsilon-distinguishable sets} requires simulation of model\dots If we have a rough idea
-    of where states live, can skip simulation step by drawing quasi-random grids in relevant
-    hypercube. Removing simulation step leads to between 1 and 2 orders of magnitude faster
-    solution.
-
-    \begin{figure}
-      \includegraphics[width=0.8\textwidth]{../ms/images/CLMM/Figure2-eps-converted-to.pdf}
-    \end{figure}
-
-  \end{frame}
 
 % --------------------------------------------------- %
 % Cost of income-driven student loans
 % --------------------------------------------------- %
 \section{Cost of income-driven student loans}
-
-
-  \begin{frame} \frametitle{Introduction}
-
-    \say{
-      Students should not be asked to pay more on their loans than they can afford\dots That's why
-      under my student loan program, we would cap repayment for an affordable portion of a borrower's
-      income, 12.5 percent\dots If borrowers work hard and make their full payments for 15 years,
-      we'll let them get on with their lives --- DJT
-    }
-
-  \end{frame}
 
   \begin{frame} \frametitle{U.S. student loan repayment plans}
 
@@ -205,15 +146,6 @@
       \end{tabular}
       }
     \end{table}
-
-  \end{frame}
-
-  \begin{frame} \frametitle{IDR expanding}
-
-     \begin{figure}
-       \includegraphics[width=\textwidth]{../ms/images/StudentLoans/idr_enrollment_ts.pdf}
-       \caption*{\tiny{U.S. Department of Education, Federal Student Aid Data Center, Federal Student Loan Portfolio.}}
-     \end{figure}
 
   \end{frame}
 
@@ -256,7 +188,8 @@
 
   \begin{frame} \frametitle{Government subsidy}
 
-      Let $\Delta_{SL}$ be the subsidy required to keep student loans program solvent:
+      \textbf{Key variable of interest}: Subsidy required to keep student loans program solvent
+      ($\Delta_{SL}$):
 
       \vspace{0.5cm}
 
@@ -341,6 +274,8 @@
 
     $$\text{prob}(\text{enroll}) = \frac{\exp(V^{S})}{\exp(V^{S}) + \exp(V^{HS})}$$
 
+    \vspace{0.75cm}
+
     $V^{HS}$ unaffected by changes in repayment plan which means all changes must come through
     changes in $V^{S}$. $V^{S}$ is itself only indirectly affected by changes in $V^{CD}$ and
     $V^{CG}$
@@ -367,9 +302,7 @@
 
   \end{frame}
 
-  \begin{frame} \frametitle{Debt effects}
-
-    \textbf{Thought experiment}:
+  \begin{frame} \frametitle{Debt effects: Thought experiment}
 
     Imagine that an individual gets an information shock at beginning of the last period of their
     college degree.
@@ -382,12 +315,15 @@
 
     \vspace{0.1cm}
 
-    If forgiveness, $\frac{\partial V^{CD}}{\partial d_t} = 0$ implies higher marginal utility for
-    debt today --- Take out maximum debt level possible.
+    If forgiveness, $\frac{\partial V^{CD}}{\partial d_t} = 0$ implies
+    $\frac{\partial V^{S}}{\partial d_t} > 0$ for all amounts of debt larger than current student
+    loans\dots
+
+    \textbf{Optimal response}: Take out maximum level of student loans.
 
     \vspace{0.3cm}
 
-    Lowest quartile increases debt the most because highest probability of forgiveness
+    Lowest quartile increases debt accumulation the most because highest probability of forgiveness
 
   \end{frame}
 
@@ -401,7 +337,7 @@
 
   \end{frame}
 
-  \begin{frame} \frametitle{Government subsidy rate}
+  \begin{frame} \frametitle{Government subsidy rate by HS GPA quartile}
 
     \begin{table}[H]
       \begin{tabular}{lll}
@@ -423,8 +359,8 @@
     IDR is expensive --- More targeted policies to reduce student loan repayment risk may be more
     successful.
 
-    For example, one policy that reduces overall government subsidy in IDR to the level from AMR by
-    offering IDR only to those in top 3 GPA quartiles.
+    For example, one policy that reduces overall government subsidy in the IDR economy to the level
+    from the AMR economy is offering IDR only to those in top 3 GPA quartiles.
 
     \vspace{0.5cm}
 
