@@ -16,7 +16,7 @@
   \usepackage{epstopdf}
   \usepackage[gen]{eurosym}
   \usepackage{float}
-  \usepackage[left=1in, right=1in, top=1in, bottom=1in, includefoot, heightrounded,footskip=.75in]{geometry}
+  \usepackage[left=1in,right=1in,top=1in,bottom=1in,includefoot,heightrounded,footskip=.75in]{geometry}
   \usepackage[colorlinks=true, citecolor=blue, urlcolor=blue, linkcolor=blue, backref=page]{hyperref}
   \usepackage{kpfonts}
   \usepackage{lipsum}
@@ -44,6 +44,7 @@
   \usepackage{amsfonts}
   \usepackage[english]{babel}
   \usepackage{bigdelim}
+  \usepackage{bookmark}
   \usepackage{epsfig}
   \usepackage{fullpage}
   \usepackage{graphicx}
@@ -96,6 +97,7 @@
   }
 
   % Fix position for page numbers
+  \addtolength{\textheight}{-60pt}
   \pagestyle{plain}
 
   % Needed to create list of appendices
@@ -147,7 +149,7 @@
 % ----------
 
 \thispagestyle{empty}
-\vspace*{15mm} Three Essays in Macroeconomics
+\vspace*{15mm} Essays in Macro and Labor Economics
 \vspace{20mm}
 by\\
 \vspace{10mm}
@@ -205,21 +207,22 @@ Laura L. Veldkamp\\
 % ---------------
 \chapter{Acknowledgments}
 
-  First and foremost, I am grateful for a truly exceptional committee consisting of Laura Veldkamp,
-  Thomas Sargent, and Stan Zin. They have each played a unique role in my development as an
-  economist by helping my learn to direct my curiosity, teaching me the tools needed to do economic
-  research, and providing encouragement when I didn't know what to do next. My life is greatly
-  improved because of the time they were willing to share with me.
+  First and foremost, I am grateful for a truly exceptional committee consisting of my chair, Laura
+  Veldkamp, and committee members Thomas Sargent, Michael Waugh, and Stan Zin. They have each played
+  a unique role in my development as an economist by helping me learn to direct my curiosity,
+  teaching me the tools needed to do economic research, and by providing encouragement when I wasn't
+  sure which steps were next. My life is greatly improved because of the time they were willing to
+  share with me.
+
+  Dave Backus, though no longer with us, also played a vital role in my development as an economist
+  and as a person --- I often miss him and frequently reflect on the lessons I learned from him.
 
   I am grateful for the collaborative environment that I was able to work in while here at NYU and
   am lucky to have learned an incredible number of things from various students and professors,
   including, but not limited to, Felipe Alvarez, Katka Borovickova, Tom Cooley, Richard Davies,
   Fiona Feng, Axelle Ferriere, Sonia Gilbukh, Victoria Gregory, Timothy Hills, Malika Krishna,
   Elliot Lipnowski, Roxana Mihet, Simon Mongey, Jonathan Payne, Alberto Polo, Kim Ruhl, Maher Said,
-  Daniel Stackman, Balint Szoke, Venky Venkateswaran, Mike Waugh, Larry, White, Peifan Wu.
-
-  Dave Backus, though no longer with us, also played a vital role in my development as an economist
-  and as a person --- I often miss him and frequently reflect on the lessons I learned from him.
+  Daniel Stackman, Balint Szoke, Venky Venkateswaran, Larry White, and Peifan Wu.
 
   The Sargent Reading Group has served as an effective tool for me to learn about a wide range of
   topics in economics --- I am grateful to those who have helped organize it each while I attended
@@ -230,7 +233,7 @@ Laura L. Veldkamp\\
   limited to, Rick Evans, Lilia Maliar, Serguei Maliar, Matt McKay, Kerk Phillips, Jim Savage, Simon
   Scheidegger, John Stachurski, and Natasha Watkins.
 
-  This work is dedicated to my wife, Jessica Coleman, and my parents, Stephanie and Gregory Coleman.
+  This work is dedicated to my wife, Jessica Coleman, and my parents, Gregory and Stephanie Coleman.
   Each of these three individuals have encouraged me in my education, driven and motivated my
   curiosity, and supported the paths that these pursuits have lead me to take, often at the price of
   their own convenience.
@@ -327,21 +330,19 @@ Laura L. Veldkamp\\
 % ------------
 % Introduction
 % ------------
-\chapter*[Introduction]{Introduction} \label{ch-intro}
-
-  Introduction
+% \chapter*[Introduction]{Introduction} \label{ch-intro}
 
   \setcounter{tocdepth}{1}% chapters and above
 
 % CHAPTER 1
 \chapter{Pareto weights as wedges in two-country models}
 
-  \input{sections/BCFL/intro.tex}
-  \input{sections/BCFL/two_countries.tex}
-  \input{sections/BCFL/calibration.tex}
-  \input{sections/BCFL/solution.tex}
-  \input{sections/BCFL/equilibrium.tex}
-  \input{sections/BCFL/conclusion.tex}
+  \input{sections/BCFL/intro}
+  \input{sections/BCFL/two_countries}
+  \input{sections/BCFL/calibration}
+  \input{sections/BCFL/solution}
+  \input{sections/BCFL/equilibrium}
+  \input{sections/BCFL/conclusion}
 
 \newpage
 \clearpage
@@ -361,6 +362,7 @@ Laura L. Veldkamp\\
 
   \input{sections/StudentLoans/intro}
   \input{sections/StudentLoans/background}
+  \input{sections/StudentLoans/model}
   \input{sections/StudentLoans/calibration}
   \input{sections/StudentLoans/results}
   \input{sections/StudentLoans/conclusion}
